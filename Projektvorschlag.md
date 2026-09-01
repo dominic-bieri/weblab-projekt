@@ -9,5 +9,21 @@ Dabei soll man durch eine Kalenderübersicht (inkl. Streak) und eine Challenge-G
 Optional könnte die Website eine kleine soziale Komponente erhalten, z. B. die Möglichkeit, anderen Nutzern zu folgen und einen chronologischen Feed zu haben.
 Allerdings soll bewusst auf Likes, Kommentare oder einen Algorithmus verzichtet werden, damit der Fokus auf den Bildern bleibt und kein zweites Instagram aufgebaut wird.
 
-## User Stories
+## User Stories (MoSCoW)
 
+### Must have
+
+### Should have
+
+### Could have
+
+### Won't have (bewusst ausgeschlossen)
+
+## Angedachter Technologie-Stack
+
+- **Frontend**: Angular
+- **Backend**: NestJS
+- **Datenbank**: PostgreSQL
+- **Deployment**: Docker Compose
+- **Tests**: Vitest
+- **Bild-Storage**: Docker-Volume
