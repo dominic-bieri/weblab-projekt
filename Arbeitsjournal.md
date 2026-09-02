@@ -8,9 +8,12 @@ Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.
 
 ---
 
-## 2026-08-31 — 0.0 h
+## 2026-09-02 — 5.0 h
 
-- _Tätigkeit …_
+- Projektsetup Angular (inkl. Angular Material) und NestJS-Backend im Monorepo
+- Routing für Angular aufgesetzt
+- CI-Pipeline (GitHub Actions) eingerichtet
+- Doku-Grundgerüst: Arbeitsjournal, arc42, Fazit/Reflexion
 
 ---
 
