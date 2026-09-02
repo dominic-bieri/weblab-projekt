@@ -1,0 +1,5 @@
+<nav>
+  @for (linkItem of links(); track linkItem.path) {
+    <a [routerLink]="linkItem.path" routerLinkActive="active">{{ linkItem.label }}</a>
+  }
+</nav>
