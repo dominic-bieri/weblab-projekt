@@ -1,20 +1,20 @@
-import {Routes} from '@angular/router';
-import {PATHS} from './paths.config';
-import {Home} from '../features/home/smart_container/home';
+import { Routes } from '@angular/router';
+import { PATHS } from './paths.config';
+import { Home } from '../features/home/smart_container/home';
 
-const {HOME, CHALLENGE} = PATHS;
+const { HOME, CHALLENGE } = PATHS;
 
 export const routes: Routes = [
   {
     path: HOME.path,
-    component: Home
+    component: Home,
   },
   {
     path: CHALLENGE.path,
-    component: Home // TODO auf eigentliche challenge seite wechseln
+    component: Home, // TODO auf eigentliche challenge seite wechseln
   },
   {
-    path: "**",
-    component: Home
-  }
+    path: '**',
+    component: Home,
+  },
 ];

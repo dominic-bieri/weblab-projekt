@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { Navigation } from './navigation';
 
 describe('Navigation', () => {
@@ -8,14 +9,24 @@ describe('Navigation', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Navigation],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Navigation);
+    fixture.componentRef.setInput('links', [
+      { path: 'home', label: 'Home' },
+      { path: 'challenge', label: 'Challenge' },
+    ]);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render a link per item', () => {
+    const anchors = (fixture.nativeElement as HTMLElement).querySelectorAll('nav a');
+    expect(anchors.length).toBe(2);
   });
 });
