@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+}
+
+mat-card {
+  width: 100%;
+  padding: 16px;
+}
+
+img[mat-card-image] {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  border-radius: 4px;
+}
