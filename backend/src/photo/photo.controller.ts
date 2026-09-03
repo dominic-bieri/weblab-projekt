@@ -1,20 +1,22 @@
 import {
   Controller,
+  Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { PhotoUploadService } from './photo-upload.service.js';
+import { PhotoService } from './photo.service.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 
-@Controller('photo-upload')
-export class PhotoUploadController {
-  constructor(private readonly photoUploadService: PhotoUploadService) {}
+@Controller('photo')
+export class PhotoController {
+  constructor(private readonly photoService: PhotoService) {}
 
-  @Post()
+  @Post('upload')
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.photoUploadService.savePhoto(file);
+    return this.photoService.savePhoto(file);
   }
 }

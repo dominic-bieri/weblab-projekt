@@ -1,5 +1,5 @@
 ### Photo Upload
-POST http://localhost:3000/photo-upload
+POST http://localhost:3000/photo/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
