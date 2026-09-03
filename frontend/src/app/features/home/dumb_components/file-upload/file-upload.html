@@ -10,24 +10,22 @@
     {{ uploadForm.file().value()?.name ?? ('fileUpload.noFileSelected' | translate) }}
   </span>
 
-  <label class="field">
-    {{ 'fileUpload.captureDate' | translate }}
-    <input
-      type="date"
-      [value]="uploadForm.captureDate().value()"
-      (input)="uploadForm.captureDate().value.set($any($event.target).value)"
-    />
-  </label>
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+    <input matInput [matDatepicker]="capturePicker" [formField]="uploadForm.captureDate" />
+    <mat-datepicker-toggle matIconSuffix [for]="capturePicker" />
+    <mat-datepicker #capturePicker />
+  </mat-form-field>
 
-  <label class="field">
-    {{ 'fileUpload.description' | translate }}
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
     <input
+      matInput
       type="text"
       [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
-      [value]="uploadForm.description().value()"
-      (input)="uploadForm.description().value.set($any($event.target).value)"
+      [formField]="uploadForm.description"
     />
-  </label>
+  </mat-form-field>
 
   <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">
     {{ 'fileUpload.upload' | translate }}

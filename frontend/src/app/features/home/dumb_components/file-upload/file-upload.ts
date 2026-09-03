@@ -1,7 +1,11 @@
 import { Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { form, required } from '@angular/forms/signals';
+import { MatInputModule } from '@angular/material/input';
+import { form, FormField, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 
 export interface PhotoUpload {
@@ -12,18 +16,27 @@ export interface PhotoUpload {
 
 interface FileUploadFormValue {
   file: File | null;
-  captureDate: string;
+  captureDate: Date | null;
   description: string;
 }
 
 const EMPTY_FORM: FileUploadFormValue = {
   file: null,
-  captureDate: '',
+  captureDate: null,
   description: '',
 };
 
 @Component({
-  imports: [MatButtonModule, MatIconModule, TranslatePipe],
+  imports: [
+    FormField,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    TranslatePipe,
+  ],
+  providers: [provideNativeDateAdapter()],
   selector: 'app-file-upload',
   styleUrl: './file-upload.css',
   templateUrl: './file-upload.html',
@@ -49,8 +62,17 @@ export class FileUpload {
 
     const { file, captureDate, description } = this.model();
     if (this.uploadForm().valid() && file) {
-      this.submitted.emit({ file, captureDate, description });
+      this.submitted.emit({ file, captureDate: this.toIsoDate(captureDate), description });
       this.uploadForm().reset({ ...EMPTY_FORM });
     }
+  }
+
+  private toIsoDate(date: Date | null): string {
+    if (!date) {
+      return '';
+    }
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${date.getFullYear()}-${month}-${day}`;
   }
 }
