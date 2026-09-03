@@ -10,5 +10,24 @@
     {{ uploadForm.file().value()?.name ?? 'Keine Datei ausgewählt' }}
   </span>
 
+  <label class="field">
+    Aufnahmedatum
+    <input
+      type="date"
+      [value]="uploadForm.captureDate().value()"
+      (input)="uploadForm.captureDate().value.set($any($event.target).value)"
+    />
+  </label>
+
+  <label class="field">
+    Beschreibung
+    <input
+      type="text"
+      placeholder="Beschreibung"
+      [value]="uploadForm.description().value()"
+      (input)="uploadForm.description().value.set($any($event.target).value)"
+    />
+  </label>
+
   <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">Upload</button>
 </form>

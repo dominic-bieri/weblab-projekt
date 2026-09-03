@@ -1,11 +1,11 @@
 <ng-container>
-  <app-file-upload (fileSelected)="onFileSelected($event)" />
+  <app-file-upload (submitted)="onPhotoUpload($event)" />
 
-  @for (item of items(); track item) {
+  @for (photo of photos.value(); track photo.id) {
     <app-picture-card
-      imageSource="https://material.angular.dev/assets/img/examples/shiba2.jpg"
-      [captureDate]="date"
-      description="das ist eine description"
+      [imageSource]="imageUrl(photo)"
+      [captureDate]="photo.captureDate"
+      [description]="photo.description ?? ''"
     />
   }
 </ng-container>

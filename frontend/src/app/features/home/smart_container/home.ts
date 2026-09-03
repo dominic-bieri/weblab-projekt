@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PictureCard } from '../dumb_components/picture-card/picture-card';
-import { FileUpload } from '../dumb_components/file-upload/file-upload';
+import { FileUpload, PhotoUpload } from '../dumb_components/file-upload/file-upload';
+import { PhotoApi } from '../services/photo.api';
+import { Photo } from '../photo.type';
 
 @Component({
   imports: [FileUpload, PictureCard],
@@ -9,10 +11,15 @@ import { FileUpload } from '../dumb_components/file-upload/file-upload';
   templateUrl: './home.html',
 })
 export class Home {
-  protected readonly date = new Date();
-  items = signal(Array.from({ length: 10 }, (_, i) => i + 1));
+  private readonly photoApi = inject(PhotoApi);
 
-  protected onFileSelected(file: File): void {
-    console.log('File received in Home:', file.name, file.size, file.type);
+  protected readonly photos = this.photoApi.photos;
+
+  protected imageUrl(photo: Photo): string {
+    return this.photoApi.imageUrl(photo);
+  }
+
+  protected onPhotoUpload(upload: PhotoUpload): void {
+    this.photoApi.uploadPhoto(upload).subscribe(() => this.photos.reload());
   }
 }

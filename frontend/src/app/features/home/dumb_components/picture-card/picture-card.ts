@@ -1,11 +1,5 @@
 import { Component, input } from '@angular/core';
-import {
-  MatCard,
-  MatCardContent,
-  MatCardHeader,
-  MatCardImage,
-  MatCardTitle,
-} from '@angular/material/card';
+import { MatCard, MatCardContent, MatCardImage, MatCardTitle } from '@angular/material/card';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -16,6 +10,6 @@ import { DatePipe, NgOptimizedImage } from '@angular/common';
 })
 export class PictureCard {
   imageSource = input.required<string>();
-  captureDate = input.required<Date>();
+  captureDate = input<Date | string | null>(null);
   description = input.required<string>();
 }

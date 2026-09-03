@@ -7,6 +7,14 @@ Content-Disposition: form-data; name="file"; filename="photo.jpg"
 Content-Type: image/jpeg
 
 < ./A7C04877.jpg
+--WebAppBoundary
+Content-Disposition: form-data; name="captureDate"
+
+2026-08-15
+--WebAppBoundary
+Content-Disposition: form-data; name="description"
+
+Sonnenuntergang am See
 --WebAppBoundary--
 
 ### List all photos

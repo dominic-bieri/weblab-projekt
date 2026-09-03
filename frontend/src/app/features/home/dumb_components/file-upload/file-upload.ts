@@ -3,9 +3,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { form, required } from '@angular/forms/signals';
 
+export interface PhotoUpload {
+  file: File;
+  captureDate: string;
+  description: string;
+}
+
 interface FileUploadFormValue {
   file: File | null;
+  captureDate: string;
+  description: string;
 }
+
+const EMPTY_FORM: FileUploadFormValue = {
+  file: null,
+  captureDate: '',
+  description: '',
+};
 
 @Component({
   imports: [MatButtonModule, MatIconModule],
@@ -15,11 +29,11 @@ interface FileUploadFormValue {
 })
 export class FileUpload {
   accept = input('*');
-  fileSelected = output<File>();
+  submitted = output<PhotoUpload>();
 
-  private readonly fileModel = signal<FileUploadFormValue>({ file: null });
+  private readonly model = signal<FileUploadFormValue>({ ...EMPTY_FORM });
 
-  readonly uploadForm = form(this.fileModel, (path) => {
+  readonly uploadForm = form(this.model, (path) => {
     required(path.file);
   });
 
@@ -32,10 +46,10 @@ export class FileUpload {
   submitForm(event: Event): void {
     event.preventDefault();
 
-    const { file } = this.fileModel();
+    const { file, captureDate, description } = this.model();
     if (this.uploadForm().valid() && file) {
-      this.fileSelected.emit(file);
-      this.uploadForm().reset({ file: null });
+      this.submitted.emit({ file, captureDate, description });
+      this.uploadForm().reset({ ...EMPTY_FORM });
     }
   }
 }
