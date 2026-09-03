@@ -1,24 +1,24 @@
+import type { Server } from 'node:http';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module.js';
+import { PhotoUploadModule } from './../src/photo-upload/photo-upload.module.js';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('PhotoUploadController (e2e)', () => {
+  let app: INestApplication<Server>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [PhotoUploadModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/photo-upload (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/photo-upload')
       .expect(200)
       .expect('Hello World!');
   });

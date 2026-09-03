@@ -1,0 +1,10 @@
+### Photo Upload
+POST http://localhost:3000/photo-upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="photo.jpg"
+Content-Type: image/jpeg
+
+< ./A7C04877.jpg
+--WebAppBoundary--
