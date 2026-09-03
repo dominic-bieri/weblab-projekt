@@ -3,15 +3,15 @@
 
   <button mat-stroked-button type="button" (click)="fileInput.click()">
     <mat-icon>attach_file</mat-icon>
-    Datei auswählen
+    {{ 'fileUpload.chooseFile' | translate }}
   </button>
 
   <span class="file-name">
-    {{ uploadForm.file().value()?.name ?? 'Keine Datei ausgewählt' }}
+    {{ uploadForm.file().value()?.name ?? ('fileUpload.noFileSelected' | translate) }}
   </span>
 
   <label class="field">
-    Aufnahmedatum
+    {{ 'fileUpload.captureDate' | translate }}
     <input
       type="date"
       [value]="uploadForm.captureDate().value()"
@@ -20,14 +20,16 @@
   </label>
 
   <label class="field">
-    Beschreibung
+    {{ 'fileUpload.description' | translate }}
     <input
       type="text"
-      placeholder="Beschreibung"
+      [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
       [value]="uploadForm.description().value()"
       (input)="uploadForm.description().value.set($any($event.target).value)"
     />
   </label>
 
-  <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">Upload</button>
+  <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">
+    {{ 'fileUpload.upload' | translate }}
+  </button>
 </form>

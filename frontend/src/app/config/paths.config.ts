@@ -3,10 +3,10 @@ import { NavigationItem } from '../components/navigation/navigation.type';
 export const PATHS: { [key: string]: NavigationItem } = {
   HOME: {
     path: 'home',
-    label: 'Home',
+    label: 'nav.home',
   },
   CHALLENGE: {
     path: 'challenge',
-    label: 'Challenge',
+    label: 'nav.challenge',
   },
 };

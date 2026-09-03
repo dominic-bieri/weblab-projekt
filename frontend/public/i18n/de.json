@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Home",
+    "challenge": "Challenge",
+    "language": "Sprache"
+  },
+  "fileUpload": {
+    "chooseFile": "Datei auswählen",
+    "noFileSelected": "Keine Datei ausgewählt",
+    "captureDate": "Aufnahmedatum",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung",
+    "upload": "Upload"
+  }
+}

@@ -1,0 +1,16 @@
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.lang-switcher {
+  margin-left: auto;
+}
+
+a.active {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}

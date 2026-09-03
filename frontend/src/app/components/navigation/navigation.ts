@@ -1,9 +1,12 @@
 import { Component, input } from '@angular/core';
 import { NavigationItem } from './navigation.type';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageSwitcher } from '../language-switcher/language-switcher';
 
 @Component({
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MatButtonModule, TranslatePipe, LanguageSwitcher],
   selector: 'app-navigation',
   styleUrl: './navigation.css',
   templateUrl: './navigation.html',

@@ -1,0 +1,8 @@
+<mat-form-field subscriptSizing="dynamic">
+  <mat-label>{{ 'nav.language' | translate }}</mat-label>
+  <mat-select [value]="currentLang()" (selectionChange)="switchLanguage($event.value)">
+    @for (lang of languages; track lang.code) {
+      <mat-option [value]="lang.code">{{ lang.label }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>

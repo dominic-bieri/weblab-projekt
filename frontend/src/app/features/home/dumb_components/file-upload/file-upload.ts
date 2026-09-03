@@ -2,6 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { form, required } from '@angular/forms/signals';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface PhotoUpload {
   file: File;
@@ -22,7 +23,7 @@ const EMPTY_FORM: FileUploadFormValue = {
 };
 
 @Component({
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, TranslatePipe],
   selector: 'app-file-upload',
   styleUrl: './file-upload.css',
   templateUrl: './file-upload.html',
