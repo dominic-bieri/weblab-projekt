@@ -1,0 +1,14 @@
+<form class="upload-form" (submit)="submitForm($event)">
+  <input #fileInput type="file" hidden [accept]="accept()" (change)="onFileChange($event)" />
+
+  <button mat-stroked-button type="button" (click)="fileInput.click()">
+    <mat-icon>attach_file</mat-icon>
+    Datei auswählen
+  </button>
+
+  <span class="file-name">
+    {{ uploadForm.file().value()?.name ?? 'Keine Datei ausgewählt' }}
+  </span>
+
+  <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">Upload</button>
+</form>

@@ -1,7 +1,11 @@
 <ng-container>
+  <app-file-upload (fileSelected)="onFileSelected($event)" />
+
   @for (item of items(); track item) {
-    <app-picture-card imageSource="https://material.angular.dev/assets/img/examples/shiba2.jpg"
-                      [captureDate]="date"
-                      description="das ist eine description"/>
+    <app-picture-card
+      imageSource="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+      [captureDate]="date"
+      description="das ist eine description"
+    />
   }
 </ng-container>
