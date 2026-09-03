@@ -1,11 +1,13 @@
 <ng-container>
-  <app-file-upload (submitted)="onPhotoUpload($event)" />
+  <app-file-upload (submitted)="onPhotoUpload($event)"/>
 
-  @for (photo of photos.value(); track photo.id) {
-    <app-picture-card
-      [imageSource]="imageUrl(photo)"
-      [captureDate]="photo.captureDate"
-      [description]="photo.description ?? ''"
-    />
+  @if (photos.hasValue()) {
+    @for (photo of photos.value(); track photo.id) {
+      <app-picture-card
+        [imageSource]="imageUrl(photo)"
+        [captureDate]="photo.captureDate"
+        [description]="photo.description ?? ''"
+      />
+    }
   }
 </ng-container>
