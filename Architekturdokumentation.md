@@ -30,6 +30,18 @@
 
 ## 9. Architekturentscheidungen (ADRs)
 
+### ADR 1: Frontend als Single Page Application (SPA)
+
+Das Frontend wird als SPA (Angular) umgesetzt. Begründung: interaktive
+Ansichten (Kalender, Galerie) ohne Full-Page-Reloads und klare Trennung von
+Frontend und Backend über eine REST-API.
+
+### ADR 2: Backend als Monolith
+
+Das Backend wird als ein einzelner NestJS-Dienst (Monolith) umgesetzt.
+Begründung: Es ist eine kleine Applikation, und ein Monolith ist einfacher
+aufzusetzen und zu betreiben als mehrere Services.
+
 ## 10. Qualitätsanforderungen
 
 ### 10.1 Qualitätsbaum
