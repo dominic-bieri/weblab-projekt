@@ -1,6 +1,8 @@
 {
   "name": "daily-lens",
   "version": "0.0.0",
+  "description": "WEB-LAB Projekt",
+  "author": "Dominic Bieri",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
