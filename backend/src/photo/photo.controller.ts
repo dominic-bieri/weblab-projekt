@@ -2,7 +2,9 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
+  StreamableFile,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,5 +20,21 @@ export class PhotoController {
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.photoService.savePhoto(file);
+  }
+
+  @Get()
+  findAll() {
+    return this.photoService.findAll();
+  }
+
+  @Get(':id')
+  async getFile(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<StreamableFile> {
+    const { photo, stream } = await this.photoService.getFile(id);
+    return new StreamableFile(stream, {
+      type: photo.mimeType,
+      disposition: `inline; filename="${encodeURIComponent(photo.filename)}"`,
+    });
   }
 }

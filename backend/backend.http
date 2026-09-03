@@ -8,3 +8,9 @@ Content-Type: image/jpeg
 
 < ./A7C04877.jpg
 --WebAppBoundary--
+
+### List all photos
+GET http://localhost:3000/photo
+
+### Photo image by id
+GET http://localhost:3000/photo/bad69006-c3a6-4b35-befe-b25e40e9eea8
