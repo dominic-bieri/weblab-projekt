@@ -1,13 +1,27 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { App } from './app';
+import { AuthService } from './core/auth/auth.service';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        {
+          provide: AuthService,
+          useValue: {
+            authenticated: signal(true),
+            login: () => Promise.resolve(),
+            register: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+          },
+        },
+      ],
     }).compileComponents();
   });
 

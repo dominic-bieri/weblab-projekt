@@ -2,7 +2,13 @@
   "nav": {
     "home": "Home",
     "challenge": "Challenge",
-    "language": "Sprache"
+    "language": "Sprache",
+    "logout": "Abmelden"
+  },
+  "auth": {
+    "title": "Daily Lens",
+    "login": "Anmelden",
+    "register": "Registrieren"
   },
   "fileUpload": {
     "chooseFile": "Datei auswählen",

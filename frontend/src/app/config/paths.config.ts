@@ -10,3 +10,8 @@ export const PATHS: { [key: string]: NavigationItem } = {
     label: 'nav.challenge',
   },
 };
+
+export const LOGIN_PATH: NavigationItem = {
+  path: 'login',
+  label: 'nav.login',
+};

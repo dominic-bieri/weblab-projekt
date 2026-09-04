@@ -1,9 +1,15 @@
 <nav>
-  @for (linkItem of links(); track linkItem.path) {
-    <a mat-button [routerLink]="linkItem.path" routerLinkActive="active">
-      {{ linkItem.label | translate }}
-    </a>
+  @if (authenticated()) {
+    @for (linkItem of links(); track linkItem.path) {
+      <a mat-button [routerLink]="linkItem.path" routerLinkActive="active">
+        {{ linkItem.label | translate }}
+      </a>
+    }
   }
 
   <app-language-switcher class="lang-switcher" />
+
+  @if (authenticated()) {
+    <button mat-button (click)="logout()">{{ 'nav.logout' | translate }}</button>
+  }
 </nav>
