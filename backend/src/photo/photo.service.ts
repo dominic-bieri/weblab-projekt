@@ -73,14 +73,6 @@ export class PhotoService {
     });
   }
 
-  async findOne(id: string, userId: string): Promise<Photo> {
-    const photo = await this.photoRepository.findOneBy({ id, userId });
-    if (!photo) {
-      throw new NotFoundException(`Photo ${id} not found`);
-    }
-    return photo;
-  }
-
   async getFile(id: string): Promise<{ photo: Photo; stream: ReadStream }> {
     const photo = await this.photoRepository.findOneBy({ id });
     if (!photo) {
@@ -98,7 +90,7 @@ export class PhotoService {
   }
 
   async updatePhoto(id: string, dto: PhotoDto, userId: string): Promise<Photo> {
-    await this.findOne(id, userId);
+    await this.assertOwnership(id, userId);
 
     const changes: Partial<Photo> = {};
     if (dto.captureDate !== undefined) {
@@ -116,7 +108,14 @@ export class PhotoService {
   }
 
   async deletePhoto(id: string, userId: string) {
-    await this.findOne(id, userId);
+    await this.assertOwnership(id, userId);
     await this.photoRepository.delete(id);
+  }
+
+  private async assertOwnership(id: string, userId: string): Promise<void> {
+    const owned = await this.photoRepository.existsBy({ id, userId });
+    if (!owned) {
+      throw new NotFoundException(`Photo ${id} not found`);
+    }
   }
 }
