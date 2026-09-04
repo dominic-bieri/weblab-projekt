@@ -4,4 +4,5 @@ export interface Photo {
   mimeType: string;
   captureDate: string | null;
   description: string | null;
+  imageUrl: string;
 }

@@ -6,6 +6,9 @@ export class Photo {
   id: string;
 
   @Column()
+  userId: string;
+
+  @Column()
   filename: string;
 
   @Column()

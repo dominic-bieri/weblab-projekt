@@ -16,7 +16,7 @@ export class PhotoApi {
   });
 
   imageUrl(photo: Photo): string {
-    return `${this.baseUrl}/${photo.id}`;
+    return `http://localhost:3000${photo.imageUrl}`;
   }
 
   uploadPhoto(upload: { file: File; captureDate: string; description: string }) {

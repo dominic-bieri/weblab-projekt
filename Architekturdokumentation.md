@@ -42,6 +42,14 @@ Das Backend wird als ein einzelner NestJS-Dienst (Monolith) umgesetzt.
 Begründung: Es ist eine kleine Applikation, und ein Monolith ist einfacher
 aufzusetzen und zu betreiben als mehrere Services.
 
+### ADR 3: Signierte URLs für den Bild-Stream-Endpunkt
+
+`<img ngSrc>` kann kein Bearer Token mitschicken, daher wird `GET /photo/:id`
+nicht per `JwtAuthGuard`, sondern per kurzlebiger HMAC-signierter URL
+abgesichert: `GET /photo` liefert pro Foto eine `imageUrl` mit `exp`/`sig`-
+Query-Parametern (5 Min. gültig), die ein `SignedPhotoUrlGuard` validiert.
+So funktioniert `<img ngSrc>` weiterhin nativ, ohne Blob-Fetch im Frontend.
+
 ## 10. Qualitätsanforderungen
 
 ### 10.1 Qualitätsbaum

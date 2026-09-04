@@ -38,6 +38,7 @@ export class PhotoService {
 
   async savePhoto(
     file: Express.Multer.File,
+    userId: string,
     meta: PhotoDto = {},
   ): Promise<Photo> {
     const id = randomUUID();
@@ -51,6 +52,7 @@ export class PhotoService {
       return await this.photoRepository.save(
         this.photoRepository.create({
           id,
+          userId,
           filename: file.originalname,
           mimeType: file.mimetype,
           captureDate,
@@ -58,18 +60,21 @@ export class PhotoService {
         }),
       );
     } catch (err) {
-      // DB insert failed – remove the file so disk and DB don't drift apart
+      // DB-Insert fehlgeschlagen – Datei wieder entfernen, damit Disk und DB nicht auseinanderlaufen
       await unlink(join(UPLOAD_DIR, storedName)).catch(() => {});
       throw err;
     }
   }
 
-  findAll(): Promise<Photo[]> {
-    return this.photoRepository.find({ order: { captureDate: 'DESC' } });
+  findAll(userId: string): Promise<Photo[]> {
+    return this.photoRepository.find({
+      where: { userId },
+      order: { captureDate: 'DESC' },
+    });
   }
 
-  async findOne(id: string): Promise<Photo> {
-    const photo = await this.photoRepository.findOneBy({ id });
+  async findOne(id: string, userId: string): Promise<Photo> {
+    const photo = await this.photoRepository.findOneBy({ id, userId });
     if (!photo) {
       throw new NotFoundException(`Photo ${id} not found`);
     }
@@ -77,7 +82,10 @@ export class PhotoService {
   }
 
   async getFile(id: string): Promise<{ photo: Photo; stream: ReadStream }> {
-    const photo = await this.findOne(id);
+    const photo = await this.photoRepository.findOneBy({ id });
+    if (!photo) {
+      throw new NotFoundException(`Photo ${id} not found`);
+    }
     const path = storagePath(photo);
 
     try {
@@ -89,7 +97,9 @@ export class PhotoService {
     return { photo, stream: createReadStream(path) };
   }
 
-  async updatePhoto(id: string, dto: PhotoDto): Promise<Photo> {
+  async updatePhoto(id: string, dto: PhotoDto, userId: string): Promise<Photo> {
+    await this.findOne(id, userId);
+
     const changes: Partial<Photo> = {};
     if (dto.captureDate !== undefined) {
       changes.captureDate = parseCaptureDate(dto.captureDate);
@@ -105,7 +115,8 @@ export class PhotoService {
     return this.photoRepository.save(photo);
   }
 
-  deletePhoto(id: string) {
-    this.photoRepository.delete(id);
+  async deletePhoto(id: string, userId: string) {
+    await this.findOne(id, userId);
+    await this.photoRepository.delete(id);
   }
 }
