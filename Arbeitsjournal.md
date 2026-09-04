@@ -26,3 +26,11 @@ Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.
 
 ---
 
+## 2026-09-04 — 7.0 h
+
+- Keycloak-Integration im Frontend (Login/Logout, Auth-Guard, Bearer-Token-Interceptor)
+- Backend JWT-Auth mit Passport für die Photo-Endpunkte, Fotos pro User getrennt
+- Bildanzeige per signierten URLs gelöst (Auth-Problem bei `<img>`-Tags, ADR 3)
+
+---
+
