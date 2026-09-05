@@ -7,7 +7,7 @@ import { Photo } from '../photo.type';
   providedIn: 'root',
 })
 export class PhotoApi {
-  private readonly baseUrl = 'http://localhost:3000/photo';
+  private readonly baseUrl = '/api/photo';
 
   private readonly http = inject(HttpClient);
 
@@ -16,7 +16,7 @@ export class PhotoApi {
   });
 
   imageUrl(photo: Photo): string {
-    return `http://localhost:3000${photo.imageUrl}`;
+    return `/api${photo.imageUrl}`;
   }
 
   uploadPhoto(upload: { file: File; captureDate: string; description: string }) {

@@ -19,10 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri:
-          'http://localhost:8080/realms/daily-lens/protocol/openid-connect/certs', // TODO replace with env
+        jwksUri: `${process.env.KEYCLOAK_INTERNAL_URL}/realms/daily-lens/protocol/openid-connect/certs`,
       }),
-      issuer: 'http://localhost:8080/realms/daily-lens',
+      issuer: process.env.KEYCLOAK_ISSUER,
       algorithms: ['RS256'],
     });
   }

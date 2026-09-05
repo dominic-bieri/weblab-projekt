@@ -5,7 +5,7 @@ const SIGNED_URL_TTL_SECONDS = 5 * 60;
 
 @Injectable()
 export class PhotoUrlSigner {
-  private readonly secret = 'daily-lens-secret'; // TODO durch env ersetzen
+  private readonly secret = process.env.PHOTO_URL_SIGNING_SECRET!;
 
   sign(photoId: string): { exp: number; sig: string } {
     const exp = Math.floor(Date.now() / 1000) + SIGNED_URL_TTL_SECONDS;

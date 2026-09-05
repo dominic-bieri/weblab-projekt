@@ -19,7 +19,7 @@ describe('Home', () => {
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    httpMock.expectOne('http://localhost:3000/photo').flush([]);
+    httpMock.expectOne('/api/photo').flush([]);
     await fixture.whenStable();
   });
 
