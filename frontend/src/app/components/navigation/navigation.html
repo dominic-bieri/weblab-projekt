@@ -10,6 +10,8 @@
   <app-language-switcher class="lang-switcher" />
 
   @if (authenticated()) {
-    <button mat-button (click)="logout()">{{ 'nav.logout' | translate }}</button>
+    <button mat-button data-testid="logout-button" (click)="logout()">
+      {{ 'nav.logout' | translate }}
+    </button>
   }
 </nav>

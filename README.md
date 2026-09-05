@@ -12,6 +12,10 @@ Damit werden Postgres, Keycloak (inkl. automatischem Import des `daily-lens`-Rea
 
 Öffnen: `http://localhost/`.
 
+## End-to-End-Tests
+
+Details in [`e2e/README.md`](e2e/README.md).
+
 ## Lokale Entwicklung
 
 Die Dev-Infrastruktur (Postgres + Keycloak) aus `infra/` starten:

@@ -1,0 +1,6 @@
+/node_modules
+
+# Cypress-Artefakte
+/cypress/screenshots
+/cypress/videos
+/cypress/downloads

@@ -1,4 +1,8 @@
 <h1>{{ 'auth.title' | translate }}</h1>
 
-<button mat-flat-button (click)="login()">{{ 'auth.login' | translate }}</button>
-<button mat-stroked-button (click)="register()">{{ 'auth.register' | translate }}</button>
+<button mat-flat-button data-testid="login-button" (click)="login()">
+  {{ 'auth.login' | translate }}
+</button>
+<button mat-stroked-button data-testid="register-button" (click)="register()">
+  {{ 'auth.register' | translate }}
+</button>

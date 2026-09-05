@@ -1,9 +1,15 @@
-<mat-card>
-  <mat-card-title>
+<mat-card data-testid="picture-card">
+  <mat-card-title data-testid="picture-card-date">
     {{ captureDate() | date: 'dd.MM.yyyy' }}
   </mat-card-title>
-  <img ngSrc="{{ imageSource() }}" mat-card-image width="500" height="400" />
+  <img
+    ngSrc="{{ imageSource() }}"
+    mat-card-image
+    data-testid="picture-card-image"
+    width="500"
+    height="400"
+  />
   <mat-card-content>
-    <p>{{ description() }}</p>
+    <p data-testid="picture-card-description">{{ description() }}</p>
   </mat-card-content>
 </mat-card>

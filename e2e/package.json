@@ -1,0 +1,23 @@
+{
+  "name": "daily-lens-e2e",
+  "version": "0.0.0",
+  "description": "WEB-LAB Projekt",
+  "author": "Dominic Bieri",
+  "private": true,
+  "scripts": {
+    "stack:up": "docker compose -f ../docker-compose.yml up -d --build && ./wait-for-stack.sh",
+    "stack:down": "docker compose -f ../docker-compose.yml down -v",
+    "e2e": "npm run stack:up && cypress run --browser chrome",
+    "cypress:open": "npm run stack:up && cypress open --e2e --browser chrome",
+    "format": "prettier --write \"cypress/**/*.ts\" cypress.config.ts",
+    "format:check": "prettier --check \"cypress/**/*.ts\" cypress.config.ts"
+  },
+  "devDependencies": {
+    "cypress": "^16.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2"
+  },
+  "allowScripts": {
+    "cypress@16.0.0": true
+  }
+}

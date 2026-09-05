@@ -1,19 +1,36 @@
 <form class="upload-form" (submit)="submitForm($event)">
-  <input #fileInput type="file" hidden [accept]="accept()" (change)="onFileChange($event)" />
+  <input
+    #fileInput
+    type="file"
+    hidden
+    data-testid="file-input"
+    [accept]="accept()"
+    (change)="onFileChange($event)"
+  />
 
-  <button mat-stroked-button type="button" (click)="fileInput.click()">
+  <button
+    mat-stroked-button
+    type="button"
+    data-testid="choose-file-button"
+    (click)="fileInput.click()"
+  >
     <mat-icon>attach_file</mat-icon>
     {{ 'fileUpload.chooseFile' | translate }}
   </button>
 
-  <span class="file-name">
+  <span class="file-name" data-testid="file-name">
     {{ uploadForm.file().value()?.name ?? ('fileUpload.noFileSelected' | translate) }}
   </span>
 
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
     <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
-    <input matInput [matDatepicker]="capturePicker" [formField]="uploadForm.captureDate" />
-    <mat-datepicker-toggle matIconSuffix [for]="capturePicker" />
+    <input
+      matInput
+      data-testid="capture-date-input"
+      [matDatepicker]="capturePicker"
+      [formField]="uploadForm.captureDate"
+    />
+    <mat-datepicker-toggle matIconSuffix data-testid="capture-date-toggle" [for]="capturePicker" />
     <mat-datepicker #capturePicker />
   </mat-form-field>
 
@@ -22,12 +39,18 @@
     <input
       matInput
       type="text"
+      data-testid="description-input"
       [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
       [formField]="uploadForm.description"
     />
   </mat-form-field>
 
-  <button mat-flat-button type="submit" [disabled]="!uploadForm().valid()">
+  <button
+    mat-flat-button
+    type="submit"
+    data-testid="upload-button"
+    [disabled]="!uploadForm().valid()"
+  >
     {{ 'fileUpload.upload' | translate }}
   </button>
 </form>
