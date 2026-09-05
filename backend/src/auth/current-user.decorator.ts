@@ -1,4 +1,3 @@
-// https://docs.nestjs.com/custom-decorators
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import type { JwtUser } from './jwt.strategy.js';
 

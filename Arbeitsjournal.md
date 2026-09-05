@@ -1,14 +1,14 @@
 # Arbeitsjournal
 
-Projekt: **daily-lens** — Weblab Projektarbeit
+Projekt: **daily-lens** - Weblab Projektarbeit
 Autor: Dominic Bieri
 Ziel: ca. 60 h
 
-Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
+Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 
 ---
 
-## 2026-09-02 — 5.0 h
+## 2026-09-02 - 5.0 h
 
 - Projektsetup Angular (inkl. Angular Material) und NestJS-Backend im Monorepo
 - Routing für Angular aufgesetzt
@@ -17,7 +17,7 @@ Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.
 
 ---
 
-## 2026-09-03 — 7.0 h
+## 2026-09-03 - 7.0 h
 
 - Fileupload-Formular im Frontend
 - Anzeige der hochgeladenen Fotos im Frontend
@@ -26,7 +26,7 @@ Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.
 
 ---
 
-## 2026-09-04 — 7.0 h
+## 2026-09-04 - 7.0 h
 
 - Keycloak-Integration im Frontend (Login/Logout, Auth-Guard, Bearer-Token-Interceptor)
 - Backend JWT-Auth mit Passport für die Photo-Endpunkte, Fotos pro User getrennt
@@ -34,3 +34,13 @@ Pro Eintrag: **Datum — Stunden — Tätigkeit(en)**. Stunden dezimal (z. B. 1.
 
 ---
 
+## 2026-09-05 - 4.5 h
+
+- Setup lokales docker compose Deployment inkl. nginx config und Path Redirect
+- Erster e2e Test mit Abhängigkeit zum kompletten Stack (Frontend, Backend, Keycloak, Postgres)
+    - User registrieren
+    - Foto hochladen
+    - hochgeladenes Foto wird angezeigt
+    - Logout
+
+---
