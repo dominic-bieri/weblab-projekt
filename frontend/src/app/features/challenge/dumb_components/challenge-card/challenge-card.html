@@ -1,0 +1,16 @@
+<mat-card data-testid="challenge-card">
+  <mat-card-title data-testid="challenge-card-title">{{ title() }}</mat-card-title>
+  <mat-card-content>
+    <p data-testid="challenge-card-period">{{ formattedPeriod() }}</p>
+    <p data-testid="challenge-card-description">{{ description() }}</p>
+  </mat-card-content>
+  <button
+    mat-stroked-button
+    type="button"
+    data-testid="challenge-card-delete-button"
+    (click)="onDelete()"
+  >
+    <mat-icon>delete</mat-icon>
+    {{ 'challenge.delete' | translate }}
+  </button>
+</mat-card>

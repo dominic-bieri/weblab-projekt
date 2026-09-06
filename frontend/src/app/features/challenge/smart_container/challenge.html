@@ -1,0 +1,16 @@
+<ng-container>
+  <app-challenge-form (submitted)="onCreate($event)"/>
+
+  @if (challenges.hasValue()) {
+    @for (challenge of challenges.value(); track challenge.id) {
+      <app-challenge-card
+        [id]="challenge.id"
+        [title]="challenge.title"
+        [description]="challenge.description"
+        [startDate]="challenge.startDate"
+        [endDate]="challenge.endDate"
+        (deleted)="onDelete($event)"
+      />
+    }
+  }
+</ng-container>

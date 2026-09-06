@@ -24,5 +24,13 @@
     "delete": "Löschen",
     "save": "Speichern",
     "cancel": "Abbrechen"
+  },
+  "challenge": {
+    "title": "Titel",
+    "description": "Beschreibung",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum",
+    "create": "Erstellen",
+    "delete": "Löschen"
   }
 }

@@ -24,5 +24,13 @@
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel"
+  },
+  "challenge": {
+    "title": "Title",
+    "description": "Description",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "create": "Create",
+    "delete": "Delete"
   }
 }

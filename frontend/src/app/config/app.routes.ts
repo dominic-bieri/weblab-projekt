@@ -3,6 +3,7 @@ import { LOGIN_PATH, PATHS } from './paths.config';
 import { canActivateAuth } from './auth.guard';
 import { Home } from '../features/home/smart_container/home';
 import { Calendar } from '../features/calendar/smart_container/calendar';
+import { ChallengePage } from '../features/challenge/smart_container/challenge';
 import { Login } from '../features/auth/login/login';
 
 const { HOME, CALENDAR, CHALLENGE } = PATHS;
@@ -24,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: CHALLENGE.path,
-    component: Home, // TODO auf eigentliche challenge seite wechseln
+    component: ChallengePage,
     canActivate: [canActivateAuth],
   },
   {

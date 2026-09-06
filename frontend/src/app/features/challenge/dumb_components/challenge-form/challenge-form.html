@@ -1,0 +1,54 @@
+<form class="challenge-form" (submit)="submitForm($event)">
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'challenge.title' | translate }}</mat-label>
+    <input
+      matInput
+      type="text"
+      data-testid="challenge-title-input"
+      [formField]="challengeForm.title"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'challenge.startDate' | translate }}</mat-label>
+    <input
+      matInput
+      data-testid="challenge-start-date-input"
+      [matDatepicker]="startPicker"
+      [formField]="challengeForm.startDate"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="startPicker"/>
+    <mat-datepicker #startPicker/>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'challenge.endDate' | translate }}</mat-label>
+    <input
+      matInput
+      data-testid="challenge-end-date-input"
+      [matDatepicker]="endPicker"
+      [formField]="challengeForm.endDate"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="endPicker"/>
+    <mat-datepicker #endPicker/>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'challenge.description' | translate }}</mat-label>
+    <input
+      matInput
+      type="text"
+      data-testid="challenge-description-input"
+      [formField]="challengeForm.description"
+    />
+  </mat-form-field>
+
+  <button
+    mat-flat-button
+    type="submit"
+    data-testid="create-challenge-button"
+    [disabled]="!challengeForm().valid()"
+  >
+    {{ 'challenge.create' | translate }}
+  </button>
+</form>
