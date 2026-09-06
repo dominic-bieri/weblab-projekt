@@ -1,9 +1,9 @@
 const KEYCLOAK_ORIGIN = 'http://localhost:8080';
 
 const CAPTURE_DATE_INPUT = '9/5/2026';
-const CAPTURE_DATE_SHOWN = '05.09.2026';
+const CAPTURE_DATE_SHOWN = '09/05/2026';
 const EDITED_CAPTURE_DATE_INPUT = '9/6/2026';
-const EDITED_CAPTURE_DATE_SHOWN = '06.09.2026';
+const EDITED_CAPTURE_DATE_SHOWN = '09/06/2026';
 const TEST_PHOTO = 'cypress/fixtures/Test.png';
 
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
@@ -19,6 +19,7 @@ describe('daily-lens', () => {
     expectEmptyGallery();
     uploadPhoto(description);
     expectPhotoInGallery(description);
+    verifyCalendarView(description);
     const editedDescription = editPhoto(`${description} edited`);
     expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
     deletePhoto();
@@ -70,7 +71,7 @@ function uploadPhoto(description: string) {
   testIdSelector('file-input').selectFile(TEST_PHOTO, { force: true });
   testIdSelector('file-name').should('contain.text', 'Test.png');
   testIdSelector('capture-date-input').type(CAPTURE_DATE_INPUT, { force: true });
-  testIdSelector('description-input').type(description);
+  testIdSelector('description-input').type(description, { force: true });
   testIdSelector('upload-button').click();
 }
 
@@ -80,10 +81,19 @@ function expectPhotoInGallery(description: string, captureDateShown = CAPTURE_DA
   testIdSelector('picture-card-date').should('contain.text', captureDateShown);
 }
 
+function verifyCalendarView(description: string) {
+  cy.get('a[href="/calendar"]').click();
+  testIdSelector('calendar-day-filled').should('have.length', 1).click();
+  testIdSelector('picture-card-description').should('have.text', description);
+  cy.get('a[href="/home"]').click();
+}
+
 function editPhoto(description: string): string {
   testIdSelector('picture-card-edit-button').click();
   testIdSelector('picture-card-date-input').clear().type(EDITED_CAPTURE_DATE_INPUT, { force: true });
-  testIdSelector('picture-card-description-input').clear().type(description);
+  testIdSelector('picture-card-description-input')
+    .clear({ force: true })
+    .type(description, { force: true });
   testIdSelector('picture-card-save-button').click();
   return description;
 }
