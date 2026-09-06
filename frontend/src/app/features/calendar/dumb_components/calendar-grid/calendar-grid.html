@@ -1,9 +1,19 @@
 <div class="calendar-header">
-  <button mat-icon-button type="button" data-testid="calendar-prev-month" (click)="previousMonth.emit()">
+  <button
+    mat-icon-button
+    type="button"
+    data-testid="calendar-prev-month"
+    (click)="previousMonth.emit()"
+  >
     <mat-icon>chevron_left</mat-icon>
   </button>
   <span data-testid="calendar-month-label">{{ monthLabel() }}</span>
-  <button mat-icon-button type="button" data-testid="calendar-next-month" (click)="nextMonth.emit()">
+  <button
+    mat-icon-button
+    type="button"
+    data-testid="calendar-next-month"
+    (click)="nextMonth.emit()"
+  >
     <mat-icon>chevron_right</mat-icon>
   </button>
 </div>
