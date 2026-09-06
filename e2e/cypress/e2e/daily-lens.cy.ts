@@ -6,6 +6,11 @@ const EDITED_CAPTURE_DATE_INPUT = '9/6/2026';
 const EDITED_CAPTURE_DATE_SHOWN = '09/06/2026';
 const TEST_PHOTO = 'cypress/fixtures/Test.png';
 
+const CHALLENGE_TITLE = 'Cypress Architecture Week';
+const CHALLENGE_START_INPUT = '9/1/2026';
+const CHALLENGE_END_INPUT = '9/14/2026';
+const CHALLENGE_DESCRIPTION = 'Only architecture shots';
+
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
 
 describe('daily-lens', () => {
@@ -24,6 +29,7 @@ describe('daily-lens', () => {
     expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
     deletePhoto();
     expectEmptyGallery();
+    createAndDeleteChallenge();
     logout();
   });
 });
@@ -82,10 +88,10 @@ function expectPhotoInGallery(description: string, captureDateShown = CAPTURE_DA
 }
 
 function verifyCalendarView(description: string) {
-  cy.get('a[href="/calendar"]').click();
+  testIdSelector('nav-link-calendar').click();
   testIdSelector('calendar-day-filled').should('have.length', 1).click();
   testIdSelector('picture-card-description').should('have.text', description);
-  cy.get('a[href="/home"]').click();
+  testIdSelector('nav-link-home').click();
 }
 
 function editPhoto(description: string): string {
@@ -100,6 +106,25 @@ function editPhoto(description: string): string {
 
 function deletePhoto() {
   testIdSelector('picture-card-delete-button').click();
+}
+
+function createAndDeleteChallenge() {
+  testIdSelector('nav-link-challenge').click();
+
+  testIdSelector('challenge-title-input').type(CHALLENGE_TITLE, { force: true });
+  testIdSelector('challenge-start-date-input').type(CHALLENGE_START_INPUT, { force: true });
+  testIdSelector('challenge-end-date-input').type(CHALLENGE_END_INPUT, { force: true });
+  testIdSelector('challenge-description-input').type(CHALLENGE_DESCRIPTION, { force: true });
+  testIdSelector('create-challenge-button').click();
+
+  testIdSelector('challenge-card').should('have.length', 1);
+  testIdSelector('challenge-card-title').should('have.text', CHALLENGE_TITLE);
+  testIdSelector('challenge-card-description').should('have.text', CHALLENGE_DESCRIPTION);
+
+  testIdSelector('challenge-card-delete-button').click();
+  testIdSelector('challenge-card').should('not.exist');
+
+  testIdSelector('nav-link-home').click();
 }
 
 function logout() {

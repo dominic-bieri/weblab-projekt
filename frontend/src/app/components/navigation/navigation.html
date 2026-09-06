@@ -1,7 +1,12 @@
 <nav>
   @if (authenticated()) {
     @for (linkItem of links(); track linkItem.path) {
-      <a mat-button [routerLink]="linkItem.path" routerLinkActive="active">
+      <a
+        mat-button
+        [routerLink]="linkItem.path"
+        routerLinkActive="active"
+        [attr.data-testid]="'nav-link-' + linkItem.path"
+      >
         {{ linkItem.label | translate }}
       </a>
     }
