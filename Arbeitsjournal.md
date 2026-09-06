@@ -44,3 +44,12 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
     - Logout
 
 ---
+
+## 2026-09-06 - 6.5 h
+
+- Foto löschen & bearbeiten im Frontend
+- Kalender-/Zeitleisten-Ansicht
+- Datum Funktionen vereinheitlicht (korrektes Format für EN <-> DE, Formatierung, usw)
+- Backend: CRUD für Challenge
+
+---

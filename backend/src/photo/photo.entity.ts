@@ -20,4 +20,7 @@ export class Photo {
 
   @Column({ type: 'text' })
   description: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  challengeId: string | null;
 }
