@@ -60,6 +60,12 @@ Eine bessere Lösung dafür wurde auf die Schnelle nicht gefunden, das Skript po
 Elemente, die im UI per E2E-Test geprüft werden, erhalten ein eigenes `data-testid`-Attribut statt über CSS-Klassen selektiert zu werden.
 Das sollte die Tests robuster machen.
 
+### ADR 5: Keycloak-spezifische Library statt generischem OAuth2/OIDC-Client
+
+Im Frontend wird für Login/Auth `keycloak-angular`/`keycloak-js` eingesetzt statt einer generischen, Provider-unabhängigen Library wie `angular-oauth2-oidc`.
+Begründung: Es handelt sich um ein kleines Schulprojekt, daher ist eine feste Abhängigkeit an Keycloak als IdP kein relevantes Risiko.
+Im Gegenzug nimmt die Keycloak-spezifische Library viel Arbeit ab: Token-Refresh, Bearer-Interceptor und Route-Guard sind fertig integriert und müssen nicht selbst gebaut werden, was Login/Auth im Vergleich zu einer generischen OIDC-Library einfacher macht.
+
 ## 10. Qualitätsanforderungen
 
 ### 10.1 Qualitätsbaum
