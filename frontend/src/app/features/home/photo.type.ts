@@ -2,7 +2,7 @@ export interface Photo {
   id: string;
   filename: string;
   mimeType: string;
-  captureDate: string | null;
-  description: string | null;
+  captureDate: string;
+  description: string;
   imageUrl: string;
 }

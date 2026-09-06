@@ -1,4 +1,4 @@
 export class PhotoDto {
-  captureDate?: string;
-  description?: string;
+  captureDate: string;
+  description: string;
 }

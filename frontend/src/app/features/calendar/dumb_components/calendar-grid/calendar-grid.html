@@ -1,0 +1,31 @@
+<div class="calendar-header">
+  <button mat-icon-button type="button" data-testid="calendar-prev-month" (click)="previousMonth.emit()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <span data-testid="calendar-month-label">{{ monthLabel() }}</span>
+  <button mat-icon-button type="button" data-testid="calendar-next-month" (click)="nextMonth.emit()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+
+<div class="calendar-grid">
+  @for (weekday of weekdayLabels(); track weekday) {
+    <span class="weekday">{{ weekday }}</span>
+  }
+  @for (blank of leadingBlanks(); track $index) {
+    <span></span>
+  }
+  @for (day of days(); track day.date.getTime()) {
+    <button
+      type="button"
+      class="day"
+      [class.filled]="day.hasPhoto"
+      [class.selected]="isSelected(day.date)"
+      [disabled]="!day.hasPhoto"
+      [attr.data-testid]="day.hasPhoto ? 'calendar-day-filled' : 'calendar-day-empty'"
+      (click)="onDayClick(day)"
+    >
+      {{ day.date.getDate() }}
+    </button>
+  }
+</div>

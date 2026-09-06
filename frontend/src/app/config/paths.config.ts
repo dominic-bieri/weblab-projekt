@@ -5,6 +5,10 @@ export const PATHS: { [key: string]: NavigationItem } = {
     path: 'home',
     label: 'nav.home',
   },
+  CALENDAR: {
+    path: 'calendar',
+    label: 'nav.calendar',
+  },
   CHALLENGE: {
     path: 'challenge',
     label: 'nav.challenge',

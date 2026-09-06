@@ -7,7 +7,7 @@
         [id]="photo.id"
         [imageSource]="imageUrl(photo)"
         [captureDate]="photo.captureDate"
-        [description]="photo.description ?? ''"
+        [description]="photo.description"
         (deleted)="onPhotoDelete($event)"
         (edited)="onPhotoEdit($event)"
       />

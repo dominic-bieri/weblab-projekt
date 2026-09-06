@@ -36,6 +36,6 @@ export class PhotoApi {
   }
 
   updatePhoto(id: string, changes: { captureDate: string; description: string }) {
-    return this.http.patch<Photo>(`${this.baseUrl}/${id}`, changes);
+    return this.http.put<Photo>(`${this.baseUrl}/${id}`, changes);
   }
 }

@@ -1,0 +1,20 @@
+<app-calendar-grid
+  [monthLabel]="monthLabel()"
+  [weekdayLabels]="weekdayLabels()"
+  [days]="days()"
+  [selectedDate]="selectedDate()"
+  (previousMonth)="previousMonth()"
+  (nextMonth)="nextMonth()"
+  (daySelected)="onDaySelected($event)"
+/>
+
+@if (selectedPhoto(); as photo) {
+  <app-picture-card
+    [id]="photo.id"
+    [imageSource]="imageUrl(photo)"
+    [captureDate]="photo.captureDate"
+    [description]="photo.description"
+    (deleted)="onPhotoDelete($event)"
+    (edited)="onPhotoEdit($event)"
+  />
+}

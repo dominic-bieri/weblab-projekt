@@ -30,7 +30,7 @@ export interface PhotoEdit extends PhotoEditValue {
 export class PictureCard {
   id = input.required<string>();
   imageSource = input.required<string>();
-  captureDate = input<Date | string | null>(null);
+  captureDate = input.required<Date | string>();
   description = input.required<string>();
 
   deleted = output<string>();

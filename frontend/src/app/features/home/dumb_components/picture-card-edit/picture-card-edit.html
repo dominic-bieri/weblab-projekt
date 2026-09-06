@@ -20,7 +20,13 @@
   />
 </mat-form-field>
 
-<button mat-flat-button type="button" data-testid="picture-card-save-button" (click)="save()">
+<button
+  mat-flat-button
+  type="button"
+  data-testid="picture-card-save-button"
+  [disabled]="!editForm().valid()"
+  (click)="save()"
+>
   {{ 'pictureCard.save' | translate }}
 </button>
 <button

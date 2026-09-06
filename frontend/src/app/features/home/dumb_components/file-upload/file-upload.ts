@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { form, FormField, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
+import { toDateKey } from '../../../../shared/local-date';
 
 export interface PhotoUpload {
   file: File;
@@ -49,6 +50,8 @@ export class FileUpload {
 
   readonly uploadForm = form(this.model, (path) => {
     required(path.file);
+    required(path.captureDate);
+    required(path.description);
   });
 
   onFileChange(event: Event): void {
@@ -62,17 +65,12 @@ export class FileUpload {
 
     const { file, captureDate, description } = this.model();
     if (this.uploadForm().valid() && file) {
-      this.submitted.emit({ file, captureDate: this.toIsoDate(captureDate), description });
+      this.submitted.emit({
+        file,
+        captureDate: captureDate ? toDateKey(captureDate) : '',
+        description,
+      });
       this.uploadForm().reset({ ...EMPTY_FORM });
     }
-  }
-
-  private toIsoDate(date: Date | null): string {
-    if (!date) {
-      return '';
-    }
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`.padStart(2, '0');
-    return `${date.getFullYear()}-${month}-${day}`;
   }
 }

@@ -5,8 +5,8 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
+  Put,
   StreamableFile,
   UploadedFile,
   UseGuards,
@@ -61,7 +61,7 @@ export class PhotoController {
     });
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
   updatePhoto(
     @Param('id', ParseUUIDPipe) id: string,

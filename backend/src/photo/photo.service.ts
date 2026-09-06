@@ -14,21 +14,6 @@ import { PhotoDto } from './photo.dto.js';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
 
-function storagePath(photo: Photo): string {
-  return join(UPLOAD_DIR, photo.id + extname(photo.filename));
-}
-
-function parseCaptureDate(value?: string): Date | null {
-  if (!value) {
-    return null;
-  }
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    throw new BadRequestException('captureDate is not a valid date');
-  }
-  return date;
-}
-
 @Injectable()
 export class PhotoService {
   constructor(
@@ -39,11 +24,11 @@ export class PhotoService {
   async savePhoto(
     file: Express.Multer.File,
     userId: string,
-    meta: PhotoDto = {},
+    meta: PhotoDto,
   ): Promise<Photo> {
     const id = randomUUID();
     const storedName = `${id}${extname(file.originalname)}`;
-    const captureDate = parseCaptureDate(meta.captureDate);
+    const captureDate = this.parseCaptureDate(meta.captureDate);
 
     await mkdir(UPLOAD_DIR, { recursive: true });
     await writeFile(join(UPLOAD_DIR, storedName), file.buffer);
@@ -56,7 +41,7 @@ export class PhotoService {
           filename: file.originalname,
           mimeType: file.mimetype,
           captureDate,
-          description: meta.description?.trim() || null,
+          description: this.parseDescription(meta.description),
         }),
       );
     } catch (err) {
@@ -78,7 +63,7 @@ export class PhotoService {
     if (!photo) {
       throw new NotFoundException(`Photo ${id} not found`);
     }
-    const path = storagePath(photo);
+    const path = this.storagePath(photo);
 
     try {
       await access(path);
@@ -92,13 +77,10 @@ export class PhotoService {
   async updatePhoto(id: string, dto: PhotoDto, userId: string): Promise<Photo> {
     await this.assertOwnership(id, userId);
 
-    const changes: Partial<Photo> = {};
-    if (dto.captureDate !== undefined) {
-      changes.captureDate = parseCaptureDate(dto.captureDate);
-    }
-    if (dto.description !== undefined) {
-      changes.description = dto.description.trim() || null;
-    }
+    const changes: Partial<Photo> = {
+      captureDate: this.parseCaptureDate(dto.captureDate),
+      description: this.parseDescription(dto.description),
+    };
 
     const photo = await this.photoRepository.preload({ id, ...changes });
     if (!photo) {
@@ -117,5 +99,27 @@ export class PhotoService {
     if (!owned) {
       throw new NotFoundException(`Photo ${id} not found`);
     }
+  }
+
+  private storagePath(photo: Photo): string {
+    return join(UPLOAD_DIR, photo.id + extname(photo.filename));
+  }
+
+  private parseCaptureDate(value: string): Date {
+    const date = new Date(value);
+    if (!value || Number.isNaN(date.getTime())) {
+      throw new BadRequestException(
+        'captureDate is required and must be a valid date',
+      );
+    }
+    return date;
+  }
+
+  private parseDescription(value: string): string {
+    const trimmed = value?.trim();
+    if (!trimmed) {
+      throw new BadRequestException('description is required');
+    }
+    return trimmed;
   }
 }

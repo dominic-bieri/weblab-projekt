@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "calendar": "Calendar",
     "challenge": "Challenge",
     "language": "Language",
     "logout": "Logout"

@@ -14,9 +14,9 @@ export class Photo {
   @Column()
   mimeType: string;
 
-  @Column({ type: 'timestamptz', nullable: true })
-  captureDate: Date | null;
+  @Column({ type: 'timestamptz' })
+  captureDate: Date;
 
-  @Column({ type: 'text', nullable: true })
-  description: string | null;
+  @Column({ type: 'text' })
+  description: string;
 }
