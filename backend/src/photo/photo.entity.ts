@@ -14,8 +14,9 @@ export class Photo {
   @Column()
   mimeType: string;
 
-  @Column({ type: 'timestamptz' })
-  captureDate: Date;
+  // reines Kalenderdatum ohne Zeit/Zeitzone -> Postgres 'date', TypeORM gibt einen String zurück
+  @Column({ type: 'date' })
+  captureDate: string;
 
   @Column({ type: 'text' })
   description: string;

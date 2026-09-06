@@ -1,11 +1,10 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
 import { CalendarDay, CalendarGrid } from '../dumb_components/calendar-grid/calendar-grid';
 import { PhotoEdit, PictureCard } from '../../home/dumb_components/picture-card/picture-card';
 import { PhotoApi } from '../../home/services/photo.api';
 import { Photo } from '../../home/photo.type';
 import { parseDateKey, toDateKey } from '../../../shared/local-date';
+import { ActiveLanguage } from '../../../core/i18n/active-language';
 
 @Component({
   imports: [CalendarGrid, PictureCard],
@@ -15,17 +14,10 @@ import { parseDateKey, toDateKey } from '../../../shared/local-date';
 })
 export class Calendar {
   private readonly photoApi = inject(PhotoApi);
-  private readonly translate = inject(TranslateService);
+  private readonly currentLang = inject(ActiveLanguage).current;
 
   private readonly currentMonth = signal(startOfMonth(new Date()));
   protected readonly selectedDate = signal<Date | null>(null);
-  private readonly currentLang = signal(this.translate.getCurrentLang() ?? 'en');
-
-  constructor() {
-    this.translate.onLangChange
-      .pipe(takeUntilDestroyed())
-      .subscribe(({ lang }) => this.currentLang.set(lang));
-  }
 
   protected readonly monthLabel = computed(() =>
     this.currentMonth().toLocaleDateString(this.currentLang(), { month: 'long', year: 'numeric' }),
@@ -41,9 +33,7 @@ export class Calendar {
   });
 
   protected readonly days = computed<CalendarDay[]>(() => {
-    const photoDates = new Set(
-      this.photoApi.photos.value().map((photo) => toDateKey(parseDateKey(photo.captureDate))),
-    );
+    const photoDates = new Set(this.photoApi.photos.value().map((photo) => photo.captureDate));
 
     const month = this.currentMonth();
     const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
@@ -60,11 +50,7 @@ export class Calendar {
       return null;
     }
     const key = toDateKey(date);
-    return (
-      this.photoApi.photos
-        .value()
-        .find((photo) => toDateKey(parseDateKey(photo.captureDate)) === key) ?? null
-    );
+    return this.photoApi.photos.value().find((photo) => photo.captureDate === key) ?? null;
   });
 
   protected imageUrl(photo: Photo): string {
@@ -93,7 +79,10 @@ export class Calendar {
   }
 
   protected onPhotoEdit(edit: PhotoEdit): void {
-    this.photoApi.updatePhoto(edit.id, edit).subscribe(() => this.photoApi.photos.reload());
+    this.photoApi.updatePhoto(edit.id, edit).subscribe(() => {
+      this.selectedDate.set(parseDateKey(edit.captureDate));
+      this.photoApi.photos.reload();
+    });
   }
 }
 

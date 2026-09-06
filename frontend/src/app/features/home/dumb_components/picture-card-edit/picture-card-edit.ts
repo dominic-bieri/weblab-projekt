@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { parseDateKey, toDateKey } from '../../../../shared/local-date';
@@ -27,13 +26,12 @@ interface PictureCardEditFormValue {
     MatDatepickerModule,
     TranslatePipe,
   ],
-  providers: [provideNativeDateAdapter()],
   selector: 'app-picture-card-edit',
   styleUrl: './picture-card-edit.css',
   templateUrl: './picture-card-edit.html',
 })
 export class PictureCardEdit implements OnInit {
-  initialCaptureDate = input.required<Date | string>();
+  initialCaptureDate = input.required<string>();
   initialDescription = input.required<string>();
 
   saved = output<PhotoEditValue>();

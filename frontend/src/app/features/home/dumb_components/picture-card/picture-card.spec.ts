@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { PhotoEdit, PictureCard } from './picture-card';
 
 describe('PictureCard', () => {
@@ -9,14 +10,14 @@ describe('PictureCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PictureCard],
-      providers: [provideTranslateService()],
+      providers: [provideTranslateService({ lang: 'de' }), provideNativeDateAdapter()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PictureCard);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('id', 'photo-1');
     fixture.componentRef.setInput('imageSource', 'test.jpg');
-    fixture.componentRef.setInput('captureDate', new Date('2026-09-03'));
+    fixture.componentRef.setInput('captureDate', '2026-09-03');
     fixture.componentRef.setInput('description', 'test description');
     await fixture.whenStable();
   });
@@ -91,7 +92,8 @@ describe('PictureCard', () => {
     await fixture.whenStable();
 
     expect(
-      fixture.nativeElement.querySelector('[data-testid="picture-card-description"]')
+      fixture.nativeElement
+        .querySelector('[data-testid="picture-card-description"]')
         ?.textContent?.trim(),
     ).toBe('test description');
   });

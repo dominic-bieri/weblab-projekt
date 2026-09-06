@@ -1,6 +1,5 @@
 import { Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,7 +36,6 @@ const EMPTY_FORM: FileUploadFormValue = {
     MatInputModule,
     TranslatePipe,
   ],
-  providers: [provideNativeDateAdapter()],
   selector: 'app-file-upload',
   styleUrl: './file-upload.css',
   templateUrl: './file-upload.html',
@@ -70,7 +68,10 @@ export class FileUpload {
         captureDate: captureDate ? toDateKey(captureDate) : '',
         description,
       });
-      this.uploadForm().reset({ ...EMPTY_FORM });
     }
+  }
+
+  reset(): void {
+    this.uploadForm().reset({ ...EMPTY_FORM });
   }
 }

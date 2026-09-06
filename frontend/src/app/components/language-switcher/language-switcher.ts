@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActiveLanguage } from '../../core/i18n/active-language';
 
 interface Language {
   code: string;
@@ -23,13 +23,7 @@ export class LanguageSwitcher {
     { code: 'de', label: 'Deutsch' },
   ];
 
-  readonly currentLang = signal(this.translate.getCurrentLang() ?? this.languages[0].code);
-
-  constructor() {
-    this.translate.onLangChange
-      .pipe(takeUntilDestroyed())
-      .subscribe(({ lang }) => this.currentLang.set(lang));
-  }
+  readonly currentLang = inject(ActiveLanguage).current;
 
   switchLanguage(lang: string): void {
     if (lang && lang !== this.currentLang()) {

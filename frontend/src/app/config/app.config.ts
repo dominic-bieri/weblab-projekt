@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { routes } from './app.routes';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -60,5 +61,6 @@ export const appConfig: ApplicationConfig = {
       lang: 'en',
     }),
     provideKeycloakAngular(),
+    provideNativeDateAdapter(),
   ],
 };

@@ -1,5 +1,5 @@
-// captureDate ist ein reines Kalenderdatum ohne Zeit/Zeitzone.
-// Backend kodiert es als UTC-Mitternacht -> immer über Y-M-D-String parsen, nie lokale Getter auf UTC-Zeit.
+// captureDate ist immer ein reiner "YYYY-MM-DD"-String (Backend: Postgres 'date').
+// Ein Date-Objekt braucht es nur für den Material-Datepicker -> hier lokal bauen, nie via new Date(string).
 
 export function toDateKey(date: Date): string {
   const month = `${date.getMonth() + 1}`.padStart(2, '0');
@@ -7,10 +7,7 @@ export function toDateKey(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-export function parseDateKey(value: Date | string): Date {
-  if (value instanceof Date) {
-    return value;
-  }
+export function parseDateKey(value: string): Date {
   const [year, month, day] = value.slice(0, 10).split('-').map(Number);
   return new Date(year, month - 1, day);
 }

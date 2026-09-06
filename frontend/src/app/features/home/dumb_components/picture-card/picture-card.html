@@ -8,7 +8,7 @@
     />
   } @else {
     <mat-card-title data-testid="picture-card-date">
-      {{ captureDate() | date: 'dd.MM.yyyy' }}
+      {{ formattedCaptureDate() }}
     </mat-card-title>
     <img
       ngSrc="{{ imageSource() }}"

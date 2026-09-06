@@ -2,20 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { Calendar } from './calendar';
 import { Photo } from '../../home/photo.type';
+import { toDateKey } from '../../../shared/local-date';
 
 describe('Calendar', () => {
   let component: Calendar;
   let fixture: ComponentFixture<Calendar>;
   let httpMock: HttpTestingController;
 
-  const today = new Date();
   const photo: Photo = {
     id: 'photo-1',
     filename: 'test.jpg',
     mimeType: 'image/jpeg',
-    captureDate: today.toISOString(),
+    captureDate: toDateKey(new Date()),
     description: 'test description',
     imageUrl: '/photo/photo-1',
   };
@@ -23,7 +24,12 @@ describe('Calendar', () => {
   beforeEach(() => {
     return TestBed.configureTestingModule({
       imports: [Calendar],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideTranslateService()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateService(),
+        provideNativeDateAdapter(),
+      ],
     })
       .compileComponents()
       .then(() => {

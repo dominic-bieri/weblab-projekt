@@ -105,14 +105,24 @@ export class PhotoService {
     return join(UPLOAD_DIR, photo.id + extname(photo.filename));
   }
 
-  private parseCaptureDate(value: string): Date {
-    const date = new Date(value);
-    if (!value || Number.isNaN(date.getTime())) {
+  private parseCaptureDate(value: string): string {
+    // nur als String validieren, nie in ein Date umwandeln (sonst Zeitzonen-Verschiebung)
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value ?? '');
+    if (!match) {
       throw new BadRequestException(
-        'captureDate is required and must be a valid date',
+        'captureDate is required and must be in format YYYY-MM-DD',
       );
     }
-    return date;
+    const [, year, month, day] = match.map(Number);
+    const check = new Date(year, month - 1, day);
+    const isValid =
+      check.getFullYear() === year &&
+      check.getMonth() === month - 1 &&
+      check.getDate() === day;
+    if (!isValid) {
+      throw new BadRequestException('captureDate is not a valid calendar date');
+    }
+    return value;
   }
 
   private parseDescription(value: string): string {

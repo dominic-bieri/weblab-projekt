@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { PhotoEdit, PictureCard } from '../dumb_components/picture-card/picture-card';
 import { FileUpload, PhotoUpload } from '../dumb_components/file-upload/file-upload';
 import { PhotoApi } from '../services/photo.api';
@@ -12,6 +12,7 @@ import { Photo } from '../photo.type';
 })
 export class Home {
   private readonly photoApi = inject(PhotoApi);
+  private readonly fileUpload = viewChild.required(FileUpload);
 
   protected readonly photos = this.photoApi.photos;
 
@@ -20,7 +21,10 @@ export class Home {
   }
 
   protected onPhotoUpload(upload: PhotoUpload): void {
-    this.photoApi.uploadPhoto(upload).subscribe(() => this.photos.reload());
+    this.photoApi.uploadPhoto(upload).subscribe(() => {
+      this.fileUpload().reset();
+      this.photos.reload();
+    });
   }
 
   protected onPhotoDelete(id: string): void {

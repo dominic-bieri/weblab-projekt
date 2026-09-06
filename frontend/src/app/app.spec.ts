@@ -2,6 +2,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { App } from './app';
 import { AuthService } from './core/auth/auth.service';
 
@@ -12,6 +13,7 @@ describe('App', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        provideNativeDateAdapter(),
         {
           provide: AuthService,
           useValue: {
