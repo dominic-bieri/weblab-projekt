@@ -2,6 +2,8 @@ const KEYCLOAK_ORIGIN = 'http://localhost:8080';
 
 const CAPTURE_DATE_INPUT = '9/5/2026';
 const CAPTURE_DATE_SHOWN = '05.09.2026';
+const EDITED_CAPTURE_DATE_INPUT = '9/6/2026';
+const EDITED_CAPTURE_DATE_SHOWN = '06.09.2026';
 const TEST_PHOTO = 'cypress/fixtures/Test.png';
 
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
@@ -17,6 +19,10 @@ describe('daily-lens', () => {
     expectEmptyGallery();
     uploadPhoto(description);
     expectPhotoInGallery(description);
+    const editedDescription = editPhoto(`${description} edited`);
+    expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
+    deletePhoto();
+    expectEmptyGallery();
     logout();
   });
 });
@@ -68,10 +74,22 @@ function uploadPhoto(description: string) {
   testIdSelector('upload-button').click();
 }
 
-function expectPhotoInGallery(description: string) {
+function expectPhotoInGallery(description: string, captureDateShown = CAPTURE_DATE_SHOWN) {
   testIdSelector('picture-card').should('have.length', 1);
   testIdSelector('picture-card-description').should('have.text', description);
-  testIdSelector('picture-card-date').should('contain.text', CAPTURE_DATE_SHOWN);
+  testIdSelector('picture-card-date').should('contain.text', captureDateShown);
+}
+
+function editPhoto(description: string): string {
+  testIdSelector('picture-card-edit-button').click();
+  testIdSelector('picture-card-date-input').clear().type(EDITED_CAPTURE_DATE_INPUT, { force: true });
+  testIdSelector('picture-card-description-input').clear().type(description);
+  testIdSelector('picture-card-save-button').click();
+  return description;
+}
+
+function deletePhoto() {
+  testIdSelector('picture-card-delete-button').click();
 }
 
 function logout() {

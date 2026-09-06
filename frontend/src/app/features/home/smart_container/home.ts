@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { PictureCard } from '../dumb_components/picture-card/picture-card';
+import { PhotoEdit, PictureCard } from '../dumb_components/picture-card/picture-card';
 import { FileUpload, PhotoUpload } from '../dumb_components/file-upload/file-upload';
 import { PhotoApi } from '../services/photo.api';
 import { Photo } from '../photo.type';
@@ -21,5 +21,13 @@ export class Home {
 
   protected onPhotoUpload(upload: PhotoUpload): void {
     this.photoApi.uploadPhoto(upload).subscribe(() => this.photos.reload());
+  }
+
+  protected onPhotoDelete(id: string): void {
+    this.photoApi.deletePhoto(id).subscribe(() => this.photos.reload());
+  }
+
+  protected onPhotoEdit(edit: PhotoEdit): void {
+    this.photoApi.updatePhoto(edit.id, edit).subscribe(() => this.photos.reload());
   }
 }

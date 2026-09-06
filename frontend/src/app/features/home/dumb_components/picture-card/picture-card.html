@@ -1,15 +1,42 @@
 <mat-card data-testid="picture-card">
-  <mat-card-title data-testid="picture-card-date">
-    {{ captureDate() | date: 'dd.MM.yyyy' }}
-  </mat-card-title>
-  <img
-    ngSrc="{{ imageSource() }}"
-    mat-card-image
-    data-testid="picture-card-image"
-    width="500"
-    height="400"
-  />
-  <mat-card-content>
-    <p data-testid="picture-card-description">{{ description() }}</p>
-  </mat-card-content>
+  @if (isEditing()) {
+    <app-picture-card-edit
+      [initialCaptureDate]="captureDate()"
+      [initialDescription]="description()"
+      (saved)="onEditSaved($event)"
+      (cancelled)="onEditCancelled()"
+    />
+  } @else {
+    <mat-card-title data-testid="picture-card-date">
+      {{ captureDate() | date: 'dd.MM.yyyy' }}
+    </mat-card-title>
+    <img
+      ngSrc="{{ imageSource() }}"
+      mat-card-image
+      data-testid="picture-card-image"
+      width="500"
+      height="400"
+    />
+    <mat-card-content>
+      <p data-testid="picture-card-description">{{ description() }}</p>
+    </mat-card-content>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="picture-card-edit-button"
+      (click)="startEdit()"
+    >
+      <mat-icon>edit</mat-icon>
+      {{ 'pictureCard.edit' | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="picture-card-delete-button"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+      {{ 'pictureCard.delete' | translate }}
+    </button>
+  }
 </mat-card>

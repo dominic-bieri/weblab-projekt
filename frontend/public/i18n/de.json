@@ -17,5 +17,11 @@
     "description": "Beschreibung",
     "descriptionPlaceholder": "Beschreibung",
     "upload": "Upload"
+  },
+  "pictureCard": {
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "save": "Speichern",
+    "cancel": "Abbrechen"
   }
 }

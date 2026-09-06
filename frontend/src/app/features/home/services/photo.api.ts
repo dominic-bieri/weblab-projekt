@@ -30,4 +30,12 @@ export class PhotoApi {
     }
     return this.http.post<Photo>(`${this.baseUrl}/upload`, body);
   }
+
+  deletePhoto(id: string) {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  updatePhoto(id: string, changes: { captureDate: string; description: string }) {
+    return this.http.patch<Photo>(`${this.baseUrl}/${id}`, changes);
+  }
 }

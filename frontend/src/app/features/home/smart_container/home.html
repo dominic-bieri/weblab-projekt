@@ -4,9 +4,12 @@
   @if (photos.hasValue()) {
     @for (photo of photos.value(); track photo.id) {
       <app-picture-card
+        [id]="photo.id"
         [imageSource]="imageUrl(photo)"
         [captureDate]="photo.captureDate"
         [description]="photo.description ?? ''"
+        (deleted)="onPhotoDelete($event)"
+        (edited)="onPhotoEdit($event)"
       />
     }
   }
