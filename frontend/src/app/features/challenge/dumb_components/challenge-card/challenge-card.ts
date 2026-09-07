@@ -2,6 +2,7 @@ import { Component, computed, inject, input, output, signal } from '@angular/cor
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
 import { parseDateKey } from '../../../../shared/local-date';
@@ -18,6 +19,7 @@ export interface ChallengeEdit extends ChallengeEditValue {
     MatCardTitle,
     MatButtonModule,
     MatIconModule,
+    RouterLink,
     TranslatePipe,
     ChallengeCardEdit,
   ],

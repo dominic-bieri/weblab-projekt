@@ -36,6 +36,10 @@
     "edit": "Edit",
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "viewPhotos": "View photos",
+    "noPhotos": "No photos for this challenge yet.",
+    "notFound": "Challenge not found.",
+    "back": "Back"
   }
 }

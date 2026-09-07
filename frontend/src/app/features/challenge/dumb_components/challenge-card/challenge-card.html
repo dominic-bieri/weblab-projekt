@@ -16,6 +16,14 @@
       <p data-testid="challenge-card-period">{{ formattedPeriod() }}</p>
       <p data-testid="challenge-card-description">{{ description() }}</p>
     </mat-card-content>
+    <a
+      mat-stroked-button
+      [routerLink]="['/challenge', id()]"
+      data-testid="challenge-card-view-photos-link"
+    >
+      <mat-icon>photo_library</mat-icon>
+      {{ 'challenge.viewPhotos' | translate }}
+    </a>
     <button
       mat-stroked-button
       type="button"

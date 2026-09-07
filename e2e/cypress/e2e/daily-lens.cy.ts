@@ -12,6 +12,7 @@ const CHALLENGE_END_INPUT = '9/14/2026';
 const CHALLENGE_DESCRIPTION = 'Only architecture shots';
 const EDITED_CHALLENGE_TITLE = 'Cypress Portrait Week';
 const EDITED_CHALLENGE_DESCRIPTION = 'Only portrait shots';
+const CHALLENGE_PHOTO_DESCRIPTION = 'Cypress Challenge Photo';
 
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
 
@@ -22,7 +23,9 @@ describe('daily-lens', () => {
 
     cy.visit('/');
     languageSwitch();
+
     registerNewUser(run);
+
     expectEmptyGallery();
     uploadPhoto(description);
     expectPhotoInGallery(description);
@@ -31,7 +34,14 @@ describe('daily-lens', () => {
     expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
     deletePhoto();
     expectEmptyGallery();
-    createEditAndDeleteChallenge();
+
+    createChallenge();
+    editChallenge();
+    expectChallengeDetailEmpty();
+    assignPhotoToChallenge();
+    expectChallengeDetailHasPhoto();
+    deleteChallengeAndPhoto();
+
     logout();
   });
 });
@@ -41,6 +51,12 @@ function languageSwitch() {
   testIdSelector('register-button').should('contain.text', 'Registrieren');
   switchLanguage('en', 'English');
   testIdSelector('register-button').should('contain.text', 'Register');
+}
+
+function switchLanguage(langCode: string, expectedLabel: string) {
+  testIdSelector('language-select').click({ force: true });
+  cy.get(`[data-testid="language-option-${langCode}"]`).click();
+  testIdSelector('language-select').should('contain.text', expectedLabel);
 }
 
 function registerNewUser(run: number) {
@@ -75,11 +91,15 @@ function expectEmptyGallery() {
   testIdSelector('picture-card').should('not.exist');
 }
 
-function uploadPhoto(description: string) {
+function uploadPhoto(description: string, challengeTitle?: string) {
   testIdSelector('file-input').selectFile(TEST_PHOTO, { force: true });
   testIdSelector('file-name').should('contain.text', 'Test.png');
   testIdSelector('capture-date-input').type(CAPTURE_DATE_INPUT, { force: true });
   testIdSelector('description-input').type(description, { force: true });
+  if (challengeTitle) {
+    testIdSelector('challenge-select').click({ force: true });
+    cy.get('mat-option').contains(challengeTitle).click();
+  }
   testIdSelector('upload-button').click();
 }
 
@@ -98,7 +118,9 @@ function verifyCalendarView(description: string) {
 
 function editPhoto(description: string): string {
   testIdSelector('picture-card-edit-button').click();
-  testIdSelector('picture-card-date-input').clear().type(EDITED_CAPTURE_DATE_INPUT, { force: true });
+  testIdSelector('picture-card-date-input')
+    .clear()
+    .type(EDITED_CAPTURE_DATE_INPUT, { force: true });
   testIdSelector('picture-card-description-input')
     .clear({ force: true })
     .type(description, { force: true });
@@ -110,7 +132,7 @@ function deletePhoto() {
   testIdSelector('picture-card-delete-button').click();
 }
 
-function createEditAndDeleteChallenge() {
+function createChallenge() {
   testIdSelector('nav-link-challenge').click();
 
   testIdSelector('challenge-title-input').type(CHALLENGE_TITLE, { force: true });
@@ -122,7 +144,9 @@ function createEditAndDeleteChallenge() {
   testIdSelector('challenge-card').should('have.length', 1);
   testIdSelector('challenge-card-title').should('have.text', CHALLENGE_TITLE);
   testIdSelector('challenge-card-description').should('have.text', CHALLENGE_DESCRIPTION);
+}
 
+function editChallenge() {
   testIdSelector('challenge-card-edit-button').click();
   testIdSelector('challenge-card-title-input')
     .clear({ force: true })
@@ -134,21 +158,40 @@ function createEditAndDeleteChallenge() {
 
   testIdSelector('challenge-card-title').should('have.text', EDITED_CHALLENGE_TITLE);
   testIdSelector('challenge-card-description').should('have.text', EDITED_CHALLENGE_DESCRIPTION);
+}
 
+function expectChallengeDetailEmpty() {
+  testIdSelector('challenge-card-view-photos-link').click();
+  testIdSelector('challenge-detail-title').should('have.text', EDITED_CHALLENGE_TITLE);
+  testIdSelector('challenge-detail-empty').should('be.visible');
+  testIdSelector('challenge-detail-back-link').click();
+}
+
+function assignPhotoToChallenge() {
+  testIdSelector('nav-link-home').click();
+  uploadPhoto(CHALLENGE_PHOTO_DESCRIPTION, EDITED_CHALLENGE_TITLE);
+  expectPhotoInGallery(CHALLENGE_PHOTO_DESCRIPTION);
+}
+
+function expectChallengeDetailHasPhoto() {
+  testIdSelector('nav-link-challenge').click();
+  testIdSelector('challenge-card-view-photos-link').click();
+  testIdSelector('challenge-detail-title').should('have.text', EDITED_CHALLENGE_TITLE);
+  testIdSelector('challenge-detail-photo').should('have.length', 1);
+  testIdSelector('challenge-detail-back-link').click();
+}
+
+function deleteChallengeAndPhoto() {
   testIdSelector('challenge-card-delete-button').click();
   testIdSelector('challenge-card').should('not.exist');
 
   testIdSelector('nav-link-home').click();
+  deletePhoto();
+  expectEmptyGallery();
 }
 
 function logout() {
   testIdSelector('logout-button').contains('Logout').click();
   cy.location('pathname').should('eq', '/login');
   testIdSelector('login-button').should('be.visible').contains('Login');
-}
-
-function switchLanguage(langCode: string, expectedLabel: string) {
-  testIdSelector('language-select').click({ force: true });
-  cy.get(`[data-testid="language-option-${langCode}"]`).click();
-  testIdSelector('language-select').should('contain.text', expectedLabel);
 }

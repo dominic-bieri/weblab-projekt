@@ -1,0 +1,26 @@
+<a mat-stroked-button routerLink="/challenge" data-testid="challenge-detail-back-link">
+  <mat-icon>arrow_back</mat-icon>
+  {{ 'challenge.back' | translate }}
+</a>
+
+@if (challenge(); as c) {
+  <h1 data-testid="challenge-detail-title">{{ c.title }}</h1>
+  <p data-testid="challenge-detail-description">{{ c.description }}</p>
+
+  @if (challengePhotos().length > 0) {
+    <div class="photo-grid">
+      @for (photo of challengePhotos(); track photo.id) {
+        <figure class="photo-tile" data-testid="challenge-detail-photo">
+          <img ngSrc="{{ imageUrl(photo) }}" fill data-testid="challenge-detail-photo-image" />
+          <figcaption data-testid="challenge-detail-photo-date">
+            {{ formattedDate(photo.captureDate) }}
+          </figcaption>
+        </figure>
+      }
+    </div>
+  } @else {
+    <p data-testid="challenge-detail-empty">{{ 'challenge.noPhotos' | translate }}</p>
+  }
+} @else if (challenges.hasValue()) {
+  <p data-testid="challenge-detail-not-found">{{ 'challenge.notFound' | translate }}</p>
+}

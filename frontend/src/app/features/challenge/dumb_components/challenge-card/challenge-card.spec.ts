@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ChallengeCard, ChallengeEdit } from './challenge-card';
@@ -10,7 +11,11 @@ describe('ChallengeCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ChallengeCard],
-      providers: [provideTranslateService({ lang: 'de' }), provideNativeDateAdapter()],
+      providers: [
+        provideTranslateService({ lang: 'de' }),
+        provideNativeDateAdapter(),
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ChallengeCard);
@@ -39,6 +44,14 @@ describe('ChallengeCard', () => {
     expect(
       element.querySelector('[data-testid="challenge-card-description"]')?.textContent?.trim(),
     ).toBe('Only architecture shots');
+  });
+
+  it('should link to the challenge detail page', () => {
+    const link: HTMLAnchorElement = fixture.nativeElement.querySelector(
+      '[data-testid="challenge-card-view-photos-link"]',
+    );
+
+    expect(link.getAttribute('href')).toBe('/challenge/challenge-1');
   });
 
   it('should emit deleted with the challenge id when the delete button is clicked', () => {
