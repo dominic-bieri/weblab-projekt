@@ -54,3 +54,12 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 - Frontend: Challenge erstellen / löschen
 
 ---
+
+## 2026-09-07 - 4.5 h
+
+- Foto einer Challenge zuordnen (Backend + Frontend, Auswahl bei Upload und Bearbeitung)
+- Challenge bearbeiten im Frontend
+- Challenge-Zugehörigkeit in der Picture-Card anzeigen
+- Challenge-Detailansicht inkl. Anzeige der zugehörigen Fotos
+
+---
