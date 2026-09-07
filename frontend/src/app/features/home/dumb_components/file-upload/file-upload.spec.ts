@@ -15,6 +15,7 @@ describe('FileUpload', () => {
 
     fixture = TestBed.createComponent(FileUpload);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();
   });
 

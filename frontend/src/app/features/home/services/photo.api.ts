@@ -19,7 +19,12 @@ export class PhotoApi {
     return `/api${photo.imageUrl}`;
   }
 
-  uploadPhoto(upload: { file: File; captureDate: string; description: string }) {
+  uploadPhoto(upload: {
+    file: File;
+    captureDate: string;
+    description: string;
+    challengeId: string | null;
+  }) {
     const body = new FormData();
     body.append('file', upload.file);
     if (upload.captureDate) {
@@ -28,6 +33,9 @@ export class PhotoApi {
     if (upload.description) {
       body.append('description', upload.description);
     }
+    if (upload.challengeId) {
+      body.append('challengeId', upload.challengeId);
+    }
     return this.http.post<Photo>(`${this.baseUrl}/upload`, body);
   }
 
@@ -35,7 +43,10 @@ export class PhotoApi {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
-  updatePhoto(id: string, changes: { captureDate: string; description: string }) {
+  updatePhoto(
+    id: string,
+    changes: { captureDate: string; description: string; challengeId: string | null },
+  ) {
     return this.http.put<Photo>(`${this.baseUrl}/${id}`, changes);
   }
 }

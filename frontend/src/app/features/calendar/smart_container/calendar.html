@@ -14,6 +14,8 @@
     [imageSource]="imageUrl(photo)"
     [captureDate]="photo.captureDate"
     [description]="photo.description"
+    [challengeId]="photo.challengeId"
+    [challenges]="challenges.value()"
     (deleted)="onPhotoDelete($event)"
     (edited)="onPhotoEdit($event)"
   />

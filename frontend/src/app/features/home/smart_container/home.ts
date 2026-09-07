@@ -3,6 +3,7 @@ import { PhotoEdit, PictureCard } from '../dumb_components/picture-card/picture-
 import { FileUpload, PhotoUpload } from '../dumb_components/file-upload/file-upload';
 import { PhotoApi } from '../services/photo.api';
 import { Photo } from '../photo.type';
+import { ChallengeApi } from '../../challenge/services/challenge.api';
 
 @Component({
   imports: [FileUpload, PictureCard],
@@ -12,9 +13,11 @@ import { Photo } from '../photo.type';
 })
 export class Home {
   private readonly photoApi = inject(PhotoApi);
+  private readonly challengeApi = inject(ChallengeApi);
   private readonly fileUpload = viewChild.required(FileUpload);
 
   protected readonly photos = this.photoApi.photos;
+  protected readonly challenges = this.challengeApi.challenges;
 
   protected imageUrl(photo: Photo): string {
     return this.photoApi.imageUrl(photo);

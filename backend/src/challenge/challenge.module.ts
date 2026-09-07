@@ -9,5 +9,6 @@ import { AuthModule } from '../auth/auth.module.js';
   imports: [TypeOrmModule.forFeature([Challenge]), AuthModule],
   controllers: [ChallengeController],
   providers: [ChallengeService],
+  exports: [ChallengeService],
 })
 export class ChallengeModule {}

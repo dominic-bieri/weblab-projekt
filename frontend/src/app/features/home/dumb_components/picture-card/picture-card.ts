@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { PhotoEditValue, PictureCardEdit } from '../picture-card-edit/picture-card-edit';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
 import { parseDateKey } from '../../../../shared/local-date';
+import { Challenge } from '../../../challenge/challenge.type';
 
 export interface PhotoEdit extends PhotoEditValue {
   id: string;
@@ -35,6 +36,8 @@ export class PictureCard {
   imageSource = input.required<string>();
   captureDate = input.required<string>();
   description = input.required<string>();
+  challengeId = input.required<string | null>();
+  challenges = input.required<Challenge[]>();
 
   deleted = output<string>();
   edited = output<PhotoEdit>();

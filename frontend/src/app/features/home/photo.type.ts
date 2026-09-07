@@ -5,4 +5,5 @@ export interface Photo {
   captureDate: string;
   description: string;
   imageUrl: string;
+  challengeId: string | null;
 }

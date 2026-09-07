@@ -1,5 +1,5 @@
 <ng-container>
-  <app-file-upload (submitted)="onPhotoUpload($event)" />
+  <app-file-upload [challenges]="challenges.value()" (submitted)="onPhotoUpload($event)" />
 
   @if (photos.hasValue()) {
     @for (photo of photos.value(); track photo.id) {
@@ -8,6 +8,8 @@
         [imageSource]="imageUrl(photo)"
         [captureDate]="photo.captureDate"
         [description]="photo.description"
+        [challengeId]="photo.challengeId"
+        [challenges]="challenges.value()"
         (deleted)="onPhotoDelete($event)"
         (edited)="onPhotoEdit($event)"
       />

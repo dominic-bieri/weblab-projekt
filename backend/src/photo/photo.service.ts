@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Photo } from './photo.entity.js';
 import { PhotoDto } from './photo.dto.js';
+import { ChallengeService } from '../challenge/challenge.service.js';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
 
@@ -19,6 +20,7 @@ export class PhotoService {
   constructor(
     @InjectRepository(Photo)
     private readonly photoRepository: Repository<Photo>,
+    private readonly challengeService: ChallengeService,
   ) {}
 
   async savePhoto(
@@ -29,6 +31,7 @@ export class PhotoService {
     const id = randomUUID();
     const storedName = `${id}${extname(file.originalname)}`;
     const captureDate = this.parseCaptureDate(meta.captureDate);
+    const challengeId = await this.parseChallengeId(meta.challengeId, userId);
 
     await mkdir(UPLOAD_DIR, { recursive: true });
     await writeFile(join(UPLOAD_DIR, storedName), file.buffer);
@@ -42,6 +45,7 @@ export class PhotoService {
           mimeType: file.mimetype,
           captureDate,
           description: this.parseDescription(meta.description),
+          challengeId,
         }),
       );
     } catch (err) {
@@ -80,6 +84,7 @@ export class PhotoService {
     const changes: Partial<Photo> = {
       captureDate: this.parseCaptureDate(dto.captureDate),
       description: this.parseDescription(dto.description),
+      challengeId: await this.parseChallengeId(dto.challengeId, userId),
     };
 
     const photo = await this.photoRepository.preload({ id, ...changes });
@@ -131,5 +136,17 @@ export class PhotoService {
       throw new BadRequestException('description is required');
     }
     return trimmed;
+  }
+
+  private async parseChallengeId(
+    value: string | null | undefined,
+    userId: string,
+  ): Promise<string | null> {
+    if (!value) {
+      return null;
+    }
+    // wirft NotFoundException, falls die Challenge nicht existiert oder einem anderen User gehört
+    await this.challengeService.findOne(value, userId);
+    return value;
   }
 }

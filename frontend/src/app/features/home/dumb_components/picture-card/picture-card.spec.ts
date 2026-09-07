@@ -19,6 +19,8 @@ describe('PictureCard', () => {
     fixture.componentRef.setInput('imageSource', 'test.jpg');
     fixture.componentRef.setInput('captureDate', '2026-09-03');
     fixture.componentRef.setInput('description', 'test description');
+    fixture.componentRef.setInput('challengeId', null);
+    fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();
   });
 
@@ -74,7 +76,12 @@ describe('PictureCard', () => {
     saveButton?.click();
 
     expect(emitted).toEqual([
-      { id: 'photo-1', captureDate: '2026-09-03', description: 'updated description' },
+      {
+        id: 'photo-1',
+        captureDate: '2026-09-03',
+        description: 'updated description',
+        challengeId: null,
+      },
     ]);
   });
 

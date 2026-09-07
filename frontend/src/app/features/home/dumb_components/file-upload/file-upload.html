@@ -45,6 +45,16 @@
     />
   </mat-form-field>
 
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
+    <mat-select data-testid="challenge-select" [formField]="uploadForm.challengeId">
+      <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
+      @for (challenge of challenges(); track challenge.id) {
+        <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
   <button
     mat-flat-button
     type="submit"

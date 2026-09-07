@@ -3,6 +3,8 @@
     <app-picture-card-edit
       [initialCaptureDate]="captureDate()"
       [initialDescription]="description()"
+      [initialChallengeId]="challengeId()"
+      [challenges]="challenges()"
       (saved)="onEditSaved($event)"
       (cancelled)="onEditCancelled()"
     />

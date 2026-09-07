@@ -5,6 +5,7 @@ import { PhotoApi } from '../../home/services/photo.api';
 import { Photo } from '../../home/photo.type';
 import { parseDateKey, toDateKey } from '../../../shared/local-date';
 import { ActiveLanguage } from '../../../core/i18n/active-language';
+import { ChallengeApi } from '../../challenge/services/challenge.api';
 
 @Component({
   imports: [CalendarGrid, PictureCard],
@@ -14,7 +15,10 @@ import { ActiveLanguage } from '../../../core/i18n/active-language';
 })
 export class Calendar {
   private readonly photoApi = inject(PhotoApi);
+  private readonly challengeApi = inject(ChallengeApi);
   private readonly currentLang = inject(ActiveLanguage).current;
+
+  protected readonly challenges = this.challengeApi.challenges;
 
   private readonly currentMonth = signal(startOfMonth(new Date()));
   protected readonly selectedDate = signal<Date | null>(null);

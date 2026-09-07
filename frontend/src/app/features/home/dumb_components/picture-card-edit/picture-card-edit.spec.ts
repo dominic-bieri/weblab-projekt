@@ -17,6 +17,8 @@ describe('PictureCardEdit', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('initialCaptureDate', '2026-09-03');
     fixture.componentRef.setInput('initialDescription', 'test description');
+    fixture.componentRef.setInput('initialChallengeId', null);
+    fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();
   });
 
@@ -36,7 +38,9 @@ describe('PictureCardEdit', () => {
 
     fixture.nativeElement.querySelector('[data-testid="picture-card-save-button"]')?.click();
 
-    expect(emitted).toEqual([{ captureDate: '2026-09-03', description: 'updated description' }]);
+    expect(emitted).toEqual([
+      { captureDate: '2026-09-03', description: 'updated description', challengeId: null },
+    ]);
   });
 
   it('should emit cancelled when cancel is clicked', () => {

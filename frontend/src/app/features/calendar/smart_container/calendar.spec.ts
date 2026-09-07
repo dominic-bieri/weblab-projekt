@@ -19,6 +19,7 @@ describe('Calendar', () => {
     captureDate: toDateKey(new Date()),
     description: 'test description',
     imageUrl: '/photo/photo-1',
+    challengeId: null,
   };
 
   beforeEach(() => {
@@ -46,6 +47,7 @@ describe('Calendar', () => {
   it('should create', async () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([]);
+    httpMock.expectOne('/api/challenge').flush([]);
     await fixture.whenStable();
 
     expect(component).toBeTruthy();
@@ -54,6 +56,7 @@ describe('Calendar', () => {
   it('should not show a picture card before a day is selected', async () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
+    httpMock.expectOne('/api/challenge').flush([]);
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('[data-testid="picture-card"]')).toBeFalsy();
@@ -62,6 +65,7 @@ describe('Calendar', () => {
   it('should show the picture card for the selected day', async () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
+    httpMock.expectOne('/api/challenge').flush([]);
     await fixture.whenStable();
 
     fixture.nativeElement.querySelector('[data-testid="calendar-day-filled"]')?.click();

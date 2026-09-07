@@ -17,7 +17,9 @@
     "captureDate": "Aufnahmedatum",
     "description": "Beschreibung",
     "descriptionPlaceholder": "Beschreibung",
-    "upload": "Upload"
+    "upload": "Upload",
+    "challenge": "Challenge",
+    "noChallenge": "Keine Challenge"
   },
   "pictureCard": {
     "edit": "Bearbeiten",

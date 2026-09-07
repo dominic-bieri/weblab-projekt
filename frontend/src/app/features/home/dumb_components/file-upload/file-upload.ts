@@ -4,26 +4,31 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { form, FormField, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { toDateKey } from '../../../../shared/local-date';
+import { Challenge } from '../../../challenge/challenge.type';
 
 export interface PhotoUpload {
   file: File;
   captureDate: string;
   description: string;
+  challengeId: string | null;
 }
 
 interface FileUploadFormValue {
   file: File | null;
   captureDate: Date | null;
   description: string;
+  challengeId: string | null;
 }
 
 const EMPTY_FORM: FileUploadFormValue = {
   file: null,
   captureDate: null,
   description: '',
+  challengeId: null,
 };
 
 @Component({
@@ -34,6 +39,7 @@ const EMPTY_FORM: FileUploadFormValue = {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSelectModule,
     TranslatePipe,
   ],
   selector: 'app-file-upload',
@@ -41,6 +47,8 @@ const EMPTY_FORM: FileUploadFormValue = {
   templateUrl: './file-upload.html',
 })
 export class FileUpload {
+  challenges = input.required<Challenge[]>();
+
   accept = input('*');
   submitted = output<PhotoUpload>();
 
@@ -61,12 +69,13 @@ export class FileUpload {
   submitForm(event: Event): void {
     event.preventDefault();
 
-    const { file, captureDate, description } = this.model();
+    const { file, captureDate, description, challengeId } = this.model();
     if (this.uploadForm().valid() && file) {
       this.submitted.emit({
         file,
         captureDate: captureDate ? toDateKey(captureDate) : '',
         description,
+        challengeId,
       });
     }
   }
