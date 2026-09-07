@@ -21,6 +21,9 @@
     />
     <mat-card-content>
       <p data-testid="picture-card-description">{{ description() }}</p>
+      @if (challengeName(); as name) {
+        <p data-testid="picture-card-challenge">{{ name }}</p>
+      }
     </mat-card-content>
     <button
       mat-stroked-button

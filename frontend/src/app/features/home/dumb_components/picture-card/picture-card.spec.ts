@@ -41,6 +41,32 @@ describe('PictureCard', () => {
     );
   });
 
+  it('should not render a challenge name when no challenge is assigned', () => {
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="picture-card-challenge"]'),
+    ).toBeNull();
+  });
+
+  it('should render the assigned challenge name', async () => {
+    fixture.componentRef.setInput('challengeId', 'challenge-1');
+    fixture.componentRef.setInput('challenges', [
+      {
+        id: 'challenge-1',
+        title: 'Architecture Week',
+        description: '',
+        startDate: '',
+        endDate: '',
+      },
+    ]);
+    await fixture.whenStable();
+
+    expect(
+      fixture.nativeElement
+        .querySelector('[data-testid="picture-card-challenge"]')
+        ?.textContent?.trim(),
+    ).toBe('Architecture Week');
+  });
+
   it('should emit deleted with the photo id when the delete button is clicked', () => {
     const emitted: string[] = [];
     component.deleted.subscribe((id) => emitted.push(id));

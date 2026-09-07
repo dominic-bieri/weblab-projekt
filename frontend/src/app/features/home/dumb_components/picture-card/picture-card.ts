@@ -52,6 +52,14 @@ export class PictureCard {
     }),
   );
 
+  protected readonly challengeName = computed(() => {
+    const challengeId = this.challengeId();
+    if (!challengeId) {
+      return null;
+    }
+    return this.challenges().find((challenge) => challenge.id === challengeId)?.title ?? null;
+  });
+
   onDelete(): void {
     this.deleted.emit(this.id());
   }
