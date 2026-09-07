@@ -177,7 +177,7 @@ function expectChallengeDetailHasPhoto() {
   testIdSelector('nav-link-challenge').click();
   testIdSelector('challenge-card-view-photos-link').click();
   testIdSelector('challenge-detail-title').should('have.text', EDITED_CHALLENGE_TITLE);
-  testIdSelector('challenge-detail-photo').should('have.length', 1);
+  testIdSelector('photo-tile').should('have.length', 1);
   testIdSelector('challenge-detail-back-link').click();
 }
 

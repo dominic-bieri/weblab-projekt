@@ -79,7 +79,7 @@ describe('ChallengeDetail', () => {
     expect(
       element.querySelector('[data-testid="challenge-detail-title"]')?.textContent?.trim(),
     ).toBe('Architecture Week');
-    expect(element.querySelectorAll('[data-testid="challenge-detail-photo"]').length).toBe(1);
+    expect(element.querySelectorAll('[data-testid="photo-tile"]').length).toBe(1);
   });
 
   it('should show the empty state when the challenge has no photos', async () => {
@@ -87,7 +87,7 @@ describe('ChallengeDetail', () => {
     const element: HTMLElement = fixture.nativeElement;
 
     expect(element.querySelector('[data-testid="challenge-detail-empty"]')).toBeTruthy();
-    expect(element.querySelectorAll('[data-testid="challenge-detail-photo"]').length).toBe(0);
+    expect(element.querySelectorAll('[data-testid="photo-tile"]').length).toBe(0);
   });
 
   it('should show a not-found message for an unknown challenge id', async () => {

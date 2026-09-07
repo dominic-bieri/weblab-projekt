@@ -7,13 +7,15 @@
 mat-card {
   width: 100%;
   padding: 16px;
+  box-shadow: none;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 img[mat-card-image] {
-  width: 100%;
+  width: calc(100% + 32px);
   height: auto;
-  margin: 0;
+  margin: 8px -16px 0;
   aspect-ratio: 5 / 4;
   object-fit: cover;
-  border-radius: 4px;
 }
