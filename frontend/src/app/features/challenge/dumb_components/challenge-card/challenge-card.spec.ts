@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { ChallengeCard } from './challenge-card';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { ChallengeCard, ChallengeEdit } from './challenge-card';
 
 describe('ChallengeCard', () => {
   let component: ChallengeCard;
@@ -9,7 +10,7 @@ describe('ChallengeCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ChallengeCard],
-      providers: [provideTranslateService({ lang: 'de' })],
+      providers: [provideTranslateService({ lang: 'de' }), provideNativeDateAdapter()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ChallengeCard);
@@ -47,5 +48,55 @@ describe('ChallengeCard', () => {
     fixture.nativeElement.querySelector('[data-testid="challenge-card-delete-button"]')?.click();
 
     expect(emitted).toEqual(['challenge-1']);
+  });
+
+  it('should switch to edit mode and emit edited with the updated values', async () => {
+    const emitted: ChallengeEdit[] = [];
+    component.edited.subscribe((value) => emitted.push(value));
+
+    fixture.nativeElement.querySelector('[data-testid="challenge-card-edit-button"]')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const titleInput: HTMLInputElement = fixture.nativeElement.querySelector(
+      '[data-testid="challenge-card-title-input"]',
+    );
+    titleInput.value = 'Portrait Week';
+    titleInput.dispatchEvent(new Event('input'));
+
+    fixture.nativeElement.querySelector('[data-testid="challenge-card-save-button"]')?.click();
+    fixture.detectChanges();
+
+    expect(emitted).toEqual([
+      {
+        id: 'challenge-1',
+        title: 'Portrait Week',
+        description: 'Only architecture shots',
+        startDate: '2026-09-01',
+        endDate: '2026-09-14',
+      },
+    ]);
+    expect(
+      fixture.nativeElement.querySelector('[data-testid="challenge-card-title"]'),
+    ).toBeTruthy();
+  });
+
+  it('should leave edit mode without emitting edited when cancel is clicked', async () => {
+    const emitted: ChallengeEdit[] = [];
+    component.edited.subscribe((value) => emitted.push(value));
+
+    fixture.nativeElement.querySelector('[data-testid="challenge-card-edit-button"]')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.nativeElement.querySelector('[data-testid="challenge-card-cancel-button"]')?.click();
+    fixture.detectChanges();
+
+    expect(emitted).toEqual([]);
+    expect(
+      fixture.nativeElement
+        .querySelector('[data-testid="challenge-card-title"]')
+        ?.textContent?.trim(),
+    ).toBe('Architecture Week');
   });
 });

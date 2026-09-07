@@ -10,6 +10,8 @@ const CHALLENGE_TITLE = 'Cypress Architecture Week';
 const CHALLENGE_START_INPUT = '9/1/2026';
 const CHALLENGE_END_INPUT = '9/14/2026';
 const CHALLENGE_DESCRIPTION = 'Only architecture shots';
+const EDITED_CHALLENGE_TITLE = 'Cypress Portrait Week';
+const EDITED_CHALLENGE_DESCRIPTION = 'Only portrait shots';
 
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
 
@@ -29,7 +31,7 @@ describe('daily-lens', () => {
     expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
     deletePhoto();
     expectEmptyGallery();
-    createAndDeleteChallenge();
+    createEditAndDeleteChallenge();
     logout();
   });
 });
@@ -108,7 +110,7 @@ function deletePhoto() {
   testIdSelector('picture-card-delete-button').click();
 }
 
-function createAndDeleteChallenge() {
+function createEditAndDeleteChallenge() {
   testIdSelector('nav-link-challenge').click();
 
   testIdSelector('challenge-title-input').type(CHALLENGE_TITLE, { force: true });
@@ -120,6 +122,18 @@ function createAndDeleteChallenge() {
   testIdSelector('challenge-card').should('have.length', 1);
   testIdSelector('challenge-card-title').should('have.text', CHALLENGE_TITLE);
   testIdSelector('challenge-card-description').should('have.text', CHALLENGE_DESCRIPTION);
+
+  testIdSelector('challenge-card-edit-button').click();
+  testIdSelector('challenge-card-title-input')
+    .clear({ force: true })
+    .type(EDITED_CHALLENGE_TITLE, { force: true });
+  testIdSelector('challenge-card-description-input')
+    .clear({ force: true })
+    .type(EDITED_CHALLENGE_DESCRIPTION, { force: true });
+  testIdSelector('challenge-card-save-button').click();
+
+  testIdSelector('challenge-card-title').should('have.text', EDITED_CHALLENGE_TITLE);
+  testIdSelector('challenge-card-description').should('have.text', EDITED_CHALLENGE_DESCRIPTION);
 
   testIdSelector('challenge-card-delete-button').click();
   testIdSelector('challenge-card').should('not.exist');

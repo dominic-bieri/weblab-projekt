@@ -33,6 +33,9 @@
     "startDate": "Startdatum",
     "endDate": "Enddatum",
     "create": "Erstellen",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
     "delete": "Löschen"
   }
 }

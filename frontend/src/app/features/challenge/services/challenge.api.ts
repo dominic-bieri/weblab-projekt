@@ -23,6 +23,18 @@ export class ChallengeApi {
     return this.http.post<Challenge>(this.baseUrl, challenge);
   }
 
+  updateChallenge(
+    id: string,
+    challenge: {
+      title: string;
+      description: string;
+      startDate: string;
+      endDate: string;
+    },
+  ) {
+    return this.http.put<Challenge>(`${this.baseUrl}/${id}`, challenge);
+  }
+
   deleteChallenge(id: string) {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

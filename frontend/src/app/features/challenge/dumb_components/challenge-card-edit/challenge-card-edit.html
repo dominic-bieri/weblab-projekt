@@ -1,0 +1,61 @@
+<mat-form-field appearance="fill" subscriptSizing="dynamic">
+  <mat-label>{{ 'challenge.title' | translate }}</mat-label>
+  <input
+    matInput
+    type="text"
+    data-testid="challenge-card-title-input"
+    [formField]="editForm.title"
+  />
+</mat-form-field>
+
+<mat-form-field appearance="fill" subscriptSizing="dynamic">
+  <mat-label>{{ 'challenge.startDate' | translate }}</mat-label>
+  <input
+    matInput
+    data-testid="challenge-card-start-date-input"
+    [matDatepicker]="editStartPicker"
+    [formField]="editForm.startDate"
+  />
+  <mat-datepicker-toggle matIconSuffix [for]="editStartPicker" />
+  <mat-datepicker #editStartPicker />
+</mat-form-field>
+
+<mat-form-field appearance="fill" subscriptSizing="dynamic">
+  <mat-label>{{ 'challenge.endDate' | translate }}</mat-label>
+  <input
+    matInput
+    data-testid="challenge-card-end-date-input"
+    [matDatepicker]="editEndPicker"
+    [formField]="editForm.endDate"
+  />
+  <mat-datepicker-toggle matIconSuffix [for]="editEndPicker" />
+  <mat-datepicker #editEndPicker />
+</mat-form-field>
+
+<mat-form-field appearance="fill" subscriptSizing="dynamic">
+  <mat-label>{{ 'challenge.description' | translate }}</mat-label>
+  <input
+    matInput
+    type="text"
+    data-testid="challenge-card-description-input"
+    [formField]="editForm.description"
+  />
+</mat-form-field>
+
+<button
+  mat-flat-button
+  type="button"
+  data-testid="challenge-card-save-button"
+  [disabled]="!editForm().valid()"
+  (click)="save()"
+>
+  {{ 'challenge.save' | translate }}
+</button>
+<button
+  mat-stroked-button
+  type="button"
+  data-testid="challenge-card-cancel-button"
+  (click)="cancel()"
+>
+  {{ 'challenge.cancel' | translate }}
+</button>

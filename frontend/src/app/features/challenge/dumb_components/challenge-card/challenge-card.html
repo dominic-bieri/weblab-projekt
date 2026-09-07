@@ -1,16 +1,38 @@
 <mat-card data-testid="challenge-card">
-  <mat-card-title data-testid="challenge-card-title">{{ title() }}</mat-card-title>
-  <mat-card-content>
-    <p data-testid="challenge-card-period">{{ formattedPeriod() }}</p>
-    <p data-testid="challenge-card-description">{{ description() }}</p>
-  </mat-card-content>
-  <button
-    mat-stroked-button
-    type="button"
-    data-testid="challenge-card-delete-button"
-    (click)="onDelete()"
-  >
-    <mat-icon>delete</mat-icon>
-    {{ 'challenge.delete' | translate }}
-  </button>
+  @if (isEditing()) {
+    <mat-card-content>
+      <app-challenge-card-edit
+        [initialTitle]="title()"
+        [initialDescription]="description()"
+        [initialStartDate]="startDate()"
+        [initialEndDate]="endDate()"
+        (saved)="onEditSaved($event)"
+        (cancelled)="onEditCancelled()"
+      />
+    </mat-card-content>
+  } @else {
+    <mat-card-title data-testid="challenge-card-title">{{ title() }}</mat-card-title>
+    <mat-card-content>
+      <p data-testid="challenge-card-period">{{ formattedPeriod() }}</p>
+      <p data-testid="challenge-card-description">{{ description() }}</p>
+    </mat-card-content>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="challenge-card-edit-button"
+      (click)="startEdit()"
+    >
+      <mat-icon>edit</mat-icon>
+      {{ 'challenge.edit' | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="challenge-card-delete-button"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+      {{ 'challenge.delete' | translate }}
+    </button>
+  }
 </mat-card>

@@ -1,6 +1,6 @@
 import { Component, inject, viewChild } from '@angular/core';
 import { ChallengeCreate, ChallengeForm } from '../dumb_components/challenge-form/challenge-form';
-import { ChallengeCard } from '../dumb_components/challenge-card/challenge-card';
+import { ChallengeCard, ChallengeEdit } from '../dumb_components/challenge-card/challenge-card';
 import { ChallengeApi } from '../services/challenge.api';
 
 @Component({
@@ -24,5 +24,10 @@ export class ChallengePage {
 
   protected onDelete(id: string): void {
     this.challengeApi.deleteChallenge(id).subscribe(() => this.challenges.reload());
+  }
+
+  protected onEdit(edit: ChallengeEdit): void {
+    const { id, ...changes } = edit;
+    this.challengeApi.updateChallenge(id, changes).subscribe(() => this.challenges.reload());
   }
 }
