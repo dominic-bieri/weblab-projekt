@@ -26,6 +26,8 @@ describe('ChallengePage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     httpMock.expectOne('/api/challenge').flush([]);
+    // Seite laedt jetzt auch Fotos (fuer die fotografierten Tage pro Challenge).
+    httpMock.expectOne('/api/photo').flush([]);
     await fixture.whenStable();
   });
 

@@ -40,6 +40,12 @@
     "viewPhotos": "View photos",
     "noPhotos": "No photos for this challenge yet.",
     "notFound": "Challenge not found.",
-    "back": "Back"
+    "back": "Back",
+    "progress": {
+      "active": "{{days}} days left",
+      "upcoming": "Starts in {{days}} days",
+      "completed": "Completed ({{total}} days)",
+      "photographed": "Photographed: {{count}} / {{total}} days"
+    }
   }
 }

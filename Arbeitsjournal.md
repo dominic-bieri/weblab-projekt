@@ -63,3 +63,9 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 - Challenge-Detailansicht inkl. Anzeige der zugehörigen Fotos
 
 ---
+
+## 2026-09-08 - 3.5 h
+
+- Fortschrittsanzeige für Challenges (fotografierte Tage & Restlaufzeit)
+
+---

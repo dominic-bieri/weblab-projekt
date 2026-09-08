@@ -6,6 +6,11 @@
 @if (challenge(); as c) {
   <h1 data-testid="challenge-detail-title">{{ c.title }}</h1>
   <p data-testid="challenge-detail-description">{{ c.description }}</p>
+  <app-challenge-progress
+    [startDate]="c.startDate"
+    [endDate]="c.endDate"
+    [captureDates]="challengePhotoDates()"
+  />
 
   @if (challengePhotos().length > 0) {
     <div class="photo-grid">

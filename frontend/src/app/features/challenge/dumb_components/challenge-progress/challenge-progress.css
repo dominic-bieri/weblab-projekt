@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.challenge-progress__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant, #49454f);
+}
+
+.challenge-progress__time {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant, #49454f);
+}

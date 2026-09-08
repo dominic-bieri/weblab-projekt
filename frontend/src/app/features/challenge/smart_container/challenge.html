@@ -9,6 +9,7 @@
         [description]="challenge.description"
         [startDate]="challenge.startDate"
         [endDate]="challenge.endDate"
+        [captureDates]="captureDatesFor(challenge.id)"
         (deleted)="onDelete($event)"
         (edited)="onEdit($event)"
       />

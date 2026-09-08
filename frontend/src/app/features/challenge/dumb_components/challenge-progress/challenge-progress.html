@@ -1,0 +1,33 @@
+@let time = progress();
+
+<div class="challenge-progress" data-testid="challenge-progress">
+  <div class="challenge-progress__header">
+    <span data-testid="challenge-progress-label">
+      {{
+        'challenge.progress.photographed'
+          | translate: { count: photographedDays(), total: time.totalDays }
+      }}
+    </span>
+    <span data-testid="challenge-progress-percent">{{ photographedPercent() }}%</span>
+  </div>
+
+  <mat-progress-bar
+    mode="determinate"
+    [value]="photographedPercent()"
+    data-testid="challenge-progress-bar"
+  />
+
+  <p class="challenge-progress__time" data-testid="challenge-progress-time">
+    @switch (time.status) {
+      @case ('upcoming') {
+        {{ 'challenge.progress.upcoming' | translate: { days: time.daysUntilStart } }}
+      }
+      @case ('completed') {
+        {{ 'challenge.progress.completed' | translate: { total: time.totalDays } }}
+      }
+      @default {
+        {{ 'challenge.progress.active' | translate: { days: time.daysRemaining } }}
+      }
+    }
+  </p>
+</div>

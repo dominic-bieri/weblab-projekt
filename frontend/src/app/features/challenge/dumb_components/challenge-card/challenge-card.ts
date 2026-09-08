@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
 import { parseDateKey } from '../../../../shared/local-date';
 import { ChallengeCardEdit, ChallengeEditValue } from '../challenge-card-edit/challenge-card-edit';
+import { ChallengeProgress } from '../challenge-progress/challenge-progress';
 
 export interface ChallengeEdit extends ChallengeEditValue {
   id: string;
@@ -22,6 +23,7 @@ export interface ChallengeEdit extends ChallengeEditValue {
     RouterLink,
     TranslatePipe,
     ChallengeCardEdit,
+    ChallengeProgress,
   ],
   selector: 'app-challenge-card',
   styleUrl: './challenge-card.css',
@@ -35,6 +37,7 @@ export class ChallengeCard {
   description = input.required<string>();
   startDate = input.required<string>();
   endDate = input.required<string>();
+  captureDates = input<string[]>([]);
 
   deleted = output<string>();
   edited = output<ChallengeEdit>();

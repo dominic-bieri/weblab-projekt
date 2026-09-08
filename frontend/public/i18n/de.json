@@ -40,6 +40,12 @@
     "viewPhotos": "Fotos anzeigen",
     "noPhotos": "Für diese Challenge gibt es noch keine Fotos.",
     "notFound": "Challenge nicht gefunden.",
-    "back": "Zurück"
+    "back": "Zurück",
+    "progress": {
+      "active": "Noch {{days}} Tage",
+      "upcoming": "Beginnt in {{days}} Tagen",
+      "completed": "Abgeschlossen ({{total}} Tage)",
+      "photographed": "Fotografiert: {{count}} / {{total}} Tage"
+    }
   }
 }
