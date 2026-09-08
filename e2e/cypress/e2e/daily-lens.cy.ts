@@ -164,6 +164,8 @@ function expectChallengeDetailEmpty() {
   testIdSelector('challenge-card-view-photos-link').click();
   testIdSelector('challenge-detail-title').should('have.text', EDITED_CHALLENGE_TITLE);
   testIdSelector('challenge-detail-empty').should('be.visible');
+  testIdSelector('challenge-progress-label').should('contain.text', '0 / 14');
+  testIdSelector('challenge-progress-bar').should('have.attr', 'aria-valuenow', '0');
   testIdSelector('challenge-detail-back-link').click();
 }
 
@@ -178,6 +180,8 @@ function expectChallengeDetailHasPhoto() {
   testIdSelector('challenge-card-view-photos-link').click();
   testIdSelector('challenge-detail-title').should('have.text', EDITED_CHALLENGE_TITLE);
   testIdSelector('photo-tile').should('have.length', 1);
+  testIdSelector('challenge-progress-label').should('contain.text', '1 / 14');
+  testIdSelector('challenge-progress-bar').should('have.attr', 'aria-valuenow', '7');
   testIdSelector('challenge-detail-back-link').click();
 }
 
