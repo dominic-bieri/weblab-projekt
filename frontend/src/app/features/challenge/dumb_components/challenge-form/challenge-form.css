@@ -1,6 +1,15 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+}
+
 .challenge-form {
   display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.75rem;
+}
+
+.challenge-form mat-form-field {
+  width: 100%;
 }

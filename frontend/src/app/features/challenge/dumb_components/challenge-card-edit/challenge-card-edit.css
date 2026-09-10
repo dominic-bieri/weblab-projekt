@@ -3,3 +3,7 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+:host mat-form-field {
+  width: 100%;
+}

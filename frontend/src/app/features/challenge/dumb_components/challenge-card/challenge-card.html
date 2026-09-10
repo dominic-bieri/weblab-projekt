@@ -21,31 +21,33 @@
       />
       <p data-testid="challenge-card-description">{{ description() }}</p>
     </mat-card-content>
-    <a
-      mat-stroked-button
-      [routerLink]="['/challenge', id()]"
-      data-testid="challenge-card-view-photos-link"
-    >
-      <mat-icon>photo_library</mat-icon>
-      {{ 'challenge.viewPhotos' | translate }}
-    </a>
-    <button
-      mat-stroked-button
-      type="button"
-      data-testid="challenge-card-edit-button"
-      (click)="startEdit()"
-    >
-      <mat-icon>edit</mat-icon>
-      {{ 'challenge.edit' | translate }}
-    </button>
-    <button
-      mat-stroked-button
-      type="button"
-      data-testid="challenge-card-delete-button"
-      (click)="onDelete()"
-    >
-      <mat-icon>delete</mat-icon>
-      {{ 'challenge.delete' | translate }}
-    </button>
+    <div class="card-actions">
+      <a
+        mat-stroked-button
+        [routerLink]="['/challenge', id()]"
+        data-testid="challenge-card-view-photos-link"
+      >
+        <mat-icon>photo_library</mat-icon>
+        {{ 'challenge.viewPhotos' | translate }}
+      </a>
+      <button
+        mat-stroked-button
+        type="button"
+        data-testid="challenge-card-edit-button"
+        (click)="startEdit()"
+      >
+        <mat-icon>edit</mat-icon>
+        {{ 'challenge.edit' | translate }}
+      </button>
+      <button
+        mat-stroked-button
+        type="button"
+        data-testid="challenge-card-delete-button"
+        (click)="onDelete()"
+      >
+        <mat-icon>delete</mat-icon>
+        {{ 'challenge.delete' | translate }}
+      </button>
+    </div>
   }
 </mat-card>
