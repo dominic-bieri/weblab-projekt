@@ -71,7 +71,7 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 
 ---
 
-## 2026-09-10 - 6.0 h
+## 2026-09-10 - 9.0 h
 
 - Validierung verbessern im Backend mit class-validator und Validierung in Frontend übernommen
 - Bugfix: Foto beim Löschen auch von der Disk entfernen, nicht nur aus der DB
@@ -81,5 +81,9 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
     - Fonts & Material-Icons selbst hosten statt vom Google-CDN
     - SEO: Meta-Description und `robots.txt` ergänzt
     - Accessibility: `alt`-Attribut der Bilder mit der Foto-Beschreibung befüllen
+- Begonnen Frontend responsive zu machen
+- Styling vereinheitlicht
 
 ---
+
+**Totale Stunden**: 47.5 h
