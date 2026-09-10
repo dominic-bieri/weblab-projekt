@@ -5,3 +5,9 @@
   gap: 24px;
   padding: 24px;
 }
+
+@media (max-width: 599.98px) {
+  :host {
+    padding: 16px;
+  }
+}
