@@ -16,6 +16,7 @@ describe('PhotoTile', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('imageSource', 'test.jpg');
     fixture.componentRef.setInput('captureDate', '2026-09-03');
+    fixture.componentRef.setInput('description', 'description');
     await fixture.whenStable();
   });
 
@@ -32,5 +33,7 @@ describe('PhotoTile', () => {
     expect(element.querySelector('[data-testid="photo-tile-date"]')?.textContent?.trim()).toBe(
       '03.09.2026',
     );
+
+    expect(img?.getAttribute('alt')).toContain('description');
   });
 });

@@ -14,6 +14,7 @@ export class PhotoTile {
 
   imageSource = input.required<string>();
   captureDate = input.required<string>();
+  description = input.required<string>();
 
   protected readonly formattedCaptureDate = computed(() =>
     parseDateKey(this.captureDate()).toLocaleDateString(this.currentLang(), {

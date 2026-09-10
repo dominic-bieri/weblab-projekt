@@ -35,6 +35,7 @@ describe('PictureCard', () => {
 
     const img = element.querySelector('img');
     expect(img?.getAttribute('src') ?? img?.getAttribute('ngSrc')).toContain('test.jpg');
+    expect(img?.getAttribute('alt')).toContain('test description');
 
     expect(element.querySelector('mat-card-content p')?.textContent?.trim()).toBe(
       'test description',
