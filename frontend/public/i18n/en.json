@@ -4,7 +4,8 @@
     "calendar": "Calendar",
     "challenge": "Challenge",
     "language": "Language",
-    "logout": "Logout"
+    "logout": "Logout",
+    "menu": "Open navigation menu"
   },
   "auth": {
     "title": "Daily Lens",
