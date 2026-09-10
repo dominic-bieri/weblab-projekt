@@ -1,15 +1,29 @@
 import { createReadStream, type ReadStream } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { access, mkdir, unlink, writeFile } from 'node:fs/promises';
-import { extname, join } from 'node:path';
+import { basename, extname, join } from 'node:path';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import sharp from 'sharp';
 import { Photo } from './photo.entity.js';
 import { PhotoDto } from './photo.dto.js';
 import { ChallengeService } from '../challenge/challenge.service.js';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
+const MAX_IMAGE_DIMENSION = 2048;
+const WEBP_QUALITY = 80;
+
+function toWebImage(input: Buffer): Promise<Buffer> {
+  return sharp(input)
+    .rotate()
+    .resize(MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION, {
+      fit: 'inside',
+      withoutEnlargement: true,
+    })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer();
+}
 
 @Injectable()
 export class PhotoService {
@@ -25,19 +39,20 @@ export class PhotoService {
     meta: PhotoDto,
   ): Promise<Photo> {
     const id = randomUUID();
-    const storedName = `${id}${extname(file.originalname)}`;
+    const storedName = `${id}.webp`;
     const challengeId = await this.resolveChallengeId(meta.challengeId, userId);
 
+    const webp = await toWebImage(file.buffer);
     await mkdir(UPLOAD_DIR, { recursive: true });
-    await writeFile(join(UPLOAD_DIR, storedName), file.buffer);
+    await writeFile(join(UPLOAD_DIR, storedName), webp);
 
     try {
       return await this.photoRepository.save(
         this.photoRepository.create({
           id,
           userId,
-          filename: file.originalname,
-          mimeType: file.mimetype,
+          filename: `${basename(file.originalname, extname(file.originalname))}.webp`,
+          mimeType: 'image/webp',
           captureDate: meta.captureDate,
           description: meta.description,
           challengeId,
@@ -108,7 +123,8 @@ export class PhotoService {
   }
 
   private storagePath(photo: Photo): string {
-    return join(UPLOAD_DIR, photo.id + extname(photo.filename));
+    // Es wird immer als <id>.webp abgelegt (siehe savePhoto).
+    return join(UPLOAD_DIR, `${photo.id}.webp`);
   }
 
   private async resolveChallengeId(

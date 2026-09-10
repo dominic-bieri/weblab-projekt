@@ -4,6 +4,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  Header,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -72,9 +73,12 @@ export class PhotoController {
     });
   }
 
-  // ADR 3 - Signierte URLs für den Bild-Stream-Endpunkt
+  // ADR 3 - Signierte URLs für den Bild-Stream-Endpunkt.
+  // Bildinhalt pro id ist unveränderlich; die signierte URL ist ~15 min stabil
+  // (PhotoUrlSigner bucketet exp), daher darf der Browser sie zwischenspeichern.
   @Get(':id')
   @UseGuards(SignedPhotoUrlGuard)
+  @Header('Cache-Control', 'private, max-age=900, immutable')
   async getPhoto(@Param('id', ParseUUIDPipe) id: string) {
     const { photo, stream } = await this.photoService.getFile(id);
     return new StreamableFile(stream, {
