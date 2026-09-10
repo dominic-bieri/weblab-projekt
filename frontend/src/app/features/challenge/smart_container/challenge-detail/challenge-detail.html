@@ -15,7 +15,11 @@
   @if (challengePhotos().length > 0) {
     <div class="photo-grid">
       @for (photo of challengePhotos(); track photo.id) {
-        <app-photo-tile [imageSource]="imageUrl(photo)" [captureDate]="photo.captureDate" [description]="photo.description"/>
+        <app-photo-tile
+          [imageSource]="imageUrl(photo)"
+          [captureDate]="photo.captureDate"
+          [description]="photo.description"
+        />
       }
     </div>
   } @else {

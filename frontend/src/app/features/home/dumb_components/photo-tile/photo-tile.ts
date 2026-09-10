@@ -1,7 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
-import { parseDateKey } from '../../../../shared/local-date';
+import { formatDateKey } from '../../../../shared/local-date';
 
 @Component({
   imports: [NgOptimizedImage],
@@ -17,10 +17,6 @@ export class PhotoTile {
   description = input.required<string>();
 
   protected readonly formattedCaptureDate = computed(() =>
-    parseDateKey(this.captureDate()).toLocaleDateString(this.currentLang(), {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }),
+    formatDateKey(this.captureDate(), this.currentLang()),
   );
 }

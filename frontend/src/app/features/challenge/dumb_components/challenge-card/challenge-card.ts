@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
-import { parseDateKey } from '../../../../shared/local-date';
+import { formatDateKey } from '../../../../shared/local-date';
 import { ChallengeCardEdit, ChallengeEditValue } from '../challenge-card-edit/challenge-card-edit';
 import { ChallengeProgress } from '../challenge-progress/challenge-progress';
 
@@ -45,13 +45,8 @@ export class ChallengeCard {
   protected readonly isEditing = signal(false);
 
   protected readonly formattedPeriod = computed(() => {
-    const format = (value: string) =>
-      parseDateKey(value).toLocaleDateString(this.currentLang(), {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      });
-    return `${format(this.startDate())} – ${format(this.endDate())}`;
+    const lang = this.currentLang();
+    return `${formatDateKey(this.startDate(), lang)} – ${formatDateKey(this.endDate(), lang)}`;
   });
 
   onDelete(): void {

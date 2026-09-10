@@ -6,7 +6,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PhotoEditValue, PictureCardEdit } from '../picture-card-edit/picture-card-edit';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
-import { parseDateKey } from '../../../../shared/local-date';
+import { formatDateKey } from '../../../../shared/local-date';
 import { Challenge } from '../../../challenge/challenge.type';
 
 export interface PhotoEdit extends PhotoEditValue {
@@ -45,11 +45,7 @@ export class PictureCard {
   protected readonly isEditing = signal(false);
 
   protected readonly formattedCaptureDate = computed(() =>
-    parseDateKey(this.captureDate()).toLocaleDateString(this.currentLang(), {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }),
+    formatDateKey(this.captureDate(), this.currentLang()),
   );
 
   protected readonly challengeName = computed(() => {

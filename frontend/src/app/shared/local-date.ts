@@ -11,3 +11,11 @@ export function parseDateKey(value: string): Date {
   const [year, month, day] = value.slice(0, 10).split('-').map(Number);
   return new Date(year, month - 1, day);
 }
+
+export function formatDateKey(value: string, locale: string): string {
+  return parseDateKey(value).toLocaleDateString(locale, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
