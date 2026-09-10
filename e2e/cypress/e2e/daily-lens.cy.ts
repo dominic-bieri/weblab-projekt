@@ -17,7 +17,7 @@ const CHALLENGE_PHOTO_DESCRIPTION = 'Cypress Challenge Photo';
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
 
 describe('daily-lens', () => {
-  it('registriert sich, lädt ein Foto hoch und meldet sich wieder ab', () => {
+  it('User Journey', () => {
     const run = Date.now();
     const description = `Cypress Journey ${run}`;
 
@@ -55,7 +55,7 @@ function languageSwitch() {
 
 function switchLanguage(langCode: string, expectedLabel: string) {
   testIdSelector('language-select').click({ force: true });
-  cy.get(`[data-testid="language-option-${langCode}"]`).click();
+  testIdSelector(`language-option-${langCode}`).click();
   testIdSelector('language-select').should('contain.text', expectedLabel);
 }
 
