@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseUUIDPipe,
   Post,
   Put,
@@ -22,6 +25,8 @@ import type { JwtUser } from '../auth/jwt.strategy.js';
 import { PhotoUrlSigner } from './photo-url.signer.js';
 import { SignedPhotoUrlGuard } from './signed-photo-url.guard.js';
 
+const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
+
 @Controller('photo')
 export class PhotoController {
   constructor(
@@ -31,9 +36,26 @@ export class PhotoController {
 
   @Post('upload')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      limits: { fileSize: MAX_PHOTO_BYTES },
+    }),
+  )
   uploadPhoto(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: MAX_PHOTO_BYTES }),
+          new FileTypeValidator({
+            // prüft die Magic Numbers, nicht nur den Client-Content-Type
+            fileType: /^image\/(jpeg|png|webp)$/,
+            overrideMimeType: true,
+          }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
     @Body() dto: PhotoDto,
     @CurrentUser() user: JwtUser,
   ) {

@@ -49,7 +49,7 @@ const EMPTY_FORM: FileUploadFormValue = {
 export class FileUpload {
   challenges = input.required<Challenge[]>();
 
-  accept = input('*');
+  accept = input('image/jpeg,image/png,image/webp');
   submitted = output<PhotoUpload>();
 
   private readonly model = signal<FileUploadFormValue>({ ...EMPTY_FORM });

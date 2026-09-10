@@ -2,11 +2,7 @@ import { createReadStream, type ReadStream } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { access, mkdir, unlink, writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Photo } from './photo.entity.js';
@@ -30,8 +26,7 @@ export class PhotoService {
   ): Promise<Photo> {
     const id = randomUUID();
     const storedName = `${id}${extname(file.originalname)}`;
-    const captureDate = this.parseCaptureDate(meta.captureDate);
-    const challengeId = await this.parseChallengeId(meta.challengeId, userId);
+    const challengeId = await this.resolveChallengeId(meta.challengeId, userId);
 
     await mkdir(UPLOAD_DIR, { recursive: true });
     await writeFile(join(UPLOAD_DIR, storedName), file.buffer);
@@ -43,8 +38,8 @@ export class PhotoService {
           userId,
           filename: file.originalname,
           mimeType: file.mimetype,
-          captureDate,
-          description: this.parseDescription(meta.description),
+          captureDate: meta.captureDate,
+          description: meta.description,
           challengeId,
         }),
       );
@@ -82,9 +77,9 @@ export class PhotoService {
     await this.assertOwnership(id, userId);
 
     const changes: Partial<Photo> = {
-      captureDate: this.parseCaptureDate(dto.captureDate),
-      description: this.parseDescription(dto.description),
-      challengeId: await this.parseChallengeId(dto.challengeId, userId),
+      captureDate: dto.captureDate,
+      description: dto.description,
+      challengeId: await this.resolveChallengeId(dto.challengeId, userId),
     };
 
     const photo = await this.photoRepository.preload({ id, ...changes });
@@ -110,35 +105,7 @@ export class PhotoService {
     return join(UPLOAD_DIR, photo.id + extname(photo.filename));
   }
 
-  private parseCaptureDate(value: string): string {
-    // nur als String validieren, nie in ein Date umwandeln (sonst Zeitzonen-Verschiebung)
-    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value ?? '');
-    if (!match) {
-      throw new BadRequestException(
-        'captureDate is required and must be in format YYYY-MM-DD',
-      );
-    }
-    const [, year, month, day] = match.map(Number);
-    const check = new Date(year, month - 1, day);
-    const isValid =
-      check.getFullYear() === year &&
-      check.getMonth() === month - 1 &&
-      check.getDate() === day;
-    if (!isValid) {
-      throw new BadRequestException('captureDate is not a valid calendar date');
-    }
-    return value;
-  }
-
-  private parseDescription(value: string): string {
-    const trimmed = value?.trim();
-    if (!trimmed) {
-      throw new BadRequestException('description is required');
-    }
-    return trimmed;
-  }
-
-  private async parseChallengeId(
+  private async resolveChallengeId(
     value: string | null | undefined,
     userId: string,
   ): Promise<string | null> {
