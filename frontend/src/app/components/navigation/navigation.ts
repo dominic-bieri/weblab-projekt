@@ -40,7 +40,7 @@ export class Navigation {
 
   protected readonly isHandset = toSignal(
     inject(BreakpointObserver)
-      .observe(Breakpoints.Handset)
+      .observe(Breakpoints.XSmall)
       .pipe(map((result) => result.matches)),
     { initialValue: false },
   );
