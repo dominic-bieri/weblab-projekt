@@ -9,6 +9,7 @@
   },
   "auth": {
     "title": "Daily Lens",
+    "tagline": "Halte jeden Tag ein Foto fest und sieh deinem Jahr beim Entstehen zu.",
     "login": "Anmelden",
     "register": "Registrieren"
   },

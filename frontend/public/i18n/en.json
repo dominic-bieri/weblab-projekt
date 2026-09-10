@@ -9,6 +9,7 @@
   },
   "auth": {
     "title": "Daily Lens",
+    "tagline": "Capture one photo a day and watch your year develop.",
     "login": "Login",
     "register": "Register"
   },

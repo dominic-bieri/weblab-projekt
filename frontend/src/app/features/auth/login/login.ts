@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 @Component({
   imports: [MatButtonModule, TranslatePipe],
   selector: 'app-login',
+  styleUrl: './login.css',
   templateUrl: './login.html',
 })
 export class Login {
