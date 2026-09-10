@@ -26,23 +26,25 @@
         <p data-testid="picture-card-challenge">{{ name }}</p>
       }
     </mat-card-content>
-    <button
-      mat-stroked-button
-      type="button"
-      data-testid="picture-card-edit-button"
-      (click)="startEdit()"
-    >
-      <mat-icon>edit</mat-icon>
-      {{ 'pictureCard.edit' | translate }}
-    </button>
-    <button
-      mat-stroked-button
-      type="button"
-      data-testid="picture-card-delete-button"
-      (click)="onDelete()"
-    >
-      <mat-icon>delete</mat-icon>
-      {{ 'pictureCard.delete' | translate }}
-    </button>
+    <div class="card-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        data-testid="picture-card-edit-button"
+        (click)="startEdit()"
+      >
+        <mat-icon>edit</mat-icon>
+        {{ 'pictureCard.edit' | translate }}
+      </button>
+      <button
+        mat-stroked-button
+        type="button"
+        data-testid="picture-card-delete-button"
+        (click)="onDelete()"
+      >
+        <mat-icon>delete</mat-icon>
+        {{ 'pictureCard.delete' | translate }}
+      </button>
+    </div>
   }
 </mat-card>
