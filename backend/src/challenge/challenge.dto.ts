@@ -13,7 +13,7 @@ export class ChallengeDto {
   @Transform(({ value }) => value?.trim())
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
+  @MaxLength(50)
   title: string;
 
   @Transform(({ value }) => value?.trim())

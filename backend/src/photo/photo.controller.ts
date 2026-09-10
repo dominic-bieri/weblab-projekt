@@ -25,7 +25,7 @@ import type { JwtUser } from '../auth/jwt.strategy.js';
 import { PhotoUrlSigner } from './photo-url.signer.js';
 import { SignedPhotoUrlGuard } from './signed-photo-url.guard.js';
 
-const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
+const MAX_PHOTO_BYTES = 200 * 1024 * 1024;
 
 @Controller('photo')
 export class PhotoController {

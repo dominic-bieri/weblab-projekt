@@ -24,7 +24,7 @@ describe('FileUpload', () => {
   });
 
   it('should not clear the form on submit until reset() is called externally', () => {
-    const file = new File([''], 'test.png');
+    const file = new File([''], 'test.png', { type: 'image/png' });
     component.uploadForm.file().value.set(file);
     component.uploadForm.captureDate().value.set(new Date(2026, 8, 6));
     component.uploadForm.description().value.set('valid description');
@@ -38,5 +38,18 @@ describe('FileUpload', () => {
 
     component.reset();
     expect(component.uploadForm.file().value()).toBeNull();
+  });
+
+  it('should reject a non-image file', () => {
+    component.uploadForm.file().value.set(new File([''], 'doc.pdf', { type: 'application/pdf' }));
+    component.uploadForm.captureDate().value.set(new Date(2026, 8, 6));
+    component.uploadForm.description().value.set('valid description');
+
+    expect(component.uploadForm().valid()).toBe(false);
+
+    const emitted: unknown[] = [];
+    component.submitted.subscribe((value) => emitted.push(value));
+    component.submitForm(new Event('submit'));
+    expect(emitted.length).toBe(0);
   });
 });

@@ -9,3 +9,8 @@
   align-self: center;
   color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
 }
+
+.file-error {
+  align-self: center;
+  color: var(--mat-sys-error, #b3261e);
+}

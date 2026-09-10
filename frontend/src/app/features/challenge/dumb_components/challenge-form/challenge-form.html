@@ -7,6 +7,9 @@
       data-testid="challenge-title-input"
       [formField]="challengeForm.title"
     />
+    <mat-hint align="end"
+      >{{ challengeForm.title().value().length }} / {{ titleMaxLength }}</mat-hint
+    >
   </mat-form-field>
 
   <mat-form-field appearance="fill" subscriptSizing="dynamic">

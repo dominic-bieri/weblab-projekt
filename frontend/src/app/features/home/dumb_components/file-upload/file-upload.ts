@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, FormField, required, validate } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { toDateKey } from '../../../../shared/local-date';
 import { Challenge } from '../../../challenge/challenge.type';
@@ -23,6 +23,10 @@ interface FileUploadFormValue {
   description: string;
   challengeId: string | null;
 }
+
+// Muss zum Backend passen (ParseFilePipe in photo.controller.ts).
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_FILE_BYTES = 200 * 1024 * 1024;
 
 const EMPTY_FORM: FileUploadFormValue = {
   file: null,
@@ -49,7 +53,7 @@ const EMPTY_FORM: FileUploadFormValue = {
 export class FileUpload {
   challenges = input.required<Challenge[]>();
 
-  accept = input('image/jpeg,image/png,image/webp');
+  accept = input(ACCEPTED_IMAGE_TYPES.join(','));
   submitted = output<PhotoUpload>();
 
   private readonly model = signal<FileUploadFormValue>({ ...EMPTY_FORM });
@@ -58,6 +62,18 @@ export class FileUpload {
     required(path.file);
     required(path.captureDate);
     required(path.description);
+
+    validate(path.file, ({ value }) => {
+      const file = value();
+      const isAllowedType = !file || ACCEPTED_IMAGE_TYPES.includes(file.type);
+      return isAllowedType ? undefined : { kind: 'type', message: 'fileUpload.invalidImage' };
+    });
+
+    validate(path.file, ({ value }) => {
+      const file = value();
+      const isWithinSizeLimit = !file || file.size <= MAX_FILE_BYTES;
+      return isWithinSizeLimit ? undefined : { kind: 'size', message: 'fileUpload.fileTooLarge' };
+    });
   });
 
   onFileChange(event: Event): void {

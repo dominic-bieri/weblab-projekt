@@ -22,6 +22,12 @@
     {{ uploadForm.file().value()?.name ?? ('fileUpload.noFileSelected' | translate) }}
   </span>
 
+  @if (uploadForm.file().value()) {
+    @for (error of uploadForm.file().errors(); track error.kind) {
+      <span class="file-error" data-testid="file-error">{{ error.message | translate }}</span>
+    }
+  }
+
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
     <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
     <input

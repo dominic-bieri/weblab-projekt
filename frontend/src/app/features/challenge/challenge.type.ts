@@ -5,3 +5,6 @@ export interface Challenge {
   startDate: string;
   endDate: string;
 }
+
+// Muss zum Backend passen (@MaxLength in challenge.dto.ts).
+export const TITLE_MAX_LENGTH = 50;

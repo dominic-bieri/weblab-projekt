@@ -3,9 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { toDateKey } from '../../../../shared/local-date';
+import { TITLE_MAX_LENGTH } from '../../challenge.type';
 
 export interface ChallengeCreate {
   title: string;
@@ -46,8 +47,11 @@ export class ChallengeForm {
 
   private readonly model = signal<ChallengeFormValue>({ ...EMPTY_FORM });
 
+  protected readonly titleMaxLength = TITLE_MAX_LENGTH;
+
   readonly challengeForm = form(this.model, (path) => {
     required(path.title);
+    maxLength(path.title, TITLE_MAX_LENGTH);
     required(path.description);
     required(path.startDate);
     required(path.endDate);

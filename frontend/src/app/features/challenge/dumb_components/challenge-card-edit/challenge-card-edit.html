@@ -6,6 +6,7 @@
     data-testid="challenge-card-title-input"
     [formField]="editForm.title"
   />
+  <mat-hint align="end">{{ editForm.title().value().length }} / {{ titleMaxLength }}</mat-hint>
 </mat-form-field>
 
 <mat-form-field appearance="fill" subscriptSizing="dynamic">

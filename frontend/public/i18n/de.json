@@ -19,7 +19,9 @@
     "descriptionPlaceholder": "Beschreibung",
     "upload": "Upload",
     "challenge": "Challenge",
-    "noChallenge": "Keine Challenge"
+    "noChallenge": "Keine Challenge",
+    "invalidImage": "Nur JPEG-, PNG- oder WebP-Bilder sind erlaubt.",
+    "fileTooLarge": "Das Bild darf höchstens 200 MB gross sein."
   },
   "pictureCard": {
     "edit": "Bearbeiten",

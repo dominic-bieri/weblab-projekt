@@ -3,9 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { form, FormField, required } from '@angular/forms/signals';
+import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { parseDateKey, toDateKey } from '../../../../shared/local-date';
+import { TITLE_MAX_LENGTH } from '../../challenge.type';
 
 export interface ChallengeEditValue {
   title: string;
@@ -50,8 +51,11 @@ export class ChallengeCardEdit implements OnInit {
     endDate: null,
   });
 
+  protected readonly titleMaxLength = TITLE_MAX_LENGTH;
+
   readonly editForm = form(this.model, (path) => {
     required(path.title);
+    maxLength(path.title, TITLE_MAX_LENGTH);
     required(path.description);
     required(path.startDate);
     required(path.endDate);
