@@ -89,9 +89,15 @@ export class PhotoService {
     return this.photoRepository.save(photo);
   }
 
-  async deletePhoto(id: string, userId: string) {
-    await this.assertOwnership(id, userId);
+  async deletePhoto(id: string, userId: string): Promise<void> {
+    const photo = await this.photoRepository.findOneBy({ id, userId });
+    if (!photo) {
+      throw new NotFoundException(`Photo ${id} not found`);
+    }
+
     await this.photoRepository.delete(id);
+    // Datei best-effort entfernen; ein verwaister Rest ist harmloser als ein 500 beim Löschen.
+    await unlink(this.storagePath(photo)).catch(() => {});
   }
 
   private async assertOwnership(id: string, userId: string): Promise<void> {
