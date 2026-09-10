@@ -5,10 +5,6 @@
 }
 
 mat-card {
-  width: 100%;
-  padding: 16px;
-  box-shadow: none;
-  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -27,7 +23,6 @@ img[mat-card-image] {
   margin-top: 0.5rem;
 }
 
-/* Matches Breakpoints.XSmall used for the nav: stack the actions full-width. */
 @media (max-width: 599.98px) {
   .card-actions {
     flex-direction: column;

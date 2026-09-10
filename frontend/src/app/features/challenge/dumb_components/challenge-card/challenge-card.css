@@ -4,11 +4,6 @@
   max-width: 500px;
 }
 
-mat-card {
-  width: 100%;
-  padding: 16px;
-}
-
 .card-actions {
   display: flex;
   flex-wrap: wrap;

@@ -6,3 +6,9 @@
 @import '@fontsource/roboto/latin-ext-400.css';
 
 @import 'material-icons/iconfont/filled.css';
+
+mat-card {
+  padding: 16px;
+  box-shadow: none;
+  background: var(--mat-sys-surface-container-low);
+}

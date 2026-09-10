@@ -4,12 +4,6 @@
   max-width: 500px;
 }
 
-.form-card {
-  padding: 16px;
-  box-shadow: none;
-  background: var(--mat-sys-surface-container);
-}
-
 .form-card__header {
   display: flex;
   align-items: center;
