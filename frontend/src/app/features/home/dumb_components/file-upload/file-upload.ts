@@ -1,5 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +40,7 @@ const EMPTY_FORM: FileUploadFormValue = {
   imports: [
     FormField,
     MatButtonModule,
+    MatCardModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,

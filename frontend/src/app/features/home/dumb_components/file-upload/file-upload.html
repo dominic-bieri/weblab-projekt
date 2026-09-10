@@ -1,72 +1,83 @@
-<form class="upload-form" (submit)="submitForm($event)">
-  <input
-    #fileInput
-    type="file"
-    hidden
-    data-testid="file-input"
-    [accept]="accept()"
-    (change)="onFileChange($event)"
-  />
+<mat-card class="form-card">
+  <div class="form-card__header">
+    <mat-icon aria-hidden="true">add_a_photo</mat-icon>
+    <h2>{{ 'fileUpload.title' | translate }}</h2>
+  </div>
 
-  <button
-    mat-stroked-button
-    type="button"
-    data-testid="choose-file-button"
-    (click)="fileInput.click()"
-  >
-    <mat-icon>attach_file</mat-icon>
-    {{ 'fileUpload.chooseFile' | translate }}
-  </button>
-
-  <span class="file-name" data-testid="file-name">
-    {{ uploadForm.file().value()?.name ?? ('fileUpload.noFileSelected' | translate) }}
-  </span>
-
-  @if (uploadForm.file().value()) {
-    @for (error of uploadForm.file().errors(); track error.kind) {
-      <span class="file-error" data-testid="file-error">{{ error.message | translate }}</span>
-    }
-  }
-
-  <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+  <form class="upload-form" (submit)="submitForm($event)">
     <input
-      matInput
-      data-testid="capture-date-input"
-      [matDatepicker]="capturePicker"
-      [formField]="uploadForm.captureDate"
+      #fileInput
+      type="file"
+      hidden
+      data-testid="file-input"
+      [accept]="accept()"
+      (change)="onFileChange($event)"
     />
-    <mat-datepicker-toggle matIconSuffix data-testid="capture-date-toggle" [for]="capturePicker" />
-    <mat-datepicker #capturePicker />
-  </mat-form-field>
 
-  <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
-    <input
-      matInput
-      type="text"
-      data-testid="description-input"
-      [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
-      [formField]="uploadForm.description"
-    />
-  </mat-form-field>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="choose-file-button"
+      (click)="fileInput.click()"
+    >
+      <mat-icon>attach_file</mat-icon>
+      {{ 'fileUpload.chooseFile' | translate }}
+    </button>
 
-  <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
-    <mat-select data-testid="challenge-select" [formField]="uploadForm.challengeId">
-      <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
-      @for (challenge of challenges(); track challenge.id) {
-        <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
+    <span class="file-name" data-testid="file-name">
+      {{ uploadForm.file().value()?.name ?? ('fileUpload.chooseFileHint' | translate) }}
+    </span>
+
+    @if (uploadForm.file().value()) {
+      @for (error of uploadForm.file().errors(); track error.kind) {
+        <span class="file-error" data-testid="file-error">{{ error.message | translate }}</span>
       }
-    </mat-select>
-  </mat-form-field>
+    }
 
-  <button
-    mat-flat-button
-    type="submit"
-    data-testid="upload-button"
-    [disabled]="!uploadForm().valid()"
-  >
-    {{ 'fileUpload.upload' | translate }}
-  </button>
-</form>
+    <mat-form-field appearance="fill" subscriptSizing="dynamic">
+      <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+      <input
+        matInput
+        data-testid="capture-date-input"
+        [matDatepicker]="capturePicker"
+        [formField]="uploadForm.captureDate"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        data-testid="capture-date-toggle"
+        [for]="capturePicker"
+      />
+      <mat-datepicker #capturePicker />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" subscriptSizing="dynamic">
+      <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
+      <input
+        matInput
+        type="text"
+        data-testid="description-input"
+        [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
+        [formField]="uploadForm.description"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" subscriptSizing="dynamic">
+      <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
+      <mat-select data-testid="challenge-select" [formField]="uploadForm.challengeId">
+        <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
+        @for (challenge of challenges(); track challenge.id) {
+          <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      type="submit"
+      data-testid="upload-button"
+      [disabled]="!uploadForm().valid()"
+    >
+      {{ 'fileUpload.upload' | translate }}
+    </button>
+  </form>
+</mat-card>

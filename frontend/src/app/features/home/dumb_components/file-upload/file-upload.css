@@ -4,6 +4,28 @@
   max-width: 500px;
 }
 
+.form-card {
+  padding: 16px;
+  box-shadow: none;
+  background: var(--mat-sys-surface-container);
+}
+
+.form-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-card__header h2 {
+  margin: 0;
+  font: var(--mat-sys-title-medium);
+}
+
+.form-card__header mat-icon {
+  color: var(--mat-sys-primary);
+}
+
 .upload-form {
   display: flex;
   flex-direction: column;
@@ -15,9 +37,11 @@
 }
 
 .file-name {
-  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .file-error {
-  color: var(--mat-sys-error, #b3261e);
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-error);
 }

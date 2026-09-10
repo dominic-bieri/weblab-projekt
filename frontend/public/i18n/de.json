@@ -14,7 +14,9 @@
     "register": "Registrieren"
   },
   "fileUpload": {
-    "chooseFile": "Datei auswählen",
+    "title": "Foto hinzufügen",
+    "chooseFile": "Bild auswählen",
+    "chooseFileHint": "JPEG, PNG oder WebP · max. 200 MB",
     "noFileSelected": "Keine Datei ausgewählt",
     "captureDate": "Aufnahmedatum",
     "description": "Beschreibung",
@@ -32,6 +34,7 @@
     "cancel": "Abbrechen"
   },
   "challenge": {
+    "formTitle": "Neue Challenge",
     "title": "Titel",
     "description": "Beschreibung",
     "startDate": "Startdatum",
