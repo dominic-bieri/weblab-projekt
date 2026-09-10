@@ -30,14 +30,6 @@ export class ChallengeController {
     return this.challengeService.findAll(user.userId);
   }
 
-  @Get(':id')
-  findOne(
-    @Param('id', ParseUUIDPipe) id: string,
-    @CurrentUser() user: JwtUser,
-  ) {
-    return this.challengeService.findOne(id, user.userId);
-  }
-
   @Put(':id')
   updateChallenge(
     @Param('id', ParseUUIDPipe) id: string,

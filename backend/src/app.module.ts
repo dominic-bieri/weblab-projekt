@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
+
 import { PhotoModule } from './photo/photo.module.js';
 import { ChallengeModule } from './challenge/challenge.module.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -22,7 +21,5 @@ import { Challenge } from './challenge/challenge.entity.js';
       synchronize: true, // TODO remove synchronized
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
