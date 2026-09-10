@@ -35,6 +35,7 @@ export class Home {
   }
 
   protected onPhotoEdit(edit: PhotoEdit): void {
-    this.photoApi.updatePhoto(edit.id, edit).subscribe(() => this.photos.reload());
+    const { id, ...changes } = edit;
+    this.photoApi.updatePhoto(id, changes).subscribe(() => this.photos.reload());
   }
 }
