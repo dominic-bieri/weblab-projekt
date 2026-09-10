@@ -67,5 +67,19 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 ## 2026-09-08 - 3.5 h
 
 - Fortschrittsanzeige für Challenges (fotografierte Tage & Restlaufzeit)
+- e2e-Tests erweitert
+
+---
+
+## 2026-09-10 - 6.0 h
+
+- Validierung verbessern im Backend mit class-validator und Validierung in Frontend übernommen
+- Bugfix: Foto beim Löschen auch von der Disk entfernen, nicht nur aus der DB
+- Lighthouse-Optimierungen:
+    - Grosse Bilder serverseitig zu WebP konvertieren (sharp), Cache-Header für Bild-URLs
+    - nginx-Caching für statische Assets
+    - Fonts & Material-Icons selbst hosten statt vom Google-CDN
+    - SEO: Meta-Description und `robots.txt` ergänzt
+    - Accessibility: `alt`-Attribut der Bilder mit der Foto-Beschreibung befüllen
 
 ---

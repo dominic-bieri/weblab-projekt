@@ -66,6 +66,16 @@ Im Frontend wird für Login/Auth `keycloak-angular`/`keycloak-js` eingesetzt sta
 Begründung: Es handelt sich um ein kleines Schulprojekt, daher ist eine feste Abhängigkeit an Keycloak als IdP kein relevantes Risiko.
 Im Gegenzug nimmt die Keycloak-spezifische Library viel Arbeit ab: Token-Refresh, Bearer-Interceptor und Route-Guard sind fertig integriert und müssen nicht selbst gebaut werden, was Login/Auth im Vergleich zu einer generischen OIDC-Library einfacher macht.
 
+### ADR 6: WebP-Konvertierung beim Upload & Caching der Bilder
+
+Kamera-Uploads sind oft mehrere MB gross und ziehen Ladezeit und Lighthouse-Score runter.
+Deshalb werden Bilder beim Upload einmalig mit `sharp` konvertiert: EXIF-Rotation, auf max. 2048 px begrenzt, als WebP (Quality 80).
+Pro Foto liegt danach nur noch eine `<id>.webp` auf der Disk.
+
+Der Bildinhalt pro `id` ändert sich nie, also darf der Browser ihn cachen.
+`GET /photo/:id` sendet `Cache-Control: private, max-age=900, immutable`.
+Damit das über Reloads hinweg greift, muss die signierte URL (ADR 3) stabil bleiben: `PhotoUrlSigner` rundet `exp` auf ein 15-Minuten-Raster, sonst wäre bei jedem Load der `sig`-Parameter anders und der Cache nutzlos.
+
 ## 10. Qualitätsanforderungen
 
 ### 10.1 Qualitätsbaum
