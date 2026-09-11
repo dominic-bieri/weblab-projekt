@@ -69,7 +69,7 @@ export class PhotoController {
     const photos = await this.photoService.findAll(user.userId);
     return photos.map((photo) => {
       const { exp, sig } = this.photoUrlSigner.sign(photo.id);
-      return { ...photo, imageUrl: `/photo/${photo.id}?exp=${exp}&sig=${sig}` };
+      return { ...photo, photoUrl: `/photo/${photo.id}?exp=${exp}&sig=${sig}` };
     });
   }
 

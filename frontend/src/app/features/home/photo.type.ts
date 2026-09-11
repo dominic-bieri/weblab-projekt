@@ -4,6 +4,6 @@ export interface Photo {
   mimeType: string;
   captureDate: string;
   description: string;
-  imageUrl: string;
+  photoUrl: string;
   challengeId: string | null;
 }

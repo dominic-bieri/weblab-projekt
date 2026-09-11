@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { FileUpload } from './file-upload';
+import { PhotoUpload } from './photo-upload';
 
-describe('FileUpload', () => {
-  let component: FileUpload;
-  let fixture: ComponentFixture<FileUpload>;
+describe('PhotoUpload', () => {
+  let component: PhotoUpload;
+  let fixture: ComponentFixture<PhotoUpload>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileUpload],
+      imports: [PhotoUpload],
       providers: [provideTranslateService(), provideNativeDateAdapter()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FileUpload);
+    fixture = TestBed.createComponent(PhotoUpload);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();

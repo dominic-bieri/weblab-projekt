@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { NgOptimizedImage } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PhotoEditValue, PictureCardEdit } from '../picture-card-edit/picture-card-edit';
+import { PhotoCardEdit, PhotoEditValue } from '../photo-card-edit/photo-card-edit';
 import { DeleteDialog } from '../../../../shared/delete-dialog/delete-dialog';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
 import { formatDateKey } from '../../../../shared/local-date';
@@ -26,16 +26,16 @@ export interface PhotoEdit extends PhotoEditValue {
     NgOptimizedImage,
     TranslatePipe,
   ],
-  selector: 'app-picture-card',
-  styleUrl: './picture-card.css',
-  templateUrl: './picture-card.html',
+  selector: 'app-photo-card',
+  styleUrl: './photo-card.css',
+  templateUrl: './photo-card.html',
 })
-export class PictureCard {
+export class PhotoCard {
   private readonly currentLang = inject(ActiveLanguage).current;
   private readonly dialog = inject(MatDialog);
 
   id = input.required<string>();
-  imageSource = input.required<string>();
+  photoSource = input.required<string>();
   captureDate = input.required<string>();
   description = input.required<string>();
   challengeId = input.required<string | null>();
@@ -69,7 +69,7 @@ export class PictureCard {
 
   startEdit(): void {
     this.dialog
-      .open(PictureCardEdit, {
+      .open(PhotoCardEdit, {
         data: {
           challenges: this.challenges(),
           initialCaptureDate: this.captureDate(),

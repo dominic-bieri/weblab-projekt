@@ -1,39 +1,39 @@
-<mat-card data-testid="picture-card">
-  <mat-card-title data-testid="picture-card-date">
+<mat-card data-testid="photo-card">
+  <mat-card-title data-testid="photo-card-date">
     {{ formattedCaptureDate() }}
   </mat-card-title>
   <img
-    ngSrc="{{ imageSource() }}"
+    ngSrc="{{ photoSource() }}"
     mat-card-image
-    data-testid="picture-card-image"
+    data-testid="photo-card-image"
     width="500"
     height="400"
     [alt]="description()"
   />
   <mat-card-content>
-    <p data-testid="picture-card-description">{{ description() }}</p>
+    <p data-testid="photo-card-description">{{ description() }}</p>
     @if (challengeName(); as name) {
-      <p data-testid="picture-card-challenge">{{ name }}</p>
+      <p data-testid="photo-card-challenge">{{ name }}</p>
     }
   </mat-card-content>
   <div class="card-actions">
     <button
       mat-stroked-button
       type="button"
-      data-testid="picture-card-edit-button"
+      data-testid="photo-card-edit-button"
       (click)="startEdit()"
     >
       <mat-icon>edit</mat-icon>
-      {{ 'pictureCard.edit' | translate }}
+      {{ 'photoCard.edit' | translate }}
     </button>
     <button
       mat-stroked-button
       type="button"
-      data-testid="picture-card-delete-button"
+      data-testid="photo-card-delete-button"
       (click)="onDelete()"
     >
       <mat-icon>delete</mat-icon>
-      {{ 'pictureCard.delete' | translate }}
+      {{ 'photoCard.delete' | translate }}
     </button>
   </div>
 </mat-card>

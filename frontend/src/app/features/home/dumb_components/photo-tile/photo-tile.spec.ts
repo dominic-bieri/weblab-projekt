@@ -14,7 +14,7 @@ describe('PhotoTile', () => {
 
     fixture = TestBed.createComponent(PhotoTile);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('imageSource', 'test.jpg');
+    fixture.componentRef.setInput('photoSource', 'test.jpg');
     fixture.componentRef.setInput('captureDate', '2026-09-03');
     fixture.componentRef.setInput('description', 'description');
     await fixture.whenStable();

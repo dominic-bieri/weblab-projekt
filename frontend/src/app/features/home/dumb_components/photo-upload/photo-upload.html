@@ -1,7 +1,7 @@
 <mat-card class="form-card">
   <div class="form-card__header">
     <mat-icon aria-hidden="true">add_a_photo</mat-icon>
-    <h2>{{ 'fileUpload.title' | translate }}</h2>
+    <h2>{{ 'photoUpload.title' | translate }}</h2>
   </div>
 
   <form class="upload-form" (submit)="submitForm($event)">
@@ -21,11 +21,11 @@
       (click)="fileInput.click()"
     >
       <mat-icon>attach_file</mat-icon>
-      {{ 'fileUpload.chooseFile' | translate }}
+      {{ 'photoUpload.chooseFile' | translate }}
     </button>
 
     <span class="file-name" data-testid="file-name">
-      {{ uploadForm.file().value()?.name ?? ('fileUpload.chooseFileHint' | translate) }}
+      {{ uploadForm.file().value()?.name ?? ('photoUpload.chooseFileHint' | translate) }}
     </span>
 
     @if (uploadForm.file().value()) {
@@ -35,7 +35,7 @@
     }
 
     <mat-form-field appearance="fill" subscriptSizing="dynamic">
-      <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+      <mat-label>{{ 'photoUpload.captureDate' | translate }}</mat-label>
       <input
         matInput
         data-testid="capture-date-input"
@@ -51,22 +51,25 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" subscriptSizing="dynamic">
-      <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
+      <mat-label>{{ 'photoUpload.description' | translate }}</mat-label>
       <input
         matInput
         type="text"
         data-testid="description-input"
-        [placeholder]="'fileUpload.descriptionPlaceholder' | translate"
+        [placeholder]="'photoUpload.descriptionPlaceholder' | translate"
         [formField]="uploadForm.description"
       />
     </mat-form-field>
 
     <mat-form-field appearance="fill" subscriptSizing="dynamic">
-      <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
+      <mat-label>{{ 'photoUpload.challenge' | translate }}</mat-label>
       <mat-select data-testid="challenge-select" [formField]="uploadForm.challengeId">
-        <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
+        <mat-option [value]="null">{{ 'photoUpload.noChallenge' | translate }}</mat-option>
         @for (challenge of challenges(); track challenge.id) {
-          <mat-option [value]="challenge.id" [attr.data-testid]="'challenge-option-' + challenge.title">
+          <mat-option
+            [value]="challenge.id"
+            [attr.data-testid]="'challenge-option-' + challenge.title"
+          >
             {{ challenge.title }}
           </mat-option>
         }
@@ -79,7 +82,7 @@
       data-testid="upload-button"
       [disabled]="!uploadForm().valid()"
     >
-      {{ 'fileUpload.upload' | translate }}
+      {{ 'photoUpload.upload' | translate }}
     </button>
   </form>
 </mat-card>

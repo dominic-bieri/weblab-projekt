@@ -16,8 +16,8 @@ export class PhotoApi {
     defaultValue: [],
   });
 
-  imageUrl(photo: Photo): string {
-    return `/api${photo.imageUrl}`;
+  photoUrl(photo: Photo): string {
+    return `/api${photo.photoUrl}`;
   }
 
   uploadPhoto(upload: {

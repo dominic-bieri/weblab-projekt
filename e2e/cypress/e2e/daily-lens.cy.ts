@@ -114,7 +114,7 @@ function loginExistingUser(run: number) {
 }
 
 function expectEmptyGallery() {
-  testIdSelector('picture-card').should('not.exist');
+  testIdSelector('photo-card').should('not.exist');
 }
 
 function rejectInvalidFile() {
@@ -139,15 +139,15 @@ function uploadPhoto(description: string, challengeTitle?: string) {
 }
 
 function expectPhotoInGallery(description: string, captureDateShown = CAPTURE_DATE_SHOWN) {
-  testIdSelector('picture-card').should('have.length', 1);
-  testIdSelector('picture-card-description').should('have.text', description);
-  testIdSelector('picture-card-date').should('contain.text', captureDateShown);
+  testIdSelector('photo-card').should('have.length', 1);
+  testIdSelector('photo-card-description').should('have.text', description);
+  testIdSelector('photo-card-date').should('contain.text', captureDateShown);
 }
 
 function verifyCalendarView(description: string) {
   testIdSelector('nav-link-calendar').click();
   testIdSelector('calendar-day-filled').should('have.length', 1).click();
-  testIdSelector('picture-card-description').should('have.text', description);
+  testIdSelector('photo-card-description').should('have.text', description);
 
   testIdSelector('calendar-next-month').click();
   testIdSelector('calendar-day-filled').should('not.exist');
@@ -158,25 +158,25 @@ function verifyCalendarView(description: string) {
 }
 
 function cancelPhotoDelete() {
-  testIdSelector('picture-card-delete-button').click();
+  testIdSelector('photo-card-delete-button').click();
   testIdSelector('delete-dialog-cancel-button').click();
-  testIdSelector('picture-card').should('have.length', 1);
+  testIdSelector('photo-card').should('have.length', 1);
 }
 
 function editPhoto(description: string): string {
-  testIdSelector('picture-card-edit-button').click();
-  testIdSelector('picture-card-date-input')
+  testIdSelector('photo-card-edit-button').click();
+  testIdSelector('photo-card-date-input')
     .clear()
     .type(EDITED_CAPTURE_DATE_INPUT, { force: true });
-  testIdSelector('picture-card-description-input')
+  testIdSelector('photo-card-description-input')
     .clear({ force: true })
     .type(description, { force: true });
-  testIdSelector('picture-card-save-button').click();
+  testIdSelector('photo-card-save-button').click();
   return description;
 }
 
 function deletePhoto() {
-  testIdSelector('picture-card-delete-button').click();
+  testIdSelector('photo-card-delete-button').click();
   testIdSelector('delete-dialog-confirm-button').click();
 }
 
@@ -236,7 +236,7 @@ function assignPhotoToChallenge() {
   testIdSelector('nav-link-home').click();
   uploadPhoto(CHALLENGE_PHOTO_DESCRIPTION, EDITED_CHALLENGE_TITLE);
   expectPhotoInGallery(CHALLENGE_PHOTO_DESCRIPTION);
-  testIdSelector('picture-card-challenge').should('have.text', EDITED_CHALLENGE_TITLE);
+  testIdSelector('photo-card-challenge').should('have.text', EDITED_CHALLENGE_TITLE);
 }
 
 function expectChallengeDetailHasPhoto() {
@@ -259,14 +259,14 @@ function editAndDeletePhotoInCalendar() {
   testIdSelector('nav-link-calendar').click();
   testIdSelector('calendar-day-filled').should('have.length', 1).click();
 
-  testIdSelector('picture-card-edit-button').click();
-  testIdSelector('picture-card-description-input')
+  testIdSelector('photo-card-edit-button').click();
+  testIdSelector('photo-card-description-input')
     .clear({ force: true })
     .type(CALENDAR_EDITED_DESCRIPTION, { force: true });
-  testIdSelector('picture-card-save-button').click();
-  testIdSelector('picture-card-description').should('have.text', CALENDAR_EDITED_DESCRIPTION);
+  testIdSelector('photo-card-save-button').click();
+  testIdSelector('photo-card-description').should('have.text', CALENDAR_EDITED_DESCRIPTION);
 
-  testIdSelector('picture-card-delete-button').click();
+  testIdSelector('photo-card-delete-button').click();
   testIdSelector('delete-dialog-confirm-button').click();
   testIdSelector('calendar-day-filled').should('not.exist');
 

@@ -25,7 +25,7 @@
     <div class="photo-grid">
       @for (photo of challengePhotos(); track photo.id) {
         <app-photo-tile
-          [imageSource]="imageUrl(photo)"
+          [photoSource]="photoUrl(photo)"
           [captureDate]="photo.captureDate"
           [description]="photo.description"
         />

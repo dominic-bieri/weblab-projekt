@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PictureCardEdit, PictureCardEditData } from './picture-card-edit';
+import { PhotoCardEdit, PhotoCardEditData } from './photo-card-edit';
 
-describe('PictureCardEdit', () => {
-  let fixture: ComponentFixture<PictureCardEdit>;
+describe('PhotoCardEdit', () => {
+  let fixture: ComponentFixture<PhotoCardEdit>;
   let closeSpy: ReturnType<typeof vi.fn>;
 
-  const data: PictureCardEditData = {
+  const data: PhotoCardEditData = {
     challenges: [],
     initialCaptureDate: '2026-09-03',
     initialDescription: 'test description',
@@ -19,7 +19,7 @@ describe('PictureCardEdit', () => {
     closeSpy = vi.fn();
 
     await TestBed.configureTestingModule({
-      imports: [PictureCardEdit],
+      imports: [PhotoCardEdit],
       providers: [
         provideTranslateService(),
         provideNativeDateAdapter(),
@@ -28,7 +28,7 @@ describe('PictureCardEdit', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PictureCardEdit);
+    fixture = TestBed.createComponent(PhotoCardEdit);
     await fixture.whenStable();
   });
 
@@ -38,12 +38,12 @@ describe('PictureCardEdit', () => {
 
   it('should close with the updated description and date when saved', () => {
     const descriptionInput: HTMLInputElement = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-description-input"]',
+      '[data-testid="photo-card-description-input"]',
     );
     descriptionInput.value = 'updated description';
     descriptionInput.dispatchEvent(new Event('input'));
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-save-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-save-button"]')?.click();
 
     expect(closeSpy).toHaveBeenCalledWith({
       captureDate: '2026-09-03',
@@ -53,7 +53,7 @@ describe('PictureCardEdit', () => {
   });
 
   it('should close without a value when cancelled', () => {
-    fixture.nativeElement.querySelector('[data-testid="picture-card-cancel-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-cancel-button"]')?.click();
 
     expect(closeSpy).toHaveBeenCalledWith();
   });

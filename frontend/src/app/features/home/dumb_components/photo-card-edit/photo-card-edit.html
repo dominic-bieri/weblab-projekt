@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>{{ 'pictureCard.editTitle' | translate }}</h2>
+<h2 mat-dialog-title>{{ 'photoCard.editTitle' | translate }}</h2>
 
-<mat-dialog-content class="picture-card-edit__content">
+<mat-dialog-content class="photo-card-edit__content">
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+    <mat-label>{{ 'photoUpload.captureDate' | translate }}</mat-label>
     <input
       matInput
-      data-testid="picture-card-date-input"
+      data-testid="photo-card-date-input"
       [matDatepicker]="editDatePicker"
       [formField]="editForm.captureDate"
     />
@@ -14,21 +14,24 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
+    <mat-label>{{ 'photoUpload.description' | translate }}</mat-label>
     <input
       matInput
       type="text"
-      data-testid="picture-card-description-input"
+      data-testid="photo-card-description-input"
       [formField]="editForm.description"
     />
   </mat-form-field>
 
   <mat-form-field appearance="fill" subscriptSizing="dynamic">
-    <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
-    <mat-select data-testid="picture-card-challenge-select" [formField]="editForm.challengeId">
-      <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
+    <mat-label>{{ 'photoUpload.challenge' | translate }}</mat-label>
+    <mat-select data-testid="photo-card-challenge-select" [formField]="editForm.challengeId">
+      <mat-option [value]="null">{{ 'photoUpload.noChallenge' | translate }}</mat-option>
       @for (challenge of challenges; track challenge.id) {
-        <mat-option [value]="challenge.id" [attr.data-testid]="'challenge-option-' + challenge.title">
+        <mat-option
+          [value]="challenge.id"
+          [attr.data-testid]="'challenge-option-' + challenge.title"
+        >
           {{ challenge.title }}
         </mat-option>
       }
@@ -40,18 +43,18 @@
   <button
     mat-stroked-button
     type="button"
-    data-testid="picture-card-cancel-button"
+    data-testid="photo-card-cancel-button"
     (click)="cancel()"
   >
-    {{ 'pictureCard.cancel' | translate }}
+    {{ 'photoCard.cancel' | translate }}
   </button>
   <button
     mat-flat-button
     type="button"
-    data-testid="picture-card-save-button"
+    data-testid="photo-card-save-button"
     [disabled]="!editForm().valid()"
     (click)="save()"
   >
-    {{ 'pictureCard.save' | translate }}
+    {{ 'photoCard.save' | translate }}
   </button>
 </mat-dialog-actions>

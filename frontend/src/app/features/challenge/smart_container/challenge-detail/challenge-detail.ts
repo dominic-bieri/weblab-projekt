@@ -51,7 +51,7 @@ export class ChallengeDetail {
     this.challengePhotos().map((photo) => photo.captureDate),
   );
 
-  protected imageUrl(photo: Photo): string {
-    return this.photoApi.imageUrl(photo);
+  protected photoUrl(photo: Photo): string {
+    return this.photoApi.photoUrl(photo);
   }
 }

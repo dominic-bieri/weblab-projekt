@@ -10,9 +10,9 @@
 />
 
 @if (selectedPhoto(); as photo) {
-  <app-picture-card
+  <app-photo-card
     [id]="photo.id"
-    [imageSource]="imageUrl(photo)"
+    [photoSource]="photoUrl(photo)"
     [captureDate]="photo.captureDate"
     [description]="photo.description"
     [challengeId]="photo.challengeId"

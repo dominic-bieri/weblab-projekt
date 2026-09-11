@@ -52,7 +52,7 @@ describe('ChallengeDetail', () => {
         mimeType: 'image/jpeg',
         captureDate: '2026-09-03',
         description: 'test',
-        imageUrl: '/photo/photo-1?exp=1&sig=abc',
+        photoUrl: '/photo/photo-1?exp=1&sig=abc',
         challengeId: 'challenge-1',
       },
       {
@@ -61,7 +61,7 @@ describe('ChallengeDetail', () => {
         mimeType: 'image/jpeg',
         captureDate: '2026-09-04',
         description: 'other',
-        imageUrl: '/photo/photo-2?exp=1&sig=abc',
+        photoUrl: '/photo/photo-2?exp=1&sig=abc',
         challengeId: null,
       },
     ]);

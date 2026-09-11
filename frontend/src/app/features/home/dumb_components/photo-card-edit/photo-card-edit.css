@@ -1,10 +1,10 @@
-.picture-card-edit__content {
+.photo-card-edit__content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   min-width: min(20rem, 100%);
 }
 
-.picture-card-edit__content mat-form-field {
+.photo-card-edit__content mat-form-field {
   width: 100%;
 }

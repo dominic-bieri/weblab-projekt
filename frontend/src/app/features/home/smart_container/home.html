@@ -1,13 +1,13 @@
 <ng-container>
   <app-streak-badge class="home-streak" [streak]="streak()" />
 
-  <app-file-upload [challenges]="challenges.value()" (submitted)="onPhotoUpload($event)" />
+  <app-photo-upload [challenges]="challenges.value()" (submitted)="onPhotoUpload($event)" />
 
   @if (photos.hasValue()) {
     @for (photo of photos.value(); track photo.id) {
-      <app-picture-card
+      <app-photo-card
         [id]="photo.id"
-        [imageSource]="imageUrl(photo)"
+        [photoSource]="photoUrl(photo)"
         [captureDate]="photo.captureDate"
         [description]="photo.description"
         [challengeId]="photo.challengeId"

@@ -2,22 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { flushDialog } from '../../../../shared/testing/flush-dialog';
-import { PhotoEdit, PictureCard } from './picture-card';
+import { PhotoCard, PhotoEdit } from './photo-card';
 
-describe('PictureCard', () => {
-  let component: PictureCard;
-  let fixture: ComponentFixture<PictureCard>;
+describe('PhotoCard', () => {
+  let component: PhotoCard;
+  let fixture: ComponentFixture<PhotoCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PictureCard],
+      imports: [PhotoCard],
       providers: [provideTranslateService({ lang: 'de' }), provideNativeDateAdapter()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PictureCard);
+    fixture = TestBed.createComponent(PhotoCard);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('id', 'photo-1');
-    fixture.componentRef.setInput('imageSource', 'test.jpg');
+    fixture.componentRef.setInput('photoSource', 'test.jpg');
     fixture.componentRef.setInput('captureDate', '2026-09-03');
     fixture.componentRef.setInput('description', 'test description');
     fixture.componentRef.setInput('challengeId', null);
@@ -33,7 +33,7 @@ describe('PictureCard', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the formatted capture date, image and description', () => {
+  it('should render the formatted capture date, photo and description', () => {
     const element: HTMLElement = fixture.nativeElement;
 
     expect(element.querySelector('mat-card-title')?.textContent?.trim()).toBe('03.09.2026');
@@ -48,9 +48,7 @@ describe('PictureCard', () => {
   });
 
   it('should not render a challenge name when no challenge is assigned', () => {
-    expect(
-      fixture.nativeElement.querySelector('[data-testid="picture-card-challenge"]'),
-    ).toBeNull();
+    expect(fixture.nativeElement.querySelector('[data-testid="photo-card-challenge"]')).toBeNull();
   });
 
   it('should render the assigned challenge name', async () => {
@@ -68,7 +66,7 @@ describe('PictureCard', () => {
 
     expect(
       fixture.nativeElement
-        .querySelector('[data-testid="picture-card-challenge"]')
+        .querySelector('[data-testid="photo-card-challenge"]')
         ?.textContent?.trim(),
     ).toBe('Architecture Week');
   });
@@ -77,7 +75,7 @@ describe('PictureCard', () => {
     const emitted: string[] = [];
     component.deleted.subscribe((id) => emitted.push(id));
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-delete-button"]')?.click();
     fixture.detectChanges();
     await flushDialog();
 
@@ -95,7 +93,7 @@ describe('PictureCard', () => {
     const emitted: string[] = [];
     component.deleted.subscribe((id) => emitted.push(id));
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-delete-button"]')?.click();
     fixture.detectChanges();
     await flushDialog();
 
@@ -111,20 +109,18 @@ describe('PictureCard', () => {
     const emitted: PhotoEdit[] = [];
     component.edited.subscribe((edit) => emitted.push(edit));
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-edit-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-edit-button"]')?.click();
     fixture.detectChanges();
     await flushDialog();
 
     const descriptionInput = document.querySelector<HTMLInputElement>(
-      '[data-testid="picture-card-description-input"]',
+      '[data-testid="photo-card-description-input"]',
     );
     descriptionInput!.value = 'updated description';
     descriptionInput!.dispatchEvent(new Event('input'));
     await flushDialog();
 
-    document
-      .querySelector<HTMLButtonElement>('[data-testid="picture-card-save-button"]')
-      ?.click();
+    document.querySelector<HTMLButtonElement>('[data-testid="photo-card-save-button"]')?.click();
     await flushDialog();
 
     expect(emitted).toEqual([
@@ -141,19 +137,17 @@ describe('PictureCard', () => {
     const emitted: PhotoEdit[] = [];
     component.edited.subscribe((edit) => emitted.push(edit));
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-edit-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-edit-button"]')?.click();
     fixture.detectChanges();
     await flushDialog();
 
-    document
-      .querySelector<HTMLButtonElement>('[data-testid="picture-card-cancel-button"]')
-      ?.click();
+    document.querySelector<HTMLButtonElement>('[data-testid="photo-card-cancel-button"]')?.click();
     await flushDialog();
 
     expect(emitted).toEqual([]);
     expect(
       fixture.nativeElement
-        .querySelector('[data-testid="picture-card-description"]')
+        .querySelector('[data-testid="photo-card-description"]')
         ?.textContent?.trim(),
     ).toBe('test description');
   });

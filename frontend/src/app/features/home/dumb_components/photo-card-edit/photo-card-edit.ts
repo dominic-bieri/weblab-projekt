@@ -16,14 +16,14 @@ export interface PhotoEditValue {
   challengeId: string | null;
 }
 
-export interface PictureCardEditData {
+export interface PhotoCardEditData {
   challenges: Challenge[];
   initialCaptureDate: string;
   initialDescription: string;
   initialChallengeId: string | null;
 }
 
-interface PictureCardEditFormValue {
+interface PhotoCardEditFormValue {
   captureDate: Date | null;
   description: string;
   challengeId: string | null;
@@ -40,17 +40,17 @@ interface PictureCardEditFormValue {
     MatDialogModule,
     TranslatePipe,
   ],
-  selector: 'app-picture-card-edit',
-  styleUrl: './picture-card-edit.css',
-  templateUrl: './picture-card-edit.html',
+  selector: 'app-photo-card-edit',
+  styleUrl: './photo-card-edit.css',
+  templateUrl: './photo-card-edit.html',
 })
-export class PictureCardEdit implements OnInit {
-  protected readonly data = inject<PictureCardEditData>(MAT_DIALOG_DATA);
-  private readonly dialogRef = inject(MatDialogRef<PictureCardEdit, PhotoEditValue>);
+export class PhotoCardEdit implements OnInit {
+  protected readonly data = inject<PhotoCardEditData>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<PhotoCardEdit, PhotoEditValue>);
 
   protected readonly challenges = this.data.challenges;
 
-  private readonly model = signal<PictureCardEditFormValue>({
+  private readonly model = signal<PhotoCardEditFormValue>({
     captureDate: null,
     description: '',
     challengeId: null,

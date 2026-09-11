@@ -12,7 +12,7 @@ import { formatDateKey } from '../../../../shared/local-date';
 export class PhotoTile {
   private readonly currentLang = inject(ActiveLanguage).current;
 
-  imageSource = input.required<string>();
+  photoSource = input.required<string>();
   captureDate = input.required<string>();
   description = input.required<string>();
 

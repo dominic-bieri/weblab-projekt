@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CalendarDay, CalendarGrid } from '../dumb_components/calendar-grid/calendar-grid';
-import { PhotoEdit, PictureCard } from '../../home/dumb_components/picture-card/picture-card';
+import { PhotoCard, PhotoEdit } from '../../home/dumb_components/photo-card/photo-card';
 import { PhotoApi } from '../../home/services/photo.api';
 import { Photo } from '../../home/photo.type';
 import { parseDateKey, toDateKey } from '../../../shared/local-date';
@@ -9,7 +9,7 @@ import { ChallengeApi } from '../../challenge/services/challenge.api';
 import { StreakApi } from '../../home/services/streak.api';
 
 @Component({
-  imports: [CalendarGrid, PictureCard],
+  imports: [CalendarGrid, PhotoCard],
   selector: 'app-calendar',
   styleUrl: './calendar.css',
   templateUrl: './calendar.html',
@@ -67,8 +67,8 @@ export class Calendar {
     return this.photoApi.photos.value().find((photo) => photo.captureDate === key) ?? null;
   });
 
-  protected imageUrl(photo: Photo): string {
-    return this.photoApi.imageUrl(photo);
+  protected photoUrl(photo: Photo): string {
+    return this.photoApi.photoUrl(photo);
   }
 
   protected previousMonth(): void {

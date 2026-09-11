@@ -17,9 +17,9 @@
     "streak": "{{count}} Tage Streak",
     "streakLabel": "Tage in Folge"
   },
-  "fileUpload": {
+  "photoUpload": {
     "title": "Foto hinzufügen",
-    "chooseFile": "Bild auswählen",
+    "chooseFile": "Foto auswählen",
     "chooseFileHint": "JPEG, PNG oder WebP · max. 200 MB",
     "noFileSelected": "Keine Datei ausgewählt",
     "captureDate": "Aufnahmedatum",
@@ -28,10 +28,10 @@
     "upload": "Upload",
     "challenge": "Challenge",
     "noChallenge": "Keine Challenge",
-    "invalidImage": "Nur JPEG-, PNG- oder WebP-Bilder sind erlaubt.",
-    "fileTooLarge": "Das Bild darf höchstens 200 MB gross sein."
+    "invalidPhoto": "Nur JPEG-, PNG- oder WebP-Fotos sind erlaubt.",
+    "fileTooLarge": "Das Foto darf höchstens 200 MB gross sein."
   },
-  "pictureCard": {
+  "photoCard": {
     "edit": "Bearbeiten",
     "editTitle": "Foto bearbeiten",
     "delete": "Löschen",

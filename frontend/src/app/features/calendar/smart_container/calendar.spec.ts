@@ -19,7 +19,7 @@ describe('Calendar', () => {
     mimeType: 'image/jpeg',
     captureDate: toDateKey(new Date()),
     description: 'test description',
-    imageUrl: '/photo/photo-1',
+    photoUrl: '/photo/photo-1',
     challengeId: null,
   };
 
@@ -56,17 +56,17 @@ describe('Calendar', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not show a picture card before a day is selected', async () => {
+  it('should not show a photo card before a day is selected', async () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
     httpMock.expectOne('/api/challenge').flush([]);
     httpMock.expectOne('/api/streak').flush({ streak: 1, dates: [photo.captureDate] });
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.querySelector('[data-testid="picture-card"]')).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('[data-testid="photo-card"]')).toBeFalsy();
   });
 
-  it('should show the picture card for the selected day', async () => {
+  it('should show the photo card for the selected day', async () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
     httpMock.expectOne('/api/challenge').flush([]);
@@ -78,7 +78,7 @@ describe('Calendar', () => {
 
     expect(
       fixture.nativeElement
-        .querySelector('[data-testid="picture-card-description"]')
+        .querySelector('[data-testid="photo-card-description"]')
         ?.textContent?.trim(),
     ).toBe('test description');
   });
@@ -93,7 +93,7 @@ describe('Calendar', () => {
     fixture.nativeElement.querySelector('[data-testid="calendar-day-filled"]')?.click();
     await fixture.whenStable();
 
-    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.nativeElement.querySelector('[data-testid="photo-card-delete-button"]')?.click();
     fixture.detectChanges();
     await flushDialog();
 

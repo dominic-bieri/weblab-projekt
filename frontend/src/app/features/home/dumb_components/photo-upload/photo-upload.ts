@@ -11,14 +11,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { toDateKey } from '../../../../shared/local-date';
 import { Challenge } from '../../../challenge/challenge.type';
 
-export interface PhotoUpload {
+export interface PhotoUploadValue {
   file: File;
   captureDate: string;
   description: string;
   challengeId: string | null;
 }
 
-interface FileUploadFormValue {
+interface PhotoUploadFormValue {
   file: File | null;
   captureDate: Date | null;
   description: string;
@@ -29,7 +29,7 @@ interface FileUploadFormValue {
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_FILE_BYTES = 200 * 1024 * 1024;
 
-const EMPTY_FORM: FileUploadFormValue = {
+const EMPTY_FORM: PhotoUploadFormValue = {
   file: null,
   captureDate: null,
   description: '',
@@ -48,17 +48,17 @@ const EMPTY_FORM: FileUploadFormValue = {
     MatSelectModule,
     TranslatePipe,
   ],
-  selector: 'app-file-upload',
-  styleUrl: './file-upload.css',
-  templateUrl: './file-upload.html',
+  selector: 'app-photo-upload',
+  styleUrl: './photo-upload.css',
+  templateUrl: './photo-upload.html',
 })
-export class FileUpload {
+export class PhotoUpload {
   challenges = input.required<Challenge[]>();
 
   accept = input(ACCEPTED_IMAGE_TYPES.join(','));
-  submitted = output<PhotoUpload>();
+  submitted = output<PhotoUploadValue>();
 
-  private readonly model = signal<FileUploadFormValue>({ ...EMPTY_FORM });
+  private readonly model = signal<PhotoUploadFormValue>({ ...EMPTY_FORM });
 
   readonly uploadForm = form(this.model, (path) => {
     required(path.file);
@@ -68,13 +68,13 @@ export class FileUpload {
     validate(path.file, ({ value }) => {
       const file = value();
       const isAllowedType = !file || ACCEPTED_IMAGE_TYPES.includes(file.type);
-      return isAllowedType ? undefined : { kind: 'type', message: 'fileUpload.invalidImage' };
+      return isAllowedType ? undefined : { kind: 'type', message: 'photoUpload.invalidPhoto' };
     });
 
     validate(path.file, ({ value }) => {
       const file = value();
       const isWithinSizeLimit = !file || file.size <= MAX_FILE_BYTES;
-      return isWithinSizeLimit ? undefined : { kind: 'size', message: 'fileUpload.fileTooLarge' };
+      return isWithinSizeLimit ? undefined : { kind: 'size', message: 'photoUpload.fileTooLarge' };
     });
   });
 
