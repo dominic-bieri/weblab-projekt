@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ChallengeApi } from '../../services/challenge.api';
@@ -14,6 +15,7 @@ import { ChallengeProgress } from '../../dumb_components/challenge-progress/chal
 @Component({
   imports: [
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     PhotoTile,
     ChallengeProgress,

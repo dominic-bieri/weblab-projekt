@@ -1,10 +1,29 @@
-h1 {
-  margin: 1rem 0 0;
-  font: var(--mat-sys-headline-small);
-  color: var(--mat-sys-on-surface);
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+}
+
+@media (max-width: 599.98px) {
+  :host {
+    padding: 16px;
+  }
+}
+
+.back-link {
+  align-self: flex-start;
+}
+
+.challenge-detail__card {
+  width: 100%;
+  max-width: 500px;
 }
 
 .photo-grid {
+  width: 100%;
+  max-width: 900px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
   gap: 4px;
