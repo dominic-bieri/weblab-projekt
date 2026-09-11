@@ -16,11 +16,7 @@
 
         <mat-divider />
 
-        <button
-          mat-list-item
-          data-testid="logout-button"
-          (click)="drawer.close(); logout()"
-        >
+        <button mat-list-item data-testid="logout-button" (click)="drawer.close(); logout()">
           <mat-icon matListItemIcon>logout</mat-icon>
           <span matListItemTitle>{{ 'nav.logout' | translate }}</span>
         </button>
