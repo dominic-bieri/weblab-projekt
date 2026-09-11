@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { CalendarDay, CalendarGrid } from './calendar-grid';
 
 describe('CalendarGrid', () => {
@@ -6,14 +7,15 @@ describe('CalendarGrid', () => {
   let fixture: ComponentFixture<CalendarGrid>;
 
   const days: CalendarDay[] = [
-    { date: new Date(2026, 8, 1), hasPhoto: false, isStreak: false },
-    { date: new Date(2026, 8, 2), hasPhoto: true, isStreak: true },
-    { date: new Date(2026, 8, 3), hasPhoto: false, isStreak: false },
+    { date: new Date(2026, 8, 1), hasPhoto: false, isStreak: false, isToday: false },
+    { date: new Date(2026, 8, 2), hasPhoto: true, isStreak: true, isToday: false },
+    { date: new Date(2026, 8, 3), hasPhoto: false, isStreak: false, isToday: true },
   ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CalendarGrid],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalendarGrid);
@@ -81,5 +83,24 @@ describe('CalendarGrid', () => {
 
     expect(previous).toBe(true);
     expect(next).toBe(true);
+  });
+
+  it('should mark only the current day as today', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const emptyDays = element.querySelectorAll('[data-testid="calendar-day-empty"]');
+
+    expect(Array.from(emptyDays).filter((day) => day.classList.contains('today')).length).toBe(1);
+    expect(
+      element.querySelector('[data-testid="calendar-day-filled"]')?.classList.contains('today'),
+    ).toBe(false);
+  });
+
+  it('should emit today when the today button is clicked', () => {
+    let emitted = false;
+    component.today.subscribe(() => (emitted = true));
+
+    fixture.nativeElement.querySelector('[data-testid="calendar-today"]')?.click();
+
+    expect(emitted).toBe(true);
   });
 });

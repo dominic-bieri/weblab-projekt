@@ -1,8 +1,19 @@
 .calendar-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calendar-header__label {
+  text-align: center;
+}
+
+.calendar-header__end {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.25rem;
+  justify-self: end;
 }
 
 :host {
@@ -60,6 +71,11 @@
 .day.streak:hover {
   background: var(--mat-sys-error, #b3261e);
   color: var(--mat-sys-on-error, #fff);
+}
+
+.day.today {
+  box-shadow: inset 0 0 0 2px var(--mat-sys-primary, #6750a4);
+  font-weight: 700;
 }
 
 .day.selected {

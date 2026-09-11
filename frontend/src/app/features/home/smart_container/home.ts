@@ -37,7 +37,7 @@ export class Home {
 
   protected onPhotoDelete(id: string): void {
     this.photoApi.deletePhoto(id).subscribe(() => {
-      this.photos.reload();
+      this.photoApi.removeFromCache(id);
       this.streakApi.streak.reload();
     });
   }
@@ -45,7 +45,7 @@ export class Home {
   protected onPhotoEdit(edit: PhotoEdit): void {
     const { id, ...changes } = edit;
     this.photoApi.updatePhoto(id, changes).subscribe(() => {
-      this.photos.reload();
+      this.photoApi.patchInCache(id, changes);
       this.streakApi.streak.reload();
     });
   }

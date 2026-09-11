@@ -37,6 +37,9 @@
     "save": "Save",
     "cancel": "Cancel"
   },
+  "calendar": {
+    "today": "Today"
+  },
   "challenge": {
     "formTitle": "New challenge",
     "title": "Title",

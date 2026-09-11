@@ -41,6 +41,7 @@ export class Calendar {
   protected readonly days = computed<CalendarDay[]>(() => {
     const photoDates = new Set(this.photoApi.photos.value().map((photo) => photo.captureDate));
     const streakDates = new Set(this.streakApi.streak.value().dates);
+    const todayKey = toDateKey(new Date());
 
     const month = this.currentMonth();
     const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
@@ -52,6 +53,7 @@ export class Calendar {
         date,
         hasPhoto: photoDates.has(dateKey),
         isStreak: streakDates.has(dateKey),
+        isToday: dateKey === todayKey,
       };
     });
   });
@@ -79,6 +81,11 @@ export class Calendar {
     this.currentMonth.update((month) => new Date(month.getFullYear(), month.getMonth() + 1, 1));
   }
 
+  protected goToToday(): void {
+    this.selectedDate.set(null);
+    this.currentMonth.set(startOfMonth(new Date()));
+  }
+
   protected onDaySelected(date: Date): void {
     this.selectedDate.set(date);
   }
@@ -86,14 +93,17 @@ export class Calendar {
   protected onPhotoDelete(id: string): void {
     this.photoApi.deletePhoto(id).subscribe(() => {
       this.selectedDate.set(null);
-      this.photoApi.photos.reload();
+      this.photoApi.removeFromCache(id);
+      this.streakApi.streak.reload();
     });
   }
 
   protected onPhotoEdit(edit: PhotoEdit): void {
-    this.photoApi.updatePhoto(edit.id, edit).subscribe(() => {
+    const { id, ...changes } = edit;
+    this.photoApi.updatePhoto(id, changes).subscribe(() => {
       this.selectedDate.set(parseDateKey(edit.captureDate));
-      this.photoApi.photos.reload();
+      this.photoApi.patchInCache(id, changes);
+      this.streakApi.streak.reload();
     });
   }
 }

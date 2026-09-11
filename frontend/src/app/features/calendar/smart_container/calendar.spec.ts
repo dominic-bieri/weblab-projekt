@@ -80,4 +80,25 @@ describe('Calendar', () => {
         ?.textContent?.trim(),
     ).toBe('test description');
   });
+
+  it('updates the grid after deleting the selected photo', async () => {
+    fixture.detectChanges();
+    httpMock.expectOne('/api/photo').flush([photo]);
+    httpMock.expectOne('/api/challenge').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 1, dates: [photo.captureDate] });
+    await fixture.whenStable();
+
+    fixture.nativeElement.querySelector('[data-testid="calendar-day-filled"]')?.click();
+    await fixture.whenStable();
+
+    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    httpMock.expectOne(`/api/photo/${photo.id}`).flush(null);
+    fixture.detectChanges();
+    httpMock.expectOne('/api/streak').flush({ streak: 0, dates: [] });
+    await fixture.whenStable();
+
+    expect(
+      fixture.nativeElement.querySelectorAll('[data-testid="calendar-day-filled"]').length,
+    ).toBe(0);
+  });
 });

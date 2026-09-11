@@ -1,15 +1,17 @@
 import { Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface CalendarDay {
   date: Date;
   hasPhoto: boolean;
   isStreak: boolean;
+  isToday: boolean;
 }
 
 @Component({
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, TranslatePipe],
   selector: 'app-calendar-grid',
   styleUrl: './calendar-grid.css',
   templateUrl: './calendar-grid.html',
@@ -22,6 +24,7 @@ export class CalendarGrid {
 
   previousMonth = output<void>();
   nextMonth = output<void>();
+  today = output<void>();
   daySelected = output<Date>();
 
   protected readonly leadingBlanks = computed(() => {

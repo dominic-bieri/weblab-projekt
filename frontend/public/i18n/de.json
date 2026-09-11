@@ -37,6 +37,9 @@
     "save": "Speichern",
     "cancel": "Abbrechen"
   },
+  "calendar": {
+    "today": "Heute"
+  },
   "challenge": {
     "formTitle": "Neue Challenge",
     "title": "Titel",

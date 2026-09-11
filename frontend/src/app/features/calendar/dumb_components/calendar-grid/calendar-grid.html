@@ -7,15 +7,26 @@
   >
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <span data-testid="calendar-month-label">{{ monthLabel() }}</span>
-  <button
-    mat-icon-button
-    type="button"
-    data-testid="calendar-next-month"
-    (click)="nextMonth.emit()"
-  >
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+  <span class="calendar-header__label" data-testid="calendar-month-label">{{ monthLabel() }}</span>
+  <div class="calendar-header__end">
+    <button
+      mat-icon-button
+      type="button"
+      data-testid="calendar-today"
+      [attr.aria-label]="'calendar.today' | translate"
+      (click)="today.emit()"
+    >
+      <mat-icon>today</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      type="button"
+      data-testid="calendar-next-month"
+      (click)="nextMonth.emit()"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
 </div>
 
 <div class="calendar-grid">
@@ -31,6 +42,7 @@
       class="day"
       [class.filled]="day.hasPhoto"
       [class.streak]="day.isStreak"
+      [class.today]="day.isToday"
       [class.selected]="isSelected(day.date)"
       [disabled]="!day.hasPhoto"
       [attr.data-testid]="day.hasPhoto ? 'calendar-day-filled' : 'calendar-day-empty'"
