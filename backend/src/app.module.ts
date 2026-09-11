@@ -20,7 +20,10 @@ import { Challenge } from './challenge/challenge.entity.js';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [Photo, Challenge],
-      synchronize: true, // TODO remove synchronized
+      // TODO synchronize entfernen, wenn in PRD verwendet werden möchte
+      // -> migrations machen
+      // Während Entwicklung angenehmer und wird vorerst so belassen
+      synchronize: true,
     }),
   ],
 })
