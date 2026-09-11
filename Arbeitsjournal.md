@@ -86,4 +86,15 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 
 ---
 
-**Totale Stunden**: 47.5 h
+## 2026-09-11 - 8.5 h
+
+- Streak-Anzeige (Backend + Frontend)
+- Bearbeiten via Dialog, Löschen mit Bestätigungsdialog
+- Backend-Tests ergänzt (Unit- und Integrationstests für Photo, Challenge, Streak, assertOwnership)
+- Generelle Styling Verbesserungen und Code Cleanup
+- Lighthouse-Verbesserungen (Accessibility, i18n-Ergänzungen, Meta-Angaben)
+- Architekturdokumentation (arc42) weiter gearbeitet und erste Version gepusht
+
+---
+
+**Totale Stunden**: 56 h
