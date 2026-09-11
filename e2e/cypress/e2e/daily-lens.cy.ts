@@ -13,6 +13,7 @@ const CHALLENGE_DESCRIPTION = 'Only architecture shots';
 const EDITED_CHALLENGE_TITLE = 'Cypress Portrait Week';
 const EDITED_CHALLENGE_DESCRIPTION = 'Only portrait shots';
 const CHALLENGE_PHOTO_DESCRIPTION = 'Cypress Challenge Photo';
+const CALENDAR_EDITED_DESCRIPTION = 'Cypress Challenge Photo edited in calendar';
 
 const testIdSelector = (testId: string) => cy.get(`[data-testid="${testId}"]`);
 
@@ -27,22 +28,28 @@ describe('daily-lens', () => {
     registerNewUser(run);
 
     expectEmptyGallery();
+    rejectInvalidFile();
     uploadPhoto(description);
     expectPhotoInGallery(description);
     verifyCalendarView(description);
+    cancelPhotoDelete();
     const editedDescription = editPhoto(`${description} edited`);
     expectPhotoInGallery(editedDescription, EDITED_CAPTURE_DATE_SHOWN);
     deletePhoto();
     expectEmptyGallery();
+    expectStreakBadge();
 
     createChallenge();
     editChallenge();
     expectChallengeDetailEmpty();
     assignPhotoToChallenge();
     expectChallengeDetailHasPhoto();
-    deleteChallengeAndPhoto();
+    deleteChallenge();
+    editAndDeletePhotoInCalendar();
 
     logout();
+    loginExistingUser(run);
+    logoutFromMobileMenu();
   });
 });
 
@@ -87,8 +94,36 @@ function registerNewUser(run: number) {
   testIdSelector('logout-button').should('be.visible');
 }
 
+function loginExistingUser(run: number) {
+  testIdSelector('login-button').click();
+
+  cy.origin(
+    KEYCLOAK_ORIGIN,
+    { args: { username: `e2e-user-${run}`, password: `e2e-Pw-${run}` } },
+    (user) => {
+      cy.get('#kc-form-login').within(() => {
+        cy.get('#username').type(user.username);
+        cy.get('#password').type(user.password);
+        cy.get('input[type="submit"], button[type="submit"]').click();
+      });
+    },
+  );
+
+  cy.location('pathname').should('eq', '/home');
+  testIdSelector('logout-button').should('be.visible');
+}
+
 function expectEmptyGallery() {
   testIdSelector('picture-card').should('not.exist');
+}
+
+function rejectInvalidFile() {
+  testIdSelector('file-input').selectFile(
+    { contents: TEST_PHOTO, fileName: 'Test.png', mimeType: 'text/plain' },
+    { force: true },
+  );
+  testIdSelector('file-error').should('be.visible');
+  testIdSelector('upload-button').should('be.disabled');
 }
 
 function uploadPhoto(description: string, challengeTitle?: string) {
@@ -98,7 +133,7 @@ function uploadPhoto(description: string, challengeTitle?: string) {
   testIdSelector('description-input').type(description, { force: true });
   if (challengeTitle) {
     testIdSelector('challenge-select').click({ force: true });
-    cy.get('mat-option').contains(challengeTitle).click();
+    testIdSelector(`challenge-option-${challengeTitle}`).click();
   }
   testIdSelector('upload-button').click();
 }
@@ -113,7 +148,19 @@ function verifyCalendarView(description: string) {
   testIdSelector('nav-link-calendar').click();
   testIdSelector('calendar-day-filled').should('have.length', 1).click();
   testIdSelector('picture-card-description').should('have.text', description);
+
+  testIdSelector('calendar-next-month').click();
+  testIdSelector('calendar-day-filled').should('not.exist');
+  testIdSelector('calendar-today').click();
+  testIdSelector('calendar-day-filled').should('have.length', 1);
+
   testIdSelector('nav-link-home').click();
+}
+
+function cancelPhotoDelete() {
+  testIdSelector('picture-card-delete-button').click();
+  testIdSelector('delete-dialog-cancel-button').click();
+  testIdSelector('picture-card').should('have.length', 1);
 }
 
 function editPhoto(description: string): string {
@@ -131,6 +178,21 @@ function editPhoto(description: string): string {
 function deletePhoto() {
   testIdSelector('picture-card-delete-button').click();
   testIdSelector('delete-dialog-confirm-button').click();
+}
+
+function expectStreakBadge() {
+  const today = new Date();
+  const todayInput = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+
+  testIdSelector('file-input').selectFile(TEST_PHOTO, { force: true });
+  testIdSelector('capture-date-input').type(todayInput, { force: true });
+  testIdSelector('description-input').type('Cypress Streak Check', { force: true });
+  testIdSelector('upload-button').click();
+
+  testIdSelector('streak-badge-count').should('have.text', '1');
+
+  deletePhoto();
+  expectEmptyGallery();
 }
 
 function createChallenge() {
@@ -174,6 +236,7 @@ function assignPhotoToChallenge() {
   testIdSelector('nav-link-home').click();
   uploadPhoto(CHALLENGE_PHOTO_DESCRIPTION, EDITED_CHALLENGE_TITLE);
   expectPhotoInGallery(CHALLENGE_PHOTO_DESCRIPTION);
+  testIdSelector('picture-card-challenge').should('have.text', EDITED_CHALLENGE_TITLE);
 }
 
 function expectChallengeDetailHasPhoto() {
@@ -186,17 +249,40 @@ function expectChallengeDetailHasPhoto() {
   testIdSelector('challenge-detail-back-link').click();
 }
 
-function deleteChallengeAndPhoto() {
+function deleteChallenge() {
   testIdSelector('challenge-card-delete-button').click();
   testIdSelector('delete-dialog-confirm-button').click();
   testIdSelector('challenge-card').should('not.exist');
+}
+
+function editAndDeletePhotoInCalendar() {
+  testIdSelector('nav-link-calendar').click();
+  testIdSelector('calendar-day-filled').should('have.length', 1).click();
+
+  testIdSelector('picture-card-edit-button').click();
+  testIdSelector('picture-card-description-input')
+    .clear({ force: true })
+    .type(CALENDAR_EDITED_DESCRIPTION, { force: true });
+  testIdSelector('picture-card-save-button').click();
+  testIdSelector('picture-card-description').should('have.text', CALENDAR_EDITED_DESCRIPTION);
+
+  testIdSelector('picture-card-delete-button').click();
+  testIdSelector('delete-dialog-confirm-button').click();
+  testIdSelector('calendar-day-filled').should('not.exist');
 
   testIdSelector('nav-link-home').click();
-  deletePhoto();
   expectEmptyGallery();
 }
 
 function logout() {
+  testIdSelector('logout-button').contains('Logout').click();
+  cy.location('pathname').should('eq', '/login');
+  testIdSelector('login-button').should('be.visible').contains('Login');
+}
+
+function logoutFromMobileMenu() {
+  cy.viewport('iphone-6');
+  testIdSelector('nav-menu-toggle').click();
   testIdSelector('logout-button').contains('Logout').click();
   cy.location('pathname').should('eq', '/login');
   testIdSelector('login-button').should('be.visible').contains('Login');

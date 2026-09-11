@@ -47,7 +47,10 @@ export class ChallengePage {
   }
 
   protected onDelete(id: string): void {
-    this.challengeApi.deleteChallenge(id).subscribe(() => this.challenges.reload());
+    this.challengeApi.deleteChallenge(id).subscribe(() => {
+      this.challenges.reload();
+      this.photos.reload();
+    });
   }
 
   protected onEdit(edit: ChallengeEdit): void {

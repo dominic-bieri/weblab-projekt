@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import sharp from 'sharp';
 import { Photo } from './photo.entity.js';
 import { PhotoDto } from './photo.dto.js';
+import { Challenge } from '../challenge/challenge.entity.js';
 import { ChallengeService } from '../challenge/challenge.service.js';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
@@ -55,7 +56,7 @@ export class PhotoService {
           mimeType: 'image/webp',
           captureDate: meta.captureDate,
           description: meta.description,
-          challengeId,
+          challenge: challengeId ? ({ id: challengeId } as Challenge) : null,
         }),
       );
     } catch (err) {
@@ -91,10 +92,11 @@ export class PhotoService {
   async updatePhoto(id: string, dto: PhotoDto, userId: string): Promise<Photo> {
     await this.assertOwnership(id, userId);
 
+    const challengeId = await this.resolveChallengeId(dto.challengeId, userId);
     const changes: Partial<Photo> = {
       captureDate: dto.captureDate,
       description: dto.description,
-      challengeId: await this.resolveChallengeId(dto.challengeId, userId),
+      challenge: challengeId ? ({ id: challengeId } as Challenge) : null,
     };
 
     const photo = await this.photoRepository.preload({ id, ...changes });

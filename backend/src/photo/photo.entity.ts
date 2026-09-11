@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  RelationId,
+} from 'typeorm';
+import { Challenge } from '../challenge/challenge.entity.js';
 
 @Entity()
 export class Photo {
@@ -21,6 +29,10 @@ export class Photo {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'uuid', nullable: true })
+  @ManyToOne(() => Challenge, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'challengeId' })
+  challenge: Challenge | null;
+
+  @RelationId((photo: Photo) => photo.challenge)
   challengeId: string | null;
 }

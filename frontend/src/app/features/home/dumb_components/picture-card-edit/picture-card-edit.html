@@ -28,7 +28,9 @@
     <mat-select data-testid="picture-card-challenge-select" [formField]="editForm.challengeId">
       <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
       @for (challenge of challenges; track challenge.id) {
-        <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
+        <mat-option [value]="challenge.id" [attr.data-testid]="'challenge-option-' + challenge.title">
+          {{ challenge.title }}
+        </mat-option>
       }
     </mat-select>
   </mat-form-field>
