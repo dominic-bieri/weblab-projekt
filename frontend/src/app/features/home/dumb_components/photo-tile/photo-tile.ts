@@ -15,6 +15,8 @@ export class PhotoTile {
   photoSource = input.required<string>();
   captureDate = input.required<string>();
   description = input.required<string>();
+  // true für das LCP-Bild (erste Kachel): deaktiviert loading="lazy" und setzt fetchpriority="high"
+  priority = input<boolean>(false);
 
   protected readonly formattedCaptureDate = computed(() =>
     formatDateKey(this.captureDate(), this.currentLang()),

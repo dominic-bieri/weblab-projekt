@@ -1,5 +1,6 @@
 <div
   class="streak-hero"
+  role="group"
   [class.streak-hero--inactive]="!isActive()"
   [attr.aria-label]="'home.streak' | translate: { count: streak() }"
   data-testid="streak-badge"

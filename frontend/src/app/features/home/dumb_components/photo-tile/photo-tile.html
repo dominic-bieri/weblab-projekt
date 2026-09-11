@@ -1,4 +1,10 @@
 <figure class="tile" data-testid="photo-tile">
-  <img ngSrc="{{ photoSource() }}" fill data-testid="photo-tile-image" [alt]="description()" />
+  <img
+    ngSrc="{{ photoSource() }}"
+    fill
+    data-testid="photo-tile-image"
+    [priority]="priority()"
+    [alt]="description()"
+  />
   <figcaption data-testid="photo-tile-date">{{ formattedCaptureDate() }}</figcaption>
 </figure>

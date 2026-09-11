@@ -14,6 +14,10 @@
   <mat-progress-bar
     mode="determinate"
     [value]="photographedPercent()"
+    [attr.aria-label]="
+      'challenge.progress.photographed'
+        | translate: { count: photographedDays(), total: time.totalDays }
+    "
     data-testid="challenge-progress-bar"
   />
 

@@ -39,7 +39,9 @@
     "cancel": "Cancel"
   },
   "calendar": {
-    "today": "Today"
+    "today": "Today",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
   },
   "deleteDialog": {
     "title": "Confirm delete",

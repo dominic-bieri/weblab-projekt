@@ -40,6 +40,8 @@ export class PhotoCard {
   description = input.required<string>();
   challengeId = input.required<string | null>();
   challenges = input.required<Challenge[]>();
+  // true für das LCP-Bild (erste Karte): deaktiviert loading="lazy" und setzt fetchpriority="high"
+  priority = input<boolean>(false);
 
   deleted = output<string>();
   edited = output<PhotoEdit>();

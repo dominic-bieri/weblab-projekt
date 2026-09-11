@@ -28,6 +28,7 @@
           [photoSource]="photoUrl(photo)"
           [captureDate]="photo.captureDate"
           [description]="photo.description"
+          [priority]="$index === 0"
         />
       }
     </div>

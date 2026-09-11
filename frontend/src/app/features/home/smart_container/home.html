@@ -12,6 +12,7 @@
         [description]="photo.description"
         [challengeId]="photo.challengeId"
         [challenges]="challenges.value()"
+        [priority]="$index === 0"
         (deleted)="onPhotoDelete($event)"
         (edited)="onPhotoEdit($event)"
       />

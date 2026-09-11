@@ -3,6 +3,7 @@
     mat-icon-button
     type="button"
     data-testid="calendar-prev-month"
+    [attr.aria-label]="'calendar.previousMonth' | translate"
     (click)="previousMonth.emit()"
   >
     <mat-icon>chevron_left</mat-icon>
@@ -22,6 +23,7 @@
       mat-icon-button
       type="button"
       data-testid="calendar-next-month"
+      [attr.aria-label]="'calendar.nextMonth' | translate"
       (click)="nextMonth.emit()"
     >
       <mat-icon>chevron_right</mat-icon>
