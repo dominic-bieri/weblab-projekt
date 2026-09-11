@@ -12,7 +12,10 @@ import { Challenge } from '../challenge/challenge.entity.js';
 import { ChallengeService } from '../challenge/challenge.service.js';
 import { assertOwnership } from '../common/assert-ownership.js';
 
-const UPLOAD_DIR = join(process.cwd(), 'uploads');
+function uploadDir(): string {
+  return process.env.UPLOAD_DIR ?? join(process.cwd(), 'uploads');
+}
+
 const MAX_IMAGE_DIMENSION = 2048;
 const WEBP_QUALITY = 80;
 
@@ -45,8 +48,8 @@ export class PhotoService {
     const challengeId = await this.resolveChallengeId(meta.challengeId, userId);
 
     const webp = await toWebImage(file.buffer);
-    await mkdir(UPLOAD_DIR, { recursive: true });
-    await writeFile(join(UPLOAD_DIR, storedName), webp);
+    await mkdir(uploadDir(), { recursive: true });
+    await writeFile(join(uploadDir(), storedName), webp);
 
     try {
       return await this.photoRepository.save(
@@ -62,7 +65,7 @@ export class PhotoService {
       );
     } catch (err) {
       // DB-Insert fehlgeschlagen – Datei wieder entfernen, damit Disk und DB nicht auseinanderlaufen
-      await unlink(join(UPLOAD_DIR, storedName)).catch(() => {});
+      await unlink(join(uploadDir(), storedName)).catch(() => {});
       throw err;
     }
   }
@@ -119,8 +122,7 @@ export class PhotoService {
   }
 
   private storagePath(photo: Photo): string {
-    // Es wird immer als <id>.webp abgelegt (siehe savePhoto).
-    return join(UPLOAD_DIR, `${photo.id}.webp`);
+    return join(uploadDir(), `${photo.id}.webp`);
   }
 
   private async resolveChallengeId(
