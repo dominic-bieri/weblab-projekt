@@ -19,6 +19,7 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.7
+    container_name: daily-lens-keycloak
     command: start-dev --import-realm
     environment:
       KEYCLOAK_ADMIN: admin
