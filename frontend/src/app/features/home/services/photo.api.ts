@@ -50,8 +50,7 @@ export class PhotoApi {
     return this.http.put<Photo>(`${this.baseUrl}/${id}`, changes);
   }
 
-  // Direktes Signal-Update statt reload(): sofort konsistent, ohne auf den
-  // nächsten Change-Detection-Tick angewiesen zu sein.
+  // direktes Signal-Update statt reload(), damit es sofort sichtbar ist
   removeFromCache(id: string): void {
     this.photos.value.update((photos) => photos.filter((photo) => photo.id !== id));
   }

@@ -33,12 +33,19 @@
   },
   "pictureCard": {
     "edit": "Edit",
+    "editTitle": "Edit photo",
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel"
   },
   "calendar": {
     "today": "Today"
+  },
+  "deleteDialog": {
+    "title": "Confirm delete",
+    "message": "Really delete \"{{name}}\"?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
   },
   "challenge": {
     "formTitle": "New challenge",
@@ -48,6 +55,7 @@
     "endDate": "End date",
     "create": "Create",
     "edit": "Edit",
+    "editTitle": "Edit challenge",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",

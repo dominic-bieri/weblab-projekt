@@ -1,49 +1,55 @@
-<mat-form-field appearance="fill" subscriptSizing="dynamic">
-  <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
-  <input
-    matInput
-    data-testid="picture-card-date-input"
-    [matDatepicker]="editDatePicker"
-    [formField]="editForm.captureDate"
-  />
-  <mat-datepicker-toggle matIconSuffix [for]="editDatePicker" />
-  <mat-datepicker #editDatePicker />
-</mat-form-field>
+<h2 mat-dialog-title>{{ 'pictureCard.editTitle' | translate }}</h2>
 
-<mat-form-field appearance="fill" subscriptSizing="dynamic">
-  <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
-  <input
-    matInput
-    type="text"
-    data-testid="picture-card-description-input"
-    [formField]="editForm.description"
-  />
-</mat-form-field>
+<mat-dialog-content class="picture-card-edit__content">
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.captureDate' | translate }}</mat-label>
+    <input
+      matInput
+      data-testid="picture-card-date-input"
+      [matDatepicker]="editDatePicker"
+      [formField]="editForm.captureDate"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="editDatePicker" />
+    <mat-datepicker #editDatePicker />
+  </mat-form-field>
 
-<mat-form-field appearance="fill" subscriptSizing="dynamic">
-  <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
-  <mat-select data-testid="picture-card-challenge-select" [formField]="editForm.challengeId">
-    <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
-    @for (challenge of challenges(); track challenge.id) {
-      <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.description' | translate }}</mat-label>
+    <input
+      matInput
+      type="text"
+      data-testid="picture-card-description-input"
+      [formField]="editForm.description"
+    />
+  </mat-form-field>
 
-<button
-  mat-flat-button
-  type="button"
-  data-testid="picture-card-save-button"
-  [disabled]="!editForm().valid()"
-  (click)="save()"
->
-  {{ 'pictureCard.save' | translate }}
-</button>
-<button
-  mat-stroked-button
-  type="button"
-  data-testid="picture-card-cancel-button"
-  (click)="cancel()"
->
-  {{ 'pictureCard.cancel' | translate }}
-</button>
+  <mat-form-field appearance="fill" subscriptSizing="dynamic">
+    <mat-label>{{ 'fileUpload.challenge' | translate }}</mat-label>
+    <mat-select data-testid="picture-card-challenge-select" [formField]="editForm.challengeId">
+      <mat-option [value]="null">{{ 'fileUpload.noChallenge' | translate }}</mat-option>
+      @for (challenge of challenges; track challenge.id) {
+        <mat-option [value]="challenge.id">{{ challenge.title }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    type="button"
+    data-testid="picture-card-cancel-button"
+    (click)="cancel()"
+  >
+    {{ 'pictureCard.cancel' | translate }}
+  </button>
+  <button
+    mat-flat-button
+    type="button"
+    data-testid="picture-card-save-button"
+    [disabled]="!editForm().valid()"
+    (click)="save()"
+  >
+    {{ 'pictureCard.save' | translate }}
+  </button>
+</mat-dialog-actions>

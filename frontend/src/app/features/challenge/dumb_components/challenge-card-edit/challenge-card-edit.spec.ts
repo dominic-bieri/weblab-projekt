@@ -1,35 +1,42 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { ChallengeCardEdit, ChallengeEditValue } from './challenge-card-edit';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ChallengeCardEdit, ChallengeCardEditData } from './challenge-card-edit';
 
 describe('ChallengeCardEdit', () => {
-  let component: ChallengeCardEdit;
   let fixture: ComponentFixture<ChallengeCardEdit>;
+  let closeSpy: ReturnType<typeof vi.fn>;
+
+  const data: ChallengeCardEditData = {
+    initialTitle: 'Architecture Week',
+    initialDescription: 'Only architecture shots',
+    initialStartDate: '2026-09-01',
+    initialEndDate: '2026-09-14',
+  };
 
   beforeEach(async () => {
+    closeSpy = vi.fn();
+
     await TestBed.configureTestingModule({
       imports: [ChallengeCardEdit],
-      providers: [provideTranslateService(), provideNativeDateAdapter()],
+      providers: [
+        provideTranslateService(),
+        provideNativeDateAdapter(),
+        { provide: MAT_DIALOG_DATA, useValue: data },
+        { provide: MatDialogRef, useValue: { close: closeSpy } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ChallengeCardEdit);
-    component = fixture.componentInstance;
-    fixture.componentRef.setInput('initialTitle', 'Architecture Week');
-    fixture.componentRef.setInput('initialDescription', 'Only architecture shots');
-    fixture.componentRef.setInput('initialStartDate', '2026-09-01');
-    fixture.componentRef.setInput('initialEndDate', '2026-09-14');
     await fixture.whenStable();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should emit saved with the updated title and description', () => {
-    const emitted: ChallengeEditValue[] = [];
-    component.saved.subscribe((value) => emitted.push(value));
-
+  it('should close with the updated title and description when saved', () => {
     const titleInput: HTMLInputElement = fixture.nativeElement.querySelector(
       '[data-testid="challenge-card-title-input"]',
     );
@@ -44,22 +51,17 @@ describe('ChallengeCardEdit', () => {
 
     fixture.nativeElement.querySelector('[data-testid="challenge-card-save-button"]')?.click();
 
-    expect(emitted).toEqual([
-      {
-        title: 'Portrait Week',
-        description: 'Only portrait shots',
-        startDate: '2026-09-01',
-        endDate: '2026-09-14',
-      },
-    ]);
+    expect(closeSpy).toHaveBeenCalledWith({
+      title: 'Portrait Week',
+      description: 'Only portrait shots',
+      startDate: '2026-09-01',
+      endDate: '2026-09-14',
+    });
   });
 
-  it('should emit cancelled when cancel is clicked', () => {
-    let cancelled = false;
-    component.cancelled.subscribe(() => (cancelled = true));
-
+  it('should close without a value when cancelled', () => {
     fixture.nativeElement.querySelector('[data-testid="challenge-card-cancel-button"]')?.click();
 
-    expect(cancelled).toBe(true);
+    expect(closeSpy).toHaveBeenCalledWith();
   });
 });

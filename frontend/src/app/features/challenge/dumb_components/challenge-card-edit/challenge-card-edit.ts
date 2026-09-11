@@ -1,8 +1,9 @@
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { form, FormField, maxLength, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { parseDateKey, toDateKey } from '../../../../shared/local-date';
@@ -13,6 +14,13 @@ export interface ChallengeEditValue {
   description: string;
   startDate: string;
   endDate: string;
+}
+
+export interface ChallengeCardEditData {
+  initialTitle: string;
+  initialDescription: string;
+  initialStartDate: string;
+  initialEndDate: string;
 }
 
 interface ChallengeCardEditFormValue {
@@ -29,6 +37,7 @@ interface ChallengeCardEditFormValue {
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    MatDialogModule,
     TranslatePipe,
   ],
   selector: 'app-challenge-card-edit',
@@ -36,13 +45,8 @@ interface ChallengeCardEditFormValue {
   templateUrl: './challenge-card-edit.html',
 })
 export class ChallengeCardEdit implements OnInit {
-  initialTitle = input.required<string>();
-  initialDescription = input.required<string>();
-  initialStartDate = input.required<string>();
-  initialEndDate = input.required<string>();
-
-  saved = output<ChallengeEditValue>();
-  cancelled = output<void>();
+  protected readonly data = inject<ChallengeCardEditData>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<ChallengeCardEdit, ChallengeEditValue>);
 
   private readonly model = signal<ChallengeCardEditFormValue>({
     title: '',
@@ -63,10 +67,10 @@ export class ChallengeCardEdit implements OnInit {
 
   ngOnInit(): void {
     this.model.set({
-      title: this.initialTitle(),
-      description: this.initialDescription(),
-      startDate: parseDateKey(this.initialStartDate()),
-      endDate: parseDateKey(this.initialEndDate()),
+      title: this.data.initialTitle,
+      description: this.data.initialDescription,
+      startDate: parseDateKey(this.data.initialStartDate),
+      endDate: parseDateKey(this.data.initialEndDate),
     });
   }
 
@@ -75,7 +79,7 @@ export class ChallengeCardEdit implements OnInit {
     if (!this.editForm().valid() || !startDate || !endDate) {
       return;
     }
-    this.saved.emit({
+    this.dialogRef.close({
       title,
       description,
       startDate: toDateKey(startDate),
@@ -84,6 +88,6 @@ export class ChallengeCardEdit implements OnInit {
   }
 
   cancel(): void {
-    this.cancelled.emit();
+    this.dialogRef.close();
   }
 }

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { flushDialog } from '../../../../shared/testing/flush-dialog';
 import { ChallengeCard, ChallengeEdit } from './challenge-card';
 
 describe('ChallengeCard', () => {
@@ -26,6 +27,10 @@ describe('ChallengeCard', () => {
     fixture.componentRef.setInput('startDate', '2026-09-01');
     fixture.componentRef.setInput('endDate', '2026-09-14');
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    document.querySelectorAll('.cdk-overlay-container').forEach((el) => el.remove());
   });
 
   it('should create', () => {
@@ -54,31 +59,59 @@ describe('ChallengeCard', () => {
     expect(link.getAttribute('href')).toBe('/challenge/challenge-1');
   });
 
-  it('should emit deleted with the challenge id when the delete button is clicked', () => {
+  it('should ask for confirmation and emit deleted once confirmed', async () => {
     const emitted: string[] = [];
     component.deleted.subscribe((id) => emitted.push(id));
 
     fixture.nativeElement.querySelector('[data-testid="challenge-card-delete-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
+
+    expect(emitted).toEqual([]);
+
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="delete-dialog-confirm-button"]')
+      ?.click();
+    await flushDialog();
 
     expect(emitted).toEqual(['challenge-1']);
   });
 
-  it('should switch to edit mode and emit edited with the updated values', async () => {
+  it('should not emit deleted when the confirmation is cancelled', async () => {
+    const emitted: string[] = [];
+    component.deleted.subscribe((id) => emitted.push(id));
+
+    fixture.nativeElement.querySelector('[data-testid="challenge-card-delete-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
+
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="delete-dialog-cancel-button"]')
+      ?.click();
+    await flushDialog();
+
+    expect(emitted).toEqual([]);
+  });
+
+  it('should open the edit dialog and emit edited with the updated values', async () => {
     const emitted: ChallengeEdit[] = [];
     component.edited.subscribe((value) => emitted.push(value));
 
     fixture.nativeElement.querySelector('[data-testid="challenge-card-edit-button"]')?.click();
     fixture.detectChanges();
-    await fixture.whenStable();
+    await flushDialog();
 
-    const titleInput: HTMLInputElement = fixture.nativeElement.querySelector(
+    const titleInput = document.querySelector<HTMLInputElement>(
       '[data-testid="challenge-card-title-input"]',
     );
-    titleInput.value = 'Portrait Week';
-    titleInput.dispatchEvent(new Event('input'));
+    titleInput!.value = 'Portrait Week';
+    titleInput!.dispatchEvent(new Event('input'));
+    await flushDialog();
 
-    fixture.nativeElement.querySelector('[data-testid="challenge-card-save-button"]')?.click();
-    fixture.detectChanges();
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="challenge-card-save-button"]')
+      ?.click();
+    await flushDialog();
 
     expect(emitted).toEqual([
       {
@@ -89,21 +122,20 @@ describe('ChallengeCard', () => {
         endDate: '2026-09-14',
       },
     ]);
-    expect(
-      fixture.nativeElement.querySelector('[data-testid="challenge-card-title"]'),
-    ).toBeTruthy();
   });
 
-  it('should leave edit mode without emitting edited when cancel is clicked', async () => {
+  it('should not emit edited when the edit dialog is cancelled', async () => {
     const emitted: ChallengeEdit[] = [];
     component.edited.subscribe((value) => emitted.push(value));
 
     fixture.nativeElement.querySelector('[data-testid="challenge-card-edit-button"]')?.click();
     fixture.detectChanges();
-    await fixture.whenStable();
+    await flushDialog();
 
-    fixture.nativeElement.querySelector('[data-testid="challenge-card-cancel-button"]')?.click();
-    fixture.detectChanges();
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="challenge-card-cancel-button"]')
+      ?.click();
+    await flushDialog();
 
     expect(emitted).toEqual([]);
     expect(

@@ -1,35 +1,42 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { PhotoEditValue, PictureCardEdit } from './picture-card-edit';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PictureCardEdit, PictureCardEditData } from './picture-card-edit';
 
 describe('PictureCardEdit', () => {
-  let component: PictureCardEdit;
   let fixture: ComponentFixture<PictureCardEdit>;
+  let closeSpy: ReturnType<typeof vi.fn>;
+
+  const data: PictureCardEditData = {
+    challenges: [],
+    initialCaptureDate: '2026-09-03',
+    initialDescription: 'test description',
+    initialChallengeId: null,
+  };
 
   beforeEach(async () => {
+    closeSpy = vi.fn();
+
     await TestBed.configureTestingModule({
       imports: [PictureCardEdit],
-      providers: [provideTranslateService(), provideNativeDateAdapter()],
+      providers: [
+        provideTranslateService(),
+        provideNativeDateAdapter(),
+        { provide: MAT_DIALOG_DATA, useValue: data },
+        { provide: MatDialogRef, useValue: { close: closeSpy } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PictureCardEdit);
-    component = fixture.componentInstance;
-    fixture.componentRef.setInput('initialCaptureDate', '2026-09-03');
-    fixture.componentRef.setInput('initialDescription', 'test description');
-    fixture.componentRef.setInput('initialChallengeId', null);
-    fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should emit saved with the updated description and date', () => {
-    const emitted: PhotoEditValue[] = [];
-    component.saved.subscribe((value) => emitted.push(value));
-
+  it('should close with the updated description and date when saved', () => {
     const descriptionInput: HTMLInputElement = fixture.nativeElement.querySelector(
       '[data-testid="picture-card-description-input"]',
     );
@@ -38,17 +45,16 @@ describe('PictureCardEdit', () => {
 
     fixture.nativeElement.querySelector('[data-testid="picture-card-save-button"]')?.click();
 
-    expect(emitted).toEqual([
-      { captureDate: '2026-09-03', description: 'updated description', challengeId: null },
-    ]);
+    expect(closeSpy).toHaveBeenCalledWith({
+      captureDate: '2026-09-03',
+      description: 'updated description',
+      challengeId: null,
+    });
   });
 
-  it('should emit cancelled when cancel is clicked', () => {
-    let cancelled = false;
-    component.cancelled.subscribe(() => (cancelled = true));
-
+  it('should close without a value when cancelled', () => {
     fixture.nativeElement.querySelector('[data-testid="picture-card-cancel-button"]')?.click();
 
-    expect(cancelled).toBe(true);
+    expect(closeSpy).toHaveBeenCalledWith();
   });
 });

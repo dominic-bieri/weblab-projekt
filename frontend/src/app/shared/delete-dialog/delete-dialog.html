@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ 'deleteDialog.title' | translate }}</h2>
+
+<mat-dialog-content data-testid="delete-dialog-message">
+  {{ 'deleteDialog.message' | translate: { name: data.name } }}
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-stroked-button
+    type="button"
+    data-testid="delete-dialog-cancel-button"
+    (click)="cancel()"
+  >
+    {{ 'deleteDialog.cancel' | translate }}
+  </button>
+  <button
+    mat-flat-button
+    type="button"
+    class="delete-dialog__confirm-button"
+    data-testid="delete-dialog-confirm-button"
+    (click)="confirm()"
+  >
+    {{ 'deleteDialog.confirm' | translate }}
+  </button>
+</mat-dialog-actions>

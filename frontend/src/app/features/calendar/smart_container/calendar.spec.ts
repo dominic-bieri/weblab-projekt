@@ -6,6 +6,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { Calendar } from './calendar';
 import { Photo } from '../../home/photo.type';
 import { toDateKey } from '../../../shared/local-date';
+import { flushDialog } from '../../../shared/testing/flush-dialog';
 
 describe('Calendar', () => {
   let component: Calendar;
@@ -42,6 +43,7 @@ describe('Calendar', () => {
 
   afterEach(() => {
     httpMock.verify();
+    document.querySelectorAll('.cdk-overlay-container').forEach((el) => el.remove());
   });
 
   it('should create', async () => {
@@ -92,6 +94,14 @@ describe('Calendar', () => {
     await fixture.whenStable();
 
     fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
+
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="delete-dialog-confirm-button"]')
+      ?.click();
+    await flushDialog();
+
     httpMock.expectOne(`/api/photo/${photo.id}`).flush(null);
     fixture.detectChanges();
     httpMock.expectOne('/api/streak').flush({ streak: 0, dates: [] });

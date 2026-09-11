@@ -1,9 +1,10 @@
-:host {
+.challenge-card-edit__content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: min(20rem, 100%);
 }
 
-:host mat-form-field {
+.challenge-card-edit__content mat-form-field {
   width: 100%;
 }

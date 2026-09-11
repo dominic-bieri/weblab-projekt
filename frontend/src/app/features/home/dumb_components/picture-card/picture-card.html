@@ -1,50 +1,39 @@
 <mat-card data-testid="picture-card">
-  @if (isEditing()) {
-    <app-picture-card-edit
-      [initialCaptureDate]="captureDate()"
-      [initialDescription]="description()"
-      [initialChallengeId]="challengeId()"
-      [challenges]="challenges()"
-      (saved)="onEditSaved($event)"
-      (cancelled)="onEditCancelled()"
-    />
-  } @else {
-    <mat-card-title data-testid="picture-card-date">
-      {{ formattedCaptureDate() }}
-    </mat-card-title>
-    <img
-      ngSrc="{{ imageSource() }}"
-      mat-card-image
-      data-testid="picture-card-image"
-      width="500"
-      height="400"
-      [alt]="description()"
-    />
-    <mat-card-content>
-      <p data-testid="picture-card-description">{{ description() }}</p>
-      @if (challengeName(); as name) {
-        <p data-testid="picture-card-challenge">{{ name }}</p>
-      }
-    </mat-card-content>
-    <div class="card-actions">
-      <button
-        mat-stroked-button
-        type="button"
-        data-testid="picture-card-edit-button"
-        (click)="startEdit()"
-      >
-        <mat-icon>edit</mat-icon>
-        {{ 'pictureCard.edit' | translate }}
-      </button>
-      <button
-        mat-stroked-button
-        type="button"
-        data-testid="picture-card-delete-button"
-        (click)="onDelete()"
-      >
-        <mat-icon>delete</mat-icon>
-        {{ 'pictureCard.delete' | translate }}
-      </button>
-    </div>
-  }
+  <mat-card-title data-testid="picture-card-date">
+    {{ formattedCaptureDate() }}
+  </mat-card-title>
+  <img
+    ngSrc="{{ imageSource() }}"
+    mat-card-image
+    data-testid="picture-card-image"
+    width="500"
+    height="400"
+    [alt]="description()"
+  />
+  <mat-card-content>
+    <p data-testid="picture-card-description">{{ description() }}</p>
+    @if (challengeName(); as name) {
+      <p data-testid="picture-card-challenge">{{ name }}</p>
+    }
+  </mat-card-content>
+  <div class="card-actions">
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="picture-card-edit-button"
+      (click)="startEdit()"
+    >
+      <mat-icon>edit</mat-icon>
+      {{ 'pictureCard.edit' | translate }}
+    </button>
+    <button
+      mat-stroked-button
+      type="button"
+      data-testid="picture-card-delete-button"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+      {{ 'pictureCard.delete' | translate }}
+    </button>
+  </div>
 </mat-card>

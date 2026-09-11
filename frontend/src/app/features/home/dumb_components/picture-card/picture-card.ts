@@ -1,10 +1,12 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { MatCard, MatCardContent, MatCardImage, MatCardTitle } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 import { NgOptimizedImage } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PhotoEditValue, PictureCardEdit } from '../picture-card-edit/picture-card-edit';
+import { DeleteDialog } from '../../../../shared/delete-dialog/delete-dialog';
 import { ActiveLanguage } from '../../../../core/i18n/active-language';
 import { formatDateKey } from '../../../../shared/local-date';
 import { Challenge } from '../../../challenge/challenge.type';
@@ -23,7 +25,6 @@ export interface PhotoEdit extends PhotoEditValue {
     MatIconModule,
     NgOptimizedImage,
     TranslatePipe,
-    PictureCardEdit,
   ],
   selector: 'app-picture-card',
   styleUrl: './picture-card.css',
@@ -31,6 +32,7 @@ export interface PhotoEdit extends PhotoEditValue {
 })
 export class PictureCard {
   private readonly currentLang = inject(ActiveLanguage).current;
+  private readonly dialog = inject(MatDialog);
 
   id = input.required<string>();
   imageSource = input.required<string>();
@@ -41,8 +43,6 @@ export class PictureCard {
 
   deleted = output<string>();
   edited = output<PhotoEdit>();
-
-  protected readonly isEditing = signal(false);
 
   protected readonly formattedCaptureDate = computed(() =>
     formatDateKey(this.captureDate(), this.currentLang()),
@@ -57,19 +57,31 @@ export class PictureCard {
   });
 
   onDelete(): void {
-    this.deleted.emit(this.id());
+    this.dialog
+      .open(DeleteDialog, { data: { name: this.formattedCaptureDate() } })
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.deleted.emit(this.id());
+        }
+      });
   }
 
   startEdit(): void {
-    this.isEditing.set(true);
-  }
-
-  onEditCancelled(): void {
-    this.isEditing.set(false);
-  }
-
-  onEditSaved(value: PhotoEditValue): void {
-    this.edited.emit({ id: this.id(), ...value });
-    this.isEditing.set(false);
+    this.dialog
+      .open(PictureCardEdit, {
+        data: {
+          challenges: this.challenges(),
+          initialCaptureDate: this.captureDate(),
+          initialDescription: this.description(),
+          initialChallengeId: this.challengeId(),
+        },
+      })
+      .afterClosed()
+      .subscribe((value) => {
+        if (value) {
+          this.edited.emit({ id: this.id(), ...value });
+        }
+      });
   }
 }

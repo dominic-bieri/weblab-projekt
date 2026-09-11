@@ -1,9 +1,10 @@
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { form, FormField, required } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { parseDateKey, toDateKey } from '../../../../shared/local-date';
@@ -13,6 +14,13 @@ export interface PhotoEditValue {
   captureDate: string;
   description: string;
   challengeId: string | null;
+}
+
+export interface PictureCardEditData {
+  challenges: Challenge[];
+  initialCaptureDate: string;
+  initialDescription: string;
+  initialChallengeId: string | null;
 }
 
 interface PictureCardEditFormValue {
@@ -29,6 +37,7 @@ interface PictureCardEditFormValue {
     MatInputModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatDialogModule,
     TranslatePipe,
   ],
   selector: 'app-picture-card-edit',
@@ -36,14 +45,10 @@ interface PictureCardEditFormValue {
   templateUrl: './picture-card-edit.html',
 })
 export class PictureCardEdit implements OnInit {
-  challenges = input.required<Challenge[]>();
+  protected readonly data = inject<PictureCardEditData>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<PictureCardEdit, PhotoEditValue>);
 
-  initialCaptureDate = input.required<string>();
-  initialDescription = input.required<string>();
-  initialChallengeId = input.required<string | null>();
-
-  saved = output<PhotoEditValue>();
-  cancelled = output<void>();
+  protected readonly challenges = this.data.challenges;
 
   private readonly model = signal<PictureCardEditFormValue>({
     captureDate: null,
@@ -58,15 +63,15 @@ export class PictureCardEdit implements OnInit {
 
   ngOnInit(): void {
     this.model.set({
-      captureDate: parseDateKey(this.initialCaptureDate()),
-      description: this.initialDescription(),
-      challengeId: this.initialChallengeId(),
+      captureDate: parseDateKey(this.data.initialCaptureDate),
+      description: this.data.initialDescription,
+      challengeId: this.data.initialChallengeId,
     });
   }
 
   save(): void {
     const { captureDate, description, challengeId } = this.model();
-    this.saved.emit({
+    this.dialogRef.close({
       captureDate: captureDate ? toDateKey(captureDate) : '',
       description,
       challengeId,
@@ -74,6 +79,6 @@ export class PictureCardEdit implements OnInit {
   }
 
   cancel(): void {
-    this.cancelled.emit();
+    this.dialogRef.close();
   }
 }

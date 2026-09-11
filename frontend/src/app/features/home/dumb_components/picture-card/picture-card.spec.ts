@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { flushDialog } from '../../../../shared/testing/flush-dialog';
 import { PhotoEdit, PictureCard } from './picture-card';
 
 describe('PictureCard', () => {
@@ -22,6 +23,10 @@ describe('PictureCard', () => {
     fixture.componentRef.setInput('challengeId', null);
     fixture.componentRef.setInput('challenges', []);
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    document.querySelectorAll('.cdk-overlay-container').forEach((el) => el.remove());
   });
 
   it('should create', () => {
@@ -68,39 +73,59 @@ describe('PictureCard', () => {
     ).toBe('Architecture Week');
   });
 
-  it('should emit deleted with the photo id when the delete button is clicked', () => {
+  it('should ask for confirmation and emit deleted once confirmed', async () => {
     const emitted: string[] = [];
     component.deleted.subscribe((id) => emitted.push(id));
 
-    const button: HTMLButtonElement | null = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-delete-button"]',
-    );
-    button?.click();
+    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
+
+    expect(emitted).toEqual([]);
+
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="delete-dialog-confirm-button"]')
+      ?.click();
+    await flushDialog();
 
     expect(emitted).toEqual(['photo-1']);
   });
 
-  it('should emit edited with the updated description and date when saved', async () => {
+  it('should not emit deleted when the confirmation is cancelled', async () => {
+    const emitted: string[] = [];
+    component.deleted.subscribe((id) => emitted.push(id));
+
+    fixture.nativeElement.querySelector('[data-testid="picture-card-delete-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
+
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="delete-dialog-cancel-button"]')
+      ?.click();
+    await flushDialog();
+
+    expect(emitted).toEqual([]);
+  });
+
+  it('should open the edit dialog and emit edited with the updated values', async () => {
     const emitted: PhotoEdit[] = [];
     component.edited.subscribe((edit) => emitted.push(edit));
 
-    const editButton: HTMLButtonElement | null = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-edit-button"]',
-    );
-    editButton?.click();
-    await fixture.whenStable();
+    fixture.nativeElement.querySelector('[data-testid="picture-card-edit-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
 
-    const descriptionInput: HTMLInputElement | null = fixture.nativeElement.querySelector(
+    const descriptionInput = document.querySelector<HTMLInputElement>(
       '[data-testid="picture-card-description-input"]',
     );
     descriptionInput!.value = 'updated description';
     descriptionInput!.dispatchEvent(new Event('input'));
-    await fixture.whenStable();
+    await flushDialog();
 
-    const saveButton: HTMLButtonElement | null = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-save-button"]',
-    );
-    saveButton?.click();
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="picture-card-save-button"]')
+      ?.click();
+    await flushDialog();
 
     expect(emitted).toEqual([
       {
@@ -113,18 +138,19 @@ describe('PictureCard', () => {
   });
 
   it('should discard changes when edit is cancelled', async () => {
-    const editButton: HTMLButtonElement | null = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-edit-button"]',
-    );
-    editButton?.click();
-    await fixture.whenStable();
+    const emitted: PhotoEdit[] = [];
+    component.edited.subscribe((edit) => emitted.push(edit));
 
-    const cancelButton: HTMLButtonElement | null = fixture.nativeElement.querySelector(
-      '[data-testid="picture-card-cancel-button"]',
-    );
-    cancelButton?.click();
-    await fixture.whenStable();
+    fixture.nativeElement.querySelector('[data-testid="picture-card-edit-button"]')?.click();
+    fixture.detectChanges();
+    await flushDialog();
 
+    document
+      .querySelector<HTMLButtonElement>('[data-testid="picture-card-cancel-button"]')
+      ?.click();
+    await flushDialog();
+
+    expect(emitted).toEqual([]);
     expect(
       fixture.nativeElement
         .querySelector('[data-testid="picture-card-description"]')

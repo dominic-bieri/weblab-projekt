@@ -130,6 +130,7 @@ function editPhoto(description: string): string {
 
 function deletePhoto() {
   testIdSelector('picture-card-delete-button').click();
+  testIdSelector('delete-dialog-confirm-button').click();
 }
 
 function createChallenge() {
@@ -187,6 +188,7 @@ function expectChallengeDetailHasPhoto() {
 
 function deleteChallengeAndPhoto() {
   testIdSelector('challenge-card-delete-button').click();
+  testIdSelector('delete-dialog-confirm-button').click();
   testIdSelector('challenge-card').should('not.exist');
 
   testIdSelector('nav-link-home').click();
