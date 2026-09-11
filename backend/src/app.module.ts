@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { PhotoModule } from './photo/photo.module.js';
 import { ChallengeModule } from './challenge/challenge.module.js';
+import { StreakModule } from './streak/streak.module.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Photo } from './photo/photo.entity.js';
 import { Challenge } from './challenge/challenge.entity.js';
@@ -10,6 +11,7 @@ import { Challenge } from './challenge/challenge.entity.js';
   imports: [
     PhotoModule,
     ChallengeModule,
+    StreakModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

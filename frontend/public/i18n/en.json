@@ -13,6 +13,10 @@
     "login": "Login",
     "register": "Register"
   },
+  "home": {
+    "streak": "{{count}} day streak",
+    "streakLabel": "day streak"
+  },
   "fileUpload": {
     "title": "Add a photo",
     "chooseFile": "Choose an image",

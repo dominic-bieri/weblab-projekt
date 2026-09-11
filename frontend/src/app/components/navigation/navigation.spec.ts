@@ -29,7 +29,7 @@ class FakeBreakpointObserver {
 
 async function createFixture(
   breakpoints: FakeBreakpointObserver,
-): Promise<ComponentFixture<Navigation>> {
+): Promise<{ fixture: ComponentFixture<Navigation> }> {
   await TestBed.configureTestingModule({
     imports: [Navigation],
     providers: [
@@ -50,8 +50,9 @@ async function createFixture(
 
   const fixture = TestBed.createComponent(Navigation);
   fixture.componentRef.setInput('links', links);
+  fixture.detectChanges();
   await fixture.whenStable();
-  return fixture;
+  return { fixture };
 }
 
 describe('Navigation', () => {
@@ -66,12 +67,12 @@ describe('Navigation', () => {
   }
 
   it('should create', async () => {
-    const fixture = await createFixture(breakpoints);
+    const { fixture } = await createFixture(breakpoints);
     expect(fixture.componentInstance).toBeTruthy();
   });
 
   it('shows inline links in the toolbar on wide viewports', async () => {
-    const fixture = await createFixture(breakpoints);
+    const { fixture } = await createFixture(breakpoints);
 
     expect(el(fixture).querySelectorAll('nav.nav-links a').length).toBe(links.length);
     expect(el(fixture).querySelector('[data-testid="nav-menu-toggle"]')).toBeFalsy();
@@ -79,7 +80,7 @@ describe('Navigation', () => {
 
   it('collapses into a sidenav drawer on handset viewports', async () => {
     breakpoints.setHandset(true);
-    const fixture = await createFixture(breakpoints);
+    const { fixture } = await createFixture(breakpoints);
 
     const toggle = el(fixture).querySelector<HTMLButtonElement>('[data-testid="nav-menu-toggle"]');
     expect(toggle).toBeTruthy();

@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 export interface CalendarDay {
   date: Date;
   hasPhoto: boolean;
+  isStreak: boolean;
 }
 
 @Component({

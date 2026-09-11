@@ -26,6 +26,7 @@ describe('Home', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 0 });
     httpMock.expectOne('/api/challenge').flush([]);
     await fixture.whenStable();
   });

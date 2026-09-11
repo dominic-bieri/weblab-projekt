@@ -30,6 +30,7 @@
       type="button"
       class="day"
       [class.filled]="day.hasPhoto"
+      [class.streak]="day.isStreak"
       [class.selected]="isSelected(day.date)"
       [disabled]="!day.hasPhoto"
       [attr.data-testid]="day.hasPhoto ? 'calendar-day-filled' : 'calendar-day-empty'"

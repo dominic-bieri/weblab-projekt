@@ -6,6 +6,7 @@ import { Photo } from '../../home/photo.type';
 import { parseDateKey, toDateKey } from '../../../shared/local-date';
 import { ActiveLanguage } from '../../../core/i18n/active-language';
 import { ChallengeApi } from '../../challenge/services/challenge.api';
+import { StreakApi } from '../../home/services/streak.api';
 
 @Component({
   imports: [CalendarGrid, PictureCard],
@@ -16,6 +17,7 @@ import { ChallengeApi } from '../../challenge/services/challenge.api';
 export class Calendar {
   private readonly photoApi = inject(PhotoApi);
   private readonly challengeApi = inject(ChallengeApi);
+  private readonly streakApi = inject(StreakApi);
   private readonly currentLang = inject(ActiveLanguage).current;
 
   protected readonly challenges = this.challengeApi.challenges;
@@ -38,13 +40,19 @@ export class Calendar {
 
   protected readonly days = computed<CalendarDay[]>(() => {
     const photoDates = new Set(this.photoApi.photos.value().map((photo) => photo.captureDate));
+    const streakDates = new Set(this.streakApi.streak.value().dates);
 
     const month = this.currentMonth();
     const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
 
     return Array.from({ length: daysInMonth }, (_, day) => {
       const date = new Date(month.getFullYear(), month.getMonth(), day + 1);
-      return { date, hasPhoto: photoDates.has(toDateKey(date)) };
+      const dateKey = toDateKey(date);
+      return {
+        date,
+        hasPhoto: photoDates.has(dateKey),
+        isStreak: streakDates.has(dateKey),
+      };
     });
   });
 

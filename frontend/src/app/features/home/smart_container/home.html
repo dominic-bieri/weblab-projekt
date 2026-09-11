@@ -1,4 +1,6 @@
 <ng-container>
+  <app-streak-badge class="home-streak" [streak]="streak()" />
+
   <app-file-upload [challenges]="challenges.value()" (submitted)="onPhotoUpload($event)" />
 
   @if (photos.hasValue()) {

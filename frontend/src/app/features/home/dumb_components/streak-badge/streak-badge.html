@@ -1,0 +1,13 @@
+<div
+  class="streak-hero"
+  [class.streak-hero--inactive]="!isActive()"
+  [attr.aria-label]="'home.streak' | translate: { count: streak() }"
+  data-testid="streak-badge"
+>
+  <mat-icon class="streak-hero__icon" aria-hidden="true">local_fire_department</mat-icon>
+
+  <div class="streak-hero__text" aria-hidden="true">
+    <span class="streak-hero__count" data-testid="streak-badge-count">{{ streak() }}</span>
+    <span class="streak-hero__label">{{ 'home.streakLabel' | translate }}</span>
+  </div>
+</div>

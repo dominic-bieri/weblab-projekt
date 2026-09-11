@@ -13,6 +13,10 @@
     "login": "Anmelden",
     "register": "Registrieren"
   },
+  "home": {
+    "streak": "{{count}} Tage Streak",
+    "streakLabel": "Tage in Folge"
+  },
   "fileUpload": {
     "title": "Foto hinzufügen",
     "chooseFile": "Bild auswählen",

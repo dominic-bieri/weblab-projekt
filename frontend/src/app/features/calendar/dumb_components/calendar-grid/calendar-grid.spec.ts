@@ -6,9 +6,9 @@ describe('CalendarGrid', () => {
   let fixture: ComponentFixture<CalendarGrid>;
 
   const days: CalendarDay[] = [
-    { date: new Date(2026, 8, 1), hasPhoto: false },
-    { date: new Date(2026, 8, 2), hasPhoto: true },
-    { date: new Date(2026, 8, 3), hasPhoto: false },
+    { date: new Date(2026, 8, 1), hasPhoto: false, isStreak: false },
+    { date: new Date(2026, 8, 2), hasPhoto: true, isStreak: true },
+    { date: new Date(2026, 8, 3), hasPhoto: false, isStreak: false },
   ];
 
   beforeEach(async () => {
@@ -32,6 +32,13 @@ describe('CalendarGrid', () => {
     const element: HTMLElement = fixture.nativeElement;
     expect(element.querySelectorAll('[data-testid="calendar-day-filled"]').length).toBe(1);
     expect(element.querySelectorAll('[data-testid="calendar-day-empty"]').length).toBe(2);
+  });
+
+  it('should mark only the streak day as streak', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const filledDay = element.querySelector('[data-testid="calendar-day-filled"]');
+
+    expect(filledDay?.classList.contains('streak')).toBe(true);
   });
 
   it('should emit daySelected when a day with a photo is clicked', () => {

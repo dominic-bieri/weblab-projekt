@@ -35,7 +35,9 @@ describe('App', () => {
 
   it('should render the navigation with the configured links', async () => {
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     await fixture.whenStable();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-navigation')).toBeTruthy();
     expect(compiled.querySelectorAll('nav a').length).toBe(

@@ -48,6 +48,7 @@ describe('Calendar', () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([]);
     httpMock.expectOne('/api/challenge').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 0, dates: [] });
     await fixture.whenStable();
 
     expect(component).toBeTruthy();
@@ -57,6 +58,7 @@ describe('Calendar', () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
     httpMock.expectOne('/api/challenge').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 1, dates: [photo.captureDate] });
     await fixture.whenStable();
 
     expect(fixture.nativeElement.querySelector('[data-testid="picture-card"]')).toBeFalsy();
@@ -66,6 +68,7 @@ describe('Calendar', () => {
     fixture.detectChanges();
     httpMock.expectOne('/api/photo').flush([photo]);
     httpMock.expectOne('/api/challenge').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 1, dates: [photo.captureDate] });
     await fixture.whenStable();
 
     fixture.nativeElement.querySelector('[data-testid="calendar-day-filled"]')?.click();
