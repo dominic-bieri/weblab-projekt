@@ -37,7 +37,7 @@ describe('PhotoUrlSigner', () => {
     expect(signer.verify(PHOTO_ID, past, sig)).toBe(false);
   });
 
-  it('buckets exp so repeated calls in the same window return the same URL (ADR 6)', () => {
+  it('buckets exp so repeated calls in the same window return the same URL (ADR 4)', () => {
     expect(signer.sign(PHOTO_ID)).toEqual(signer.sign(PHOTO_ID));
   });
 });
