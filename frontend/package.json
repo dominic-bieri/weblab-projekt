@@ -10,6 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --watch=false",
+    "lint": "oxlint src/",
     "format": "prettier --write \"src/**/*.{ts,html,css,scss}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,scss}\""
   },
@@ -38,6 +39,7 @@
     "@angular/cli": "^22.1.6",
     "@angular/compiler-cli": "^22.1.0",
     "jsdom": "^28.0.0",
+    "oxlint": "^1.82.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
     "vitest": "^4.0.8"

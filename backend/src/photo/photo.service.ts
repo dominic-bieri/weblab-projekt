@@ -10,6 +10,7 @@ import { Photo } from './photo.entity.js';
 import { PhotoDto } from './photo.dto.js';
 import { Challenge } from '../challenge/challenge.entity.js';
 import { ChallengeService } from '../challenge/challenge.service.js';
+import { assertOwnership } from '../common/assert-ownership.js';
 
 const UPLOAD_DIR = join(process.cwd(), 'uploads');
 const MAX_IMAGE_DIMENSION = 2048;
@@ -90,7 +91,7 @@ export class PhotoService {
   }
 
   async updatePhoto(id: string, dto: PhotoDto, userId: string): Promise<Photo> {
-    await this.assertOwnership(id, userId);
+    await assertOwnership(this.photoRepository, 'Photo', id, userId);
 
     const challengeId = await this.resolveChallengeId(dto.challengeId, userId);
     const changes: Partial<Photo> = {
@@ -115,13 +116,6 @@ export class PhotoService {
     await this.photoRepository.delete(id);
     // Datei best-effort entfernen; ein verwaister Rest ist harmloser als ein 500 beim Löschen.
     await unlink(this.storagePath(photo)).catch(() => {});
-  }
-
-  private async assertOwnership(id: string, userId: string): Promise<void> {
-    const owned = await this.photoRepository.existsBy({ id, userId });
-    if (!owned) {
-      throw new NotFoundException(`Photo ${id} not found`);
-    }
   }
 
   private storagePath(photo: Photo): string {

@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Challenge } from './challenge.entity.js';
 import { ChallengeDto } from './challenge.dto.js';
+import { assertOwnership } from '../common/assert-ownership.js';
 
 @Injectable()
 export class ChallengeService {
@@ -43,7 +44,7 @@ export class ChallengeService {
     userId: string,
     dto: ChallengeDto,
   ): Promise<Challenge> {
-    await this.assertOwnership(id, userId);
+    await assertOwnership(this.challengeRepository, 'Challenge', id, userId);
     this.assertDateOrder(dto);
 
     const challenge = await this.challengeRepository.preload({ id, ...dto });
@@ -54,7 +55,7 @@ export class ChallengeService {
   }
 
   async deleteChallenge(id: string, userId: string): Promise<void> {
-    await this.assertOwnership(id, userId);
+    await assertOwnership(this.challengeRepository, 'Challenge', id, userId);
     await this.challengeRepository.delete(id);
   }
 
@@ -62,13 +63,6 @@ export class ChallengeService {
   private assertDateOrder(dto: ChallengeDto): void {
     if (dto.endDate < dto.startDate) {
       throw new BadRequestException('endDate must not be before startDate');
-    }
-  }
-
-  private async assertOwnership(id: string, userId: string): Promise<void> {
-    const owned = await this.challengeRepository.existsBy({ id, userId });
-    if (!owned) {
-      throw new NotFoundException(`Challenge ${id} not found`);
     }
   }
 }

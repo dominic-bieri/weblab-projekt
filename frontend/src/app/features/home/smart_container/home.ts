@@ -36,17 +36,11 @@ export class Home {
   }
 
   protected onPhotoDelete(id: string): void {
-    this.photoApi.deletePhoto(id).subscribe(() => {
-      this.photoApi.removeFromCache(id);
-      this.streakApi.streak.reload();
-    });
+    this.photoApi.deleteAndSync(id).subscribe(() => this.streakApi.streak.reload());
   }
 
   protected onPhotoEdit(edit: PhotoEdit): void {
     const { id, ...changes } = edit;
-    this.photoApi.updatePhoto(id, changes).subscribe(() => {
-      this.photoApi.patchInCache(id, changes);
-      this.streakApi.streak.reload();
-    });
+    this.photoApi.updateAndSync(id, changes).subscribe(() => this.streakApi.streak.reload());
   }
 }

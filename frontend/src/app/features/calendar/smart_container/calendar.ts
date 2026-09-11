@@ -91,18 +91,16 @@ export class Calendar {
   }
 
   protected onPhotoDelete(id: string): void {
-    this.photoApi.deletePhoto(id).subscribe(() => {
+    this.photoApi.deleteAndSync(id).subscribe(() => {
       this.selectedDate.set(null);
-      this.photoApi.removeFromCache(id);
       this.streakApi.streak.reload();
     });
   }
 
   protected onPhotoEdit(edit: PhotoEdit): void {
     const { id, ...changes } = edit;
-    this.photoApi.updatePhoto(id, changes).subscribe(() => {
+    this.photoApi.updateAndSync(id, changes).subscribe(() => {
       this.selectedDate.set(parseDateKey(edit.captureDate));
-      this.photoApi.patchInCache(id, changes);
       this.streakApi.streak.reload();
     });
   }

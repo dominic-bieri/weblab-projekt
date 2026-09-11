@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, httpResource } from '@angular/common/http';
+import { tap } from 'rxjs';
 import { Photo } from '../photo.type';
 
 @Injectable({
@@ -62,5 +63,16 @@ export class PhotoApi {
     this.photos.value.update((photos) =>
       photos.map((photo) => (photo.id === id ? { ...photo, ...changes } : photo)),
     );
+  }
+
+  deleteAndSync(id: string) {
+    return this.deletePhoto(id).pipe(tap(() => this.removeFromCache(id)));
+  }
+
+  updateAndSync(
+    id: string,
+    changes: { captureDate: string; description: string; challengeId: string | null },
+  ) {
+    return this.updatePhoto(id, changes).pipe(tap(() => this.patchInCache(id, changes)));
   }
 }

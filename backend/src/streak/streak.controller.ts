@@ -5,11 +5,11 @@ import { CurrentUser } from '../auth/current-user.decorator.js';
 import type { JwtUser } from '../auth/jwt.strategy.js';
 
 @Controller('streak')
+@UseGuards(JwtAuthGuard)
 export class StreakController {
   constructor(private readonly streakService: StreakService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async getStreak(
     @CurrentUser() user: JwtUser,
   ): Promise<{ streak: number; dates: string[] }> {
