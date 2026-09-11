@@ -18,11 +18,11 @@
 
         <button
           mat-list-item
-          class="logout-item"
           data-testid="logout-button"
           (click)="drawer.close(); logout()"
         >
-          {{ 'nav.logout' | translate }}
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>{{ 'nav.logout' | translate }}</span>
         </button>
       </mat-nav-list>
     }
@@ -63,7 +63,8 @@
       <app-language-switcher class="lang-switcher" />
 
       @if (authenticated() && !isHandset()) {
-        <button mat-button class="logout-item" data-testid="logout-button" (click)="logout()">
+        <button mat-button data-testid="logout-button" (click)="logout()">
+          <mat-icon>logout</mat-icon>
           {{ 'nav.logout' | translate }}
         </button>
       }

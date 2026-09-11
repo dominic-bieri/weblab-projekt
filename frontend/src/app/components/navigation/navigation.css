@@ -47,12 +47,6 @@ a.active {
   margin: 0.5rem 0;
 }
 
-/* Logout ends the session — it is not a navigation link, so colour it apart. */
-.logout-item {
-  color: var(--mat-sys-error);
-  --mat-list-list-item-label-text-color: var(--mat-sys-error);
-}
-
 .nav-content {
   padding: 1rem;
 }
