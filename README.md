@@ -20,3 +20,7 @@ Danach `http://localhost/` öffnen und sich mit einem beliebigen Benutzernamen/P
 ## Lokale Entwicklung
 
 Siehe [Entwicklung.md](./Entwicklung.md).
+
+## End-to-End-Tests
+
+Siehe [e2e/README.md](./e2e/README.md).

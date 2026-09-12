@@ -4,7 +4,11 @@ Eine User Journey durch daily-lens mit Cypress, gegen den kompletten Compose-Sta
 
 ## Voraussetzungen
 
-Docker, Node 24 und Google Chrome. Die Ports `80`, `8080` und `5432` müssen frei sein.
+Docker, Node 24 und Google Chrome. Die Ports `80`, `8080` und `5432` müssen frei sein, d.h. es darf nichts anderes aus diesem Repo laufen:
+
+- kein docker-compose-Stack im Root
+- kein docker-compose-Stack in `infra/`
+- keine lokalen Dev-Services (`npm run start:dev`, `npm start`)
 
 ## Ausführen
 
