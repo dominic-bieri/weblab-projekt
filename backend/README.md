@@ -1,35 +1,23 @@
-## Description
+# daily-lens Backend
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NestJS-Backend von daily-lens.
 
-## Project setup
+## Setup
 
 ```bash
-$ npm install
+cp .env.example .env
+npm install
 ```
 
-## Compile and run the project
+## Entwicklung
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Run tests
+## Tests
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run test       # Unit-Tests
+npm run test:e2e   # Integrationstests
 ```

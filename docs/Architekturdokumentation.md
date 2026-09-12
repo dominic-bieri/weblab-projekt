@@ -416,15 +416,15 @@ Dieses Kapitel beschreibt die Qualitätsziele und wie sie überprüft wurden.
 Gemessen wurde manuell (Chrome DevTools Lighthouse) pro Route, jeweils für Mobile und Desktop, gegen den per `docker compose up --build` gestarteten Stack.
 Damit nicht nur der leere Zustand gemessen wird, wurden vorher ca. 10 Fotos (je ca. 20 MB, unkonvertiert direkt ab Kamera) hochgeladen. Das entspricht eher der späteren Praxisnutzung als eine leere Galerie oder Kalenderansicht.
 Gemessen wurde in einem Inkognito-Tab, sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
-Die Screenshots liegen unter [`docs/lighthouse/`](./docs/lighthouse).
+Die Screenshots liegen unter [`docs/lighthouse/`](./lighthouse).
 
 | Route | Mobile | Desktop |
 |---|---|---|
-| `/login` | ![Lighthouse login mobile](./docs/lighthouse/login-mobile.png) | ![Lighthouse login desktop](./docs/lighthouse/login-desktop.png) |
-| `/home` | ![Lighthouse home mobile](./docs/lighthouse/home-mobile.png) | ![Lighthouse home desktop](./docs/lighthouse/home-desktop.png) |
-| `/calendar` | ![Lighthouse calendar mobile](./docs/lighthouse/calendar-mobile.png) | ![Lighthouse calendar desktop](./docs/lighthouse/calendar-desktop.png) |
-| `/challenge` | ![Lighthouse challenge mobile](./docs/lighthouse/challenge-mobile.png) | ![Lighthouse challenge desktop](./docs/lighthouse/challenge-desktop.png) |
-| `/challenge/:id` | ![Lighthouse challenge-detail mobile](./docs/lighthouse/challenge-detail-mobile.png) | ![Lighthouse challenge-detail desktop](./docs/lighthouse/challenge-detail-desktop.png) |
+| `/login` | ![Lighthouse login mobile](./lighthouse/login-mobile.png) | ![Lighthouse login desktop](./lighthouse/login-desktop.png) |
+| `/home` | ![Lighthouse home mobile](./lighthouse/home-mobile.png) | ![Lighthouse home desktop](./lighthouse/home-desktop.png) |
+| `/calendar` | ![Lighthouse calendar mobile](./lighthouse/calendar-mobile.png) | ![Lighthouse calendar desktop](./lighthouse/calendar-desktop.png) |
+| `/challenge` | ![Lighthouse challenge mobile](./lighthouse/challenge-mobile.png) | ![Lighthouse challenge desktop](./lighthouse/challenge-desktop.png) |
+| `/challenge/:id` | ![Lighthouse challenge-detail mobile](./lighthouse/challenge-detail-mobile.png) | ![Lighthouse challenge-detail desktop](./lighthouse/challenge-detail-desktop.png) |
 
 ## 11. Risiken und technische Schulden
 
