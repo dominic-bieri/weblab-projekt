@@ -1,7 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { Component, computed, inject, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,27 +25,22 @@ import { ChallengeProgress } from '../../dumb_components/challenge-progress/chal
   templateUrl: './challenge-detail.html',
 })
 export class ChallengeDetail {
-  private readonly route = inject(ActivatedRoute);
   private readonly challengeApi = inject(ChallengeApi);
   private readonly photoApi = inject(PhotoApi);
 
-  private readonly challengeId = toSignal(
-    this.route.paramMap.pipe(map((params) => params.get('id') ?? '')),
-    { requireSync: true },
-  );
+  // Wird via withComponentInputBinding() aus dem Routenparameter ":id" befüllt.
+  readonly id = input<string>('');
 
   protected readonly challenges = this.challengeApi.challenges;
   protected readonly photos = this.photoApi.photos;
 
   protected readonly challenge = computed(
     () =>
-      this.challengeApi
-        .challengesValue()
-        .find((challenge) => challenge.id === this.challengeId()) ?? null,
+      this.challengeApi.challengesValue().find((challenge) => challenge.id === this.id()) ?? null,
   );
 
   protected readonly challengePhotos = computed(() =>
-    this.photoApi.photosValue().filter((photo) => photo.challengeId === this.challengeId()),
+    this.photoApi.photosValue().filter((photo) => photo.challengeId === this.id()),
   );
 
   protected readonly challengePhotoDates = computed(() =>

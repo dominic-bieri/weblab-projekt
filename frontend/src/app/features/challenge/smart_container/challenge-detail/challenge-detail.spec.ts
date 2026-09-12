@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -10,7 +9,7 @@ describe('ChallengeDetail', () => {
   let fixture: ComponentFixture<ChallengeDetail>;
   let httpMock: HttpTestingController;
 
-  async function setup(challengeId: string) {
+  async function createComponent(challengeId: string) {
     await TestBed.configureTestingModule({
       imports: [ChallengeDetail],
       providers: [
@@ -18,16 +17,17 @@ describe('ChallengeDetail', () => {
         provideHttpClientTesting(),
         provideTranslateService(),
         provideRouter([]),
-        {
-          provide: ActivatedRoute,
-          useValue: { paramMap: of(convertToParamMap({ id: challengeId })) },
-        },
       ],
     }).compileComponents();
 
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(ChallengeDetail);
+    fixture.componentRef.setInput('id', challengeId);
     fixture.detectChanges();
+  }
+
+  async function setup(challengeId: string) {
+    await createComponent(challengeId);
 
     httpMock.expectOne('/api/challenge').flush([
       {
@@ -98,23 +98,7 @@ describe('ChallengeDetail', () => {
   });
 
   it('should show an error message when the challenge fails to load', async () => {
-    await TestBed.configureTestingModule({
-      imports: [ChallengeDetail],
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideTranslateService(),
-        provideRouter([]),
-        {
-          provide: ActivatedRoute,
-          useValue: { paramMap: of(convertToParamMap({ id: 'challenge-1' })) },
-        },
-      ],
-    }).compileComponents();
-
-    httpMock = TestBed.inject(HttpTestingController);
-    fixture = TestBed.createComponent(ChallengeDetail);
-    fixture.detectChanges();
+    await createComponent('challenge-1');
 
     httpMock.expectOne('/api/challenge').flush(null, { status: 500, statusText: 'Server Error' });
     httpMock.expectOne('/api/photo').flush([]);
