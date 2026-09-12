@@ -155,31 +155,40 @@ graph TB
     Nav["components/navigation<br/>(enthält language-switcher)"]
     config["config<br/>(routes, DI-Setup, auth.guard)"]
     subgraph features
+        login[login]
         home[home]
         calendar[calendar]
         challenge[challenge]
     end
     core["core/auth<br/>(Wrapper um keycloak-js)"]
+    i18n["core/i18n<br/>(aktive Sprache)"]
     shared["shared<br/>(local-date, challenge-progress.util, ...)"]
 
     Nav -- "router-outlet" --> features
     config -- "definiert Routen für" --> features
+    login --> core
     home --> core
     calendar --> core
     challenge --> core
     home --> shared
     calendar --> shared
     challenge --> shared
+    Nav --> i18n
+    home --> i18n
+    calendar --> i18n
+    challenge --> i18n
 ```
 
 | Baustein | Verantwortung |
 |---|---|
+| login | Login-/Registrierungs-Einstiegsseite, stösst Redirect zu Keycloak an |
 | home | Foto-Upload, Foto-Liste, Streak-Anzeige |
 | calendar | Kalender-/Zeitleisten-Ansicht der eigenen Fotos |
 | challenge | CRUD von Challenges, Detail-/Galerie-Ansicht je Challenge |
 | components | App-weite UI-Bausteine: `navigation` (Shell um `router-outlet`, Menü) und `language-switcher`|
 | config | Routing & App Konfigurationen |
 | core/auth | Login/Logout, Bearer-Token-Interceptor, Route-Guard |
+| core/i18n | Hält die aktive Sprache zentral, von `language-switcher` und den Feature-Komponenten für Datums-/Textformatierung verwendet |
 | shared | domänenübergreifende Utilities (Datum, Challenge-Fortschritt) und Dialoge |
 
 ## 6. Laufzeitsicht
@@ -266,10 +275,10 @@ graph TB
     BE --- VOL_UP
 ```
 
-- `docker compose up --build` im Repo-Root startet alle vier Container; Keycloak importiert den `daily-lens`-Realm automatisch beim Start
-- Nur `frontend` (Port 80) und `keycloak` (Port 8080) sind nach aussen exponiert; `backend` ist nur intern erreichbar und wird über den nginx-Reverse-Proxy angesprochen
+- `docker compose up --build` im Repo-Root startet alle vier Container. Keycloak importiert den `daily-lens`-Realm automatisch beim Start
+- Nur `frontend` (Port 80) und `keycloak` (Port 8080) sind nach aussen exponiert. `backend` ist nur intern erreichbar und wird über den nginx-Reverse-Proxy angesprochen
 - Drei benannte Volumes für DB-Daten, Keycloak-Daten und hochgeladene Fotos überleben Container-Neustarts
-- Für die Entwicklung startet `infra/docker-compose.yaml` nur Postgres + Keycloak; Frontend (`npm run start`) und Backend (`npm run start:dev`) laufen dann lokal mit Hot-Reload
+- Für die Entwicklung startet `infra/docker-compose.yaml` nur Postgres + Keycloak. Frontend (`npm run start`) und Backend (`npm run start:dev`) laufen dann lokal mit Hot-Reload
 
 ## 8. Querschnittliche Konzepte
 
@@ -283,7 +292,8 @@ Bei fremden Ressourcen kommt ein 404 statt 403 zurück, damit man von aussen nic
 
 ### Validierung
 
-DTOs (`PhotoDto`, `ChallengeDto`) werden mit `class-validator`/`class-transformer` deklarativ validiert (Datumsformat, Pflichtfelder, UUID); die Angular-Formulare spiegeln dieselben Regeln clientseitig.
+DTOs (`PhotoDto`, `ChallengeDto`) werden mit `class-validator`/`class-transformer` deklarativ validiert (Datumsformat, Pflichtfelder, UUID).
+Die Angular-Formulare spiegeln dieselben Regeln clientseitig.
 Feldübergreifende Regeln (z. B. `endDate >= startDate`) werden im Service geprüft.
 
 ### Bild-Pipeline
@@ -367,9 +377,9 @@ Details dazu in Kapitel 8 unter [Bild-Pipeline](#bild-pipeline).
 
 | Qualitätsziel | Konkretisierung |
 |---|---|
-| Performance | Lighthouse-Score >= 90 (Mobile & Desktop); WebP-Kompression und Cache-Header für Fotos |
+| Performance | Lighthouse-Score >= 90 (Mobile & Desktop). WebP-Kompression und Cache-Header für Fotos |
 | Benutzbarkeit | Responsive für Mobile/Tablet/Desktop |
-| Sicherheit | Zugriff nur mit gültigem Token; Fotos/Challenges strikt pro Account isoliert |
+| Sicherheit | Zugriff nur mit gültigem Token. Fotos/Challenges strikt pro Account isoliert |
 | Zuverlässigkeit | Unit-, Integrations- und E2E-Tests laufen automatisiert in der CI |
 | Übertragbarkeit | `docker compose up` startet den kompletten Stack reproduzierbar |
 
@@ -384,6 +394,21 @@ Details dazu in Kapitel 8 unter [Bild-Pipeline](#bild-pipeline).
 | 5 | Bewertende:r klont das Repo frisch und führt `docker compose up --build` aus | Kompletter Stack (DB, Keycloak inkl. Realm, Backend, Frontend) läuft ohne weitere Handgriffe unter `http://localhost/` |
 | 6 | Dasselbe Foto wird in derselben Session zweimal geladen (Navigation zurück/vor) | Bild kommt aus dem Browser-Cache statt vom Server (stabile signierte URL, `Cache-Control: immutable`) |
 
+### 10.3 Lighthouse-Ergebnisse
+
+Gemessen wurde manuell (Chrome DevTools Lighthouse) pro Route, jeweils für Mobile und Desktop, gegen den per `docker compose up --build` gestarteten Stack.
+Damit nicht nur der leere Zustand gemessen wird, wurden vorher ca. 10 Fotos (je ca. 20 MB, unkonvertiert direkt ab Kamera) hochgeladen. Das entspricht eher der späteren Praxisnutzung als eine leere Galerie oder Kalenderansicht.
+Gemessen wurde in einem Inkognito-Tab, sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
+Die Screenshots liegen unter [`docs/lighthouse/`](./docs/lighthouse).
+
+| Route | Mobile | Desktop |
+|---|---|---|
+| `/login` | ![Lighthouse login mobile](./docs/lighthouse/login-mobile.png) | ![Lighthouse login desktop](./docs/lighthouse/login-desktop.png) |
+| `/home` | ![Lighthouse home mobile](./docs/lighthouse/home-mobile.png) | ![Lighthouse home desktop](./docs/lighthouse/home-desktop.png) |
+| `/calendar` | ![Lighthouse calendar mobile](./docs/lighthouse/calendar-mobile.png) | ![Lighthouse calendar desktop](./docs/lighthouse/calendar-desktop.png) |
+| `/challenge` | ![Lighthouse challenge mobile](./docs/lighthouse/challenge-mobile.png) | ![Lighthouse challenge desktop](./docs/lighthouse/challenge-desktop.png) |
+| `/challenge/:id` | ![Lighthouse challenge-detail mobile](./docs/lighthouse/challenge-detail-mobile.png) | ![Lighthouse challenge-detail desktop](./docs/lighthouse/challenge-detail-desktop.png) |
+
 ## 11. Risiken und technische Schulden
 
 ### Risiko 1: Fehlende Pagination bei wachsender Fotoanzahl
@@ -397,7 +422,7 @@ Massnahme: Pagination/Lazy-Loading einführen, spätestens sobald Mehrbenutzer-F
 
 ### Technische Schuld 1: Secrets ohne Rotation
 
-`PHOTO_URL_SIGNING_SECRET` (siehe [Signierte Bild-URLs](#signierte-bild-urls)) und das Keycloak-Client-Secret liegen als Klartext in `.env`; `.env.example` enthält sogar einen fixen Default-Wert. Es gibt keinen Rotationsmechanismus.
+`PHOTO_URL_SIGNING_SECRET` (siehe [Signierte Bild-URLs](#signierte-bild-urls)) liegt als Klartext in `.env`.
 Bei einem Leak der `.env` (z. B. falsch konfiguriertes Volume/Backup) lassen sich damit beliebige signierte Bild-URLs fälschen, bis das Secret manuell ersetzt wird.
 
 Begründung: Für ein Schulprojekt mit einmaligem Deployment zur Bewertung (kein produktiver Betrieb mit echten Userdaten über längere Zeit) steht der Aufwand für ein eigenes Secret-Management im Verhältnis zum Zeitbudget von ca. 60 Stunden (siehe Kap. 2) nicht im Verhältnis zum Nutzen.
@@ -409,7 +434,8 @@ Massnahme: Für einen produktiven Betrieb Secrets über ein Secret-Management st
 `e2e/wait-for-stack.sh` (ADR 2) pollt den Realm-Endpunkt per Curl-Loop (60 × 1 s), weil ein reiner Container-Healthcheck nur "Keycloak läuft" prüft, nicht ob der Realm-Import abgeschlossen ist.
 Das Polling ist ein Workaround: Bei einem langsamen CI-Runner kann das fixe 60-Sekunden-Timeout knapp werden und den E2E-Lauf ohne fachlichen Grund fehlschlagen lassen.
 
-Begründung: Ein sauberer Healthcheck, der den Keycloak-Realm-Import mit abbildet, wurde in der verfügbaren Zeit nicht gefunden (siehe ADR 2); das Polling-Skript war die pragmatischere Lösung, um die E2E-Pipeline überhaupt lauffähig zu bekommen.
+Begründung: Ein sauberer Healthcheck, der den Keycloak-Realm-Import mit abbildet, wurde in der verfügbaren Zeit nicht gefunden (siehe ADR 2).
+Das Polling-Skript war die pragmatischere Lösung, um die E2E-Pipeline überhaupt lauffähig zu bekommen.
 
 Massnahme: Prüfen, ob Keycloak einen Health-Endpunkt bietet, der den Realm-Import mit abbildet, oder Timeout/Backoff des Skripts konfigurierbar machen.
 
