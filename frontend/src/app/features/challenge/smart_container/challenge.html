@@ -14,5 +14,7 @@
         (edited)="onEdit($event)"
       />
     }
+  } @else if (challenges.error()) {
+    <p data-testid="challenge-list-error">{{ 'common.loadError' | translate }}</p>
   }
 </ng-container>

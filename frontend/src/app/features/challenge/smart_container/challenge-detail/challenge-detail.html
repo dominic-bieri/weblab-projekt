@@ -35,6 +35,8 @@
   } @else {
     <p data-testid="challenge-detail-empty">{{ 'challenge.noPhotos' | translate }}</p>
   }
+} @else if (challenges.error()) {
+  <p data-testid="challenge-detail-error">{{ 'common.loadError' | translate }}</p>
 } @else if (challenges.hasValue()) {
   <p data-testid="challenge-detail-not-found">{{ 'challenge.notFound' | translate }}</p>
 }

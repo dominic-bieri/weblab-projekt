@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loadError": "Something went wrong while loading. Please try again later."
+  },
   "nav": {
     "home": "Home",
     "calendar": "Calendar",

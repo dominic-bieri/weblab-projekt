@@ -16,7 +16,7 @@
     [captureDate]="photo.captureDate"
     [description]="photo.description"
     [challengeId]="photo.challengeId"
-    [challenges]="challenges.value()"
+    [challenges]="challenges()"
     (deleted)="onPhotoDelete($event)"
     (edited)="onPhotoEdit($event)"
   />

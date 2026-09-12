@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loadError": "Beim Laden ist etwas schiefgelaufen. Bitte versuche es später erneut."
+  },
   "nav": {
     "home": "Home",
     "calendar": "Kalender",

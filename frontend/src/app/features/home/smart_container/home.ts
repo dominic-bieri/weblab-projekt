@@ -1,4 +1,5 @@
 import { Component, computed, inject, viewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PhotoCard, PhotoEdit } from '../dumb_components/photo-card/photo-card';
 import { PhotoUpload, PhotoUploadValue } from '../dumb_components/photo-upload/photo-upload';
 import { StreakBadge } from '../dumb_components/streak-badge/streak-badge';
@@ -8,7 +9,7 @@ import { Photo } from '../photo.type';
 import { ChallengeApi } from '../../challenge/services/challenge.api';
 
 @Component({
-  imports: [PhotoUpload, PhotoCard, StreakBadge],
+  imports: [PhotoUpload, PhotoCard, StreakBadge, TranslatePipe],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
@@ -20,8 +21,8 @@ export class Home {
   private readonly photoUpload = viewChild.required(PhotoUpload);
 
   protected readonly photos = this.photoApi.photos;
-  protected readonly challenges = this.challengeApi.challenges;
-  protected readonly streak = computed(() => this.streakApi.streak.value().streak);
+  protected readonly challenges = this.challengeApi.challengesValue;
+  protected readonly streak = computed(() => this.streakApi.streakValue().streak);
 
   protected photoUrl(photo: Photo): string {
     return this.photoApi.photoUrl(photo);

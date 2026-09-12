@@ -1,4 +1,5 @@
 import { Component, computed, inject, viewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ChallengeCreate, ChallengeForm } from '../dumb_components/challenge-form/challenge-form';
 import { ChallengeCard, ChallengeEdit } from '../dumb_components/challenge-card/challenge-card';
 import { ChallengeApi } from '../services/challenge.api';
@@ -7,14 +8,14 @@ import { PhotoApi } from '../../home/services/photo.api';
 const NO_CAPTURE_DATES: string[] = [];
 
 @Component({
-  imports: [ChallengeForm, ChallengeCard],
+  imports: [ChallengeForm, ChallengeCard, TranslatePipe],
   selector: 'app-challenge',
   styleUrl: './challenge.css',
   templateUrl: './challenge.html',
 })
 export class ChallengePage {
   private readonly challengeApi = inject(ChallengeApi);
-  private readonly photos = inject(PhotoApi).photos;
+  private readonly photoApi = inject(PhotoApi);
   private readonly challengeForm = viewChild.required(ChallengeForm);
 
   protected readonly challenges = this.challengeApi.challenges;
@@ -22,7 +23,7 @@ export class ChallengePage {
   private readonly captureDatesByChallenge = computed(() => {
     const datesByChallenge = new Map<string, string[]>();
 
-    for (const photo of this.photos.value()) {
+    for (const photo of this.photoApi.photosValue()) {
       if (!photo.challengeId) {
         continue;
       }
@@ -48,7 +49,7 @@ export class ChallengePage {
   protected onDelete(id: string): void {
     this.challengeApi.deleteChallenge(id).subscribe(() => {
       this.challenges.reload();
-      this.photos.reload();
+      this.photoApi.photos.reload();
     });
   }
 

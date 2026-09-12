@@ -96,4 +96,31 @@ describe('ChallengeDetail', () => {
 
     expect(element.querySelector('[data-testid="challenge-detail-not-found"]')).toBeTruthy();
   });
+
+  it('should show an error message when the challenge fails to load', async () => {
+    await TestBed.configureTestingModule({
+      imports: [ChallengeDetail],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateService(),
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: of(convertToParamMap({ id: 'challenge-1' })) },
+        },
+      ],
+    }).compileComponents();
+
+    httpMock = TestBed.inject(HttpTestingController);
+    fixture = TestBed.createComponent(ChallengeDetail);
+    fixture.detectChanges();
+
+    httpMock.expectOne('/api/challenge').flush(null, { status: 500, statusText: 'Server Error' });
+    httpMock.expectOne('/api/photo').flush([]);
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('[data-testid="challenge-detail-error"]')).toBeTruthy();
+  });
 });

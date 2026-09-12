@@ -40,11 +40,14 @@ export class ChallengeDetail {
   protected readonly photos = this.photoApi.photos;
 
   protected readonly challenge = computed(
-    () => this.challenges.value().find((challenge) => challenge.id === this.challengeId()) ?? null,
+    () =>
+      this.challengeApi
+        .challengesValue()
+        .find((challenge) => challenge.id === this.challengeId()) ?? null,
   );
 
   protected readonly challengePhotos = computed(() =>
-    this.photos.value().filter((photo) => photo.challengeId === this.challengeId()),
+    this.photoApi.photosValue().filter((photo) => photo.challengeId === this.challengeId()),
   );
 
   protected readonly challengePhotoDates = computed(() =>

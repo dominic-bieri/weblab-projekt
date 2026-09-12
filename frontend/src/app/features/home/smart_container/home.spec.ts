@@ -6,11 +6,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { Home } from './home';
 
 describe('Home', () => {
-  let component: Home;
   let fixture: ComponentFixture<Home>;
   let httpMock: HttpTestingController;
 
-  beforeEach(async () => {
+  async function setup() {
     await TestBed.configureTestingModule({
       imports: [Home],
       providers: [
@@ -23,19 +22,31 @@ describe('Home', () => {
 
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(Home);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-    httpMock.expectOne('/api/photo').flush([]);
-    httpMock.expectOne('/api/streak').flush({ streak: 0 });
-    httpMock.expectOne('/api/challenge').flush([]);
-    await fixture.whenStable();
-  });
+  }
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create', async () => {
+    await setup();
+    httpMock.expectOne('/api/photo').flush([]);
+    httpMock.expectOne('/api/streak').flush({ streak: 0 });
+    httpMock.expectOne('/api/challenge').flush([]);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should show an error message when the photos fail to load', async () => {
+    await setup();
+    httpMock.expectOne('/api/photo').flush(null, { status: 500, statusText: 'Server Error' });
+    httpMock.expectOne('/api/streak').flush({ streak: 0 });
+    httpMock.expectOne('/api/challenge').flush([]);
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('[data-testid="home-photos-error"]')).toBeTruthy();
   });
 });

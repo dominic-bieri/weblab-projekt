@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 
 import { HttpClient, httpResource } from '@angular/common/http';
 import { tap } from 'rxjs';
@@ -15,6 +15,9 @@ export class PhotoApi {
   readonly photos = httpResource<Photo[]>(() => this.baseUrl, {
     defaultValue: [],
   });
+
+  // Sicherer Zugriff: photos.value() wirft im Error-Status, auch mit defaultValue gesetzt.
+  readonly photosValue = computed(() => (this.photos.hasValue() ? this.photos.value() : []));
 
   photoUrl(photo: Photo): string {
     return `/api${photo.photoUrl}`;

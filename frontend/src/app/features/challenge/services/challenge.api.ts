@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { HttpClient, httpResource } from '@angular/common/http';
 import { Challenge } from '../challenge.type';
 
@@ -13,6 +13,11 @@ export class ChallengeApi {
   readonly challenges = httpResource<Challenge[]>(() => this.baseUrl, {
     defaultValue: [],
   });
+
+  // Sicherer Zugriff: challenges.value() wirft im Error-Status, auch mit defaultValue gesetzt.
+  readonly challengesValue = computed(() =>
+    this.challenges.hasValue() ? this.challenges.value() : [],
+  );
 
   createChallenge(challenge: {
     title: string;

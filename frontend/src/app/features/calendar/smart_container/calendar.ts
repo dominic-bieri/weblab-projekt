@@ -20,7 +20,7 @@ export class Calendar {
   private readonly streakApi = inject(StreakApi);
   private readonly currentLang = inject(ActiveLanguage).current;
 
-  protected readonly challenges = this.challengeApi.challenges;
+  protected readonly challenges = this.challengeApi.challengesValue;
 
   private readonly currentMonth = signal(startOfMonth(new Date()));
   protected readonly selectedDate = signal<Date | null>(null);
@@ -39,8 +39,8 @@ export class Calendar {
   });
 
   protected readonly days = computed<CalendarDay[]>(() => {
-    const photoDates = new Set(this.photoApi.photos.value().map((photo) => photo.captureDate));
-    const streakDates = new Set(this.streakApi.streak.value().dates);
+    const photoDates = new Set(this.photoApi.photosValue().map((photo) => photo.captureDate));
+    const streakDates = new Set(this.streakApi.streakValue().dates);
     const todayKey = toDateKey(new Date());
 
     const month = this.currentMonth();
@@ -64,7 +64,7 @@ export class Calendar {
       return null;
     }
     const key = toDateKey(date);
-    return this.photoApi.photos.value().find((photo) => photo.captureDate === key) ?? null;
+    return this.photoApi.photosValue().find((photo) => photo.captureDate === key) ?? null;
   });
 
   protected photoUrl(photo: Photo): string {

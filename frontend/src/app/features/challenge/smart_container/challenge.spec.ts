@@ -6,11 +6,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { ChallengePage } from './challenge';
 
 describe('ChallengePage', () => {
-  let component: ChallengePage;
   let fixture: ComponentFixture<ChallengePage>;
   let httpMock: HttpTestingController;
 
-  beforeEach(async () => {
+  async function setup() {
     await TestBed.configureTestingModule({
       imports: [ChallengePage],
       providers: [
@@ -23,19 +22,30 @@ describe('ChallengePage', () => {
 
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(ChallengePage);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-    httpMock.expectOne('/api/challenge').flush([]);
-    // Seite laedt jetzt auch Fotos (fuer die fotografierten Tage pro Challenge).
-    httpMock.expectOne('/api/photo').flush([]);
-    await fixture.whenStable();
-  });
+  }
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create', async () => {
+    await setup();
+    httpMock.expectOne('/api/challenge').flush([]);
+    // Seite laedt jetzt auch Fotos (fuer die fotografierten Tage pro Challenge).
+    httpMock.expectOne('/api/photo').flush([]);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should show an error message when the challenges fail to load', async () => {
+    await setup();
+    httpMock.expectOne('/api/challenge').flush(null, { status: 500, statusText: 'Server Error' });
+    httpMock.expectOne('/api/photo').flush([]);
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('[data-testid="challenge-list-error"]')).toBeTruthy();
   });
 });

@@ -1,7 +1,7 @@
 <ng-container>
   <app-streak-badge class="home-streak" [streak]="streak()" />
 
-  <app-photo-upload [challenges]="challenges.value()" (submitted)="onPhotoUpload($event)" />
+  <app-photo-upload [challenges]="challenges()" (submitted)="onPhotoUpload($event)" />
 
   @if (photos.hasValue()) {
     @for (photo of photos.value(); track photo.id) {
@@ -11,11 +11,13 @@
         [captureDate]="photo.captureDate"
         [description]="photo.description"
         [challengeId]="photo.challengeId"
-        [challenges]="challenges.value()"
+        [challenges]="challenges()"
         [priority]="$index === 0"
         (deleted)="onPhotoDelete($event)"
         (edited)="onPhotoEdit($event)"
       />
     }
+  } @else if (photos.error()) {
+    <p data-testid="home-photos-error">{{ 'common.loadError' | translate }}</p>
   }
 </ng-container>
