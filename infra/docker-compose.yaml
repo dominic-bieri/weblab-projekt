@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: daily-lens-db
+    container_name: daily-lens-db-dev
     restart: unless-stopped
     environment:
       POSTGRES_USER: dailylens
@@ -19,7 +19,7 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.7
-    container_name: daily-lens-keycloak
+    container_name: daily-lens-keycloak-dev
     command: start-dev --import-realm
     environment:
       KEYCLOAK_ADMIN: admin
