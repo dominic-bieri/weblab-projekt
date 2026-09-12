@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -44,15 +44,15 @@ interface ChallengeCardEditFormValue {
   styleUrl: './challenge-card-edit.css',
   templateUrl: './challenge-card-edit.html',
 })
-export class ChallengeCardEdit implements OnInit {
+export class ChallengeCardEdit {
   protected readonly data = inject<ChallengeCardEditData>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<ChallengeCardEdit, ChallengeEditValue>);
 
   private readonly model = signal<ChallengeCardEditFormValue>({
-    title: '',
-    description: '',
-    startDate: null,
-    endDate: null,
+    title: this.data.initialTitle,
+    description: this.data.initialDescription,
+    startDate: parseDateKey(this.data.initialStartDate),
+    endDate: parseDateKey(this.data.initialEndDate),
   });
 
   protected readonly titleMaxLength = TITLE_MAX_LENGTH;
@@ -64,15 +64,6 @@ export class ChallengeCardEdit implements OnInit {
     required(path.startDate);
     required(path.endDate);
   });
-
-  ngOnInit(): void {
-    this.model.set({
-      title: this.data.initialTitle,
-      description: this.data.initialDescription,
-      startDate: parseDateKey(this.data.initialStartDate),
-      endDate: parseDateKey(this.data.initialEndDate),
-    });
-  }
 
   save(): void {
     const { title, description, startDate, endDate } = this.model();

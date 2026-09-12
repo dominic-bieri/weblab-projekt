@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -44,30 +44,22 @@ interface PhotoCardEditFormValue {
   styleUrl: './photo-card-edit.css',
   templateUrl: './photo-card-edit.html',
 })
-export class PhotoCardEdit implements OnInit {
+export class PhotoCardEdit {
   protected readonly data = inject<PhotoCardEditData>(MAT_DIALOG_DATA);
   private readonly dialogRef = inject(MatDialogRef<PhotoCardEdit, PhotoEditValue>);
 
   protected readonly challenges = this.data.challenges;
 
   private readonly model = signal<PhotoCardEditFormValue>({
-    captureDate: null,
-    description: '',
-    challengeId: null,
+    captureDate: parseDateKey(this.data.initialCaptureDate),
+    description: this.data.initialDescription,
+    challengeId: this.data.initialChallengeId,
   });
 
   readonly editForm = form(this.model, (path) => {
     required(path.captureDate);
     required(path.description);
   });
-
-  ngOnInit(): void {
-    this.model.set({
-      captureDate: parseDateKey(this.data.initialCaptureDate),
-      description: this.data.initialDescription,
-      challengeId: this.data.initialChallengeId,
-    });
-  }
 
   save(): void {
     const { captureDate, description, challengeId } = this.model();
