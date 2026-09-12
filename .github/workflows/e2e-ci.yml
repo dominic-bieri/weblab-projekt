@@ -7,7 +7,6 @@ on:
       - "frontend/**"
       - "backend/**"
       - "e2e/**"
-      - "infra/**"
       - "docker-compose.yml"
       - ".github/workflows/e2e-ci.yml"
   pull_request:
@@ -16,7 +15,6 @@ on:
       - "frontend/**"
       - "backend/**"
       - "e2e/**"
-      - "infra/**"
       - "docker-compose.yml"
       - ".github/workflows/e2e-ci.yml"
 
