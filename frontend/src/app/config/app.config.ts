@@ -5,6 +5,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { routes } from './app.routes';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideTranslateService } from '@ngx-translate/core';
+import { getStoredLanguage } from '../core/i18n/active-language';
 import {
   AutoRefreshTokenService,
   createInterceptorCondition,
@@ -58,7 +59,7 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json',
       }),
       fallbackLang: 'en',
-      lang: 'en',
+      lang: getStoredLanguage() ?? 'en',
     }),
     provideKeycloakAngular(),
     provideNativeDateAdapter(),
