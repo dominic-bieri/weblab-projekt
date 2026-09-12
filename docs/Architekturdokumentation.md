@@ -4,8 +4,8 @@ Architekturdokumentation nach [arc42](https://arc42.de/overview/)
 
 ## 1. Einführung und Ziele
 
-daily-lens ist eine Webapplikation, die User dazu anregt, täglich ein Foto hochzuladen und sich zeitlich begrenzen Challenges zu widmen.
-Zusätzlich existiert eine Kalenderansicht mit Streak-Funktion, damit die persönliche Routine besser sichtbar zu machen und zum Weitermachen motiviert.
+daily-lens ist eine Webapplikation, die User dazu anregt, täglich ein Foto hochzuladen und sich zeitlich begrenzten Challenges zu widmen.
+Zusätzlich existiert eine Kalenderansicht mit Streak-Funktion, um die persönliche Routine besser sichtbar zu machen und zum Weitermachen zu motivieren.
 
 Genaue Anforderungen stehen im [`Projektvorschlag.md`](./Projektvorschlag.md).
 Die Modulvorgaben dazu stehen im Repository [web-programming-lab-projekt](https://github.com/web-programming-lab/web-programming-lab-projekt) (Stand 31. August 2026).
@@ -99,7 +99,7 @@ Begründung: Es ist eine kleine Applikation, und ein Monolith ist einfacher aufz
 
 **Frontend**
 - nach Features
-- strikte unterteilung in `smart_container` und `dumb_components`
+- strikte Unterteilung in `smart_container` und `dumb_components`
 
 **Backend**
 - nach Features
@@ -332,7 +332,7 @@ Der Browser lädt ein `<img>` über eine eigene, native GET-Anfrage, an die sich
 
 So funktioniert `<img ngSrc>` weiterhin nativ, ohne dass das Frontend die Bilder selbst per Fetch laden und als Blob einbinden muss.
 
-Das Muster ist unter "signed URL" bzw. "presigned URL" bekannt, siehe z. B.[Bytescale Signed URL](https://www.bytescale.com/docs/secure-urls/signed-urls) oder [Google Signed URLs](https://docs.cloud.google.com/storage/docs/access-control/signed-urls).
+Das Muster ist unter "signed URL" bzw. "presigned URL" bekannt, siehe z. B. [Bytescale Signed URL](https://www.bytescale.com/docs/secure-urls/signed-urls) oder [Google Signed URLs](https://docs.cloud.google.com/storage/docs/access-control/signed-urls).
 
 ### Internationalisierung
 
@@ -362,12 +362,12 @@ Der Mechanismus ist in Kapitel 8 unter [Signierte Bild-URLs](#signierte-bild-url
 ### ADR 2: E2E-Test
 
 Der Cypress-Test in `e2e/` läuft gegen den vollständigen `docker-compose`-Stack (Frontend, Backend, Postgres, Keycloak), nicht gegen `ng serve` mit gemocktem Backend.
-Grund: Das Backend validiert Tokens live gegen den JWKS-Endpunkt des Realms, ein Mock würde genau diese Integration ungetestet lassen.
+Grund: Das Backend validiert Tokens live gegen den JWKS-Endpunkt des Realms; ein Mock würde genau diese Integration ungetestet lassen.
 Vor allem Keycloak zu mocken hätte sich letztlich aufwändiger angefühlt als den ganzen Stack e2e zu testen.
 
 Das Warten auf Stack-Bereitschaft steckt in `e2e/wait-for-stack.sh`, nicht in einem `docker-compose`-Healthcheck:
 "Keycloak läuft" heisst nicht "Realm kann Login/Registrierung entgegennehmen".
-Eine bessere Lösung dafür wurde auf die Schnelle nicht gefunden, das Skript pollt deshalb den Realm-Endpunkt, bis er antwortet.
+Eine bessere Lösung dafür wurde auf die Schnelle nicht gefunden; das Skript pollt deshalb den Realm-Endpunkt, bis er antwortet.
 
 
 Elemente, die im UI per E2E-Test geprüft werden, erhalten ein eigenes `data-testid`-Attribut statt über CSS-Klassen selektiert zu werden.
@@ -376,7 +376,7 @@ Das sollte die Tests robuster machen.
 ### ADR 3: Keycloak-spezifische Library statt generischem OAuth2/OIDC-Client
 
 Im Frontend wird für Login/Auth `keycloak-angular`/`keycloak-js` eingesetzt statt einer generischen, Provider-unabhängigen Library wie `angular-oauth2-oidc`.
-Begründung: Es handelt sich um ein kleines Schulprojekt, daher ist eine feste Abhängigkeit an Keycloak als IdP kein relevantes Risiko.
+Begründung: Es handelt sich um ein kleines Schulprojekt, daher ist eine feste Abhängigkeit von Keycloak als IdP kein relevantes Risiko.
 Im Gegenzug nimmt die Keycloak-spezifische Library viel Arbeit ab: Token-Refresh, Bearer-Interceptor und Route-Guard sind fertig integriert und müssen nicht selbst gebaut werden, was Login/Auth im Vergleich zu einer generischen OIDC-Library einfacher macht.
 
 ### ADR 4: WebP-Konvertierung beim Upload & Caching der Bilder
@@ -415,7 +415,7 @@ Dieses Kapitel beschreibt die Qualitätsziele und wie sie überprüft wurden.
 
 Gemessen wurde manuell (Chrome DevTools Lighthouse) pro Route, jeweils für Mobile und Desktop, gegen den per `docker compose up --build` gestarteten Stack.
 Damit nicht nur der leere Zustand gemessen wird, wurden vorher ca. 10 Fotos (je ca. 20 MB, unkonvertiert direkt ab Kamera) hochgeladen. Das entspricht eher der späteren Praxisnutzung als eine leere Galerie oder Kalenderansicht.
-Gemessen wurde in einem Inkognito-Tab, sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
+Gemessen wurde in einem Inkognito-Tab; sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
 Die Screenshots liegen unter [`docs/lighthouse/`](./lighthouse).
 
 | Route | Mobile | Desktop |
@@ -444,7 +444,7 @@ Massnahme: Pagination/Lazy-Loading einführen, spätestens sobald Mehrbenutzer-F
 `PHOTO_URL_SIGNING_SECRET` (siehe [Signierte Bild-URLs](#signierte-bild-urls)) liegt als Klartext in `.env`.
 Bei einem Leak der `.env` (z. B. falsch konfiguriertes Volume/Backup) lassen sich damit beliebige signierte Bild-URLs fälschen, bis das Secret manuell ersetzt wird.
 
-Begründung: Für ein Schulprojekt mit einmaligem Deployment zur Bewertung (kein produktiver Betrieb mit echten Userdaten über längere Zeit) steht der Aufwand für ein eigenes Secret-Management im Verhältnis zum Zeitbudget von ca. 60 Stunden (siehe Kap. 2) nicht im Verhältnis zum Nutzen.
+Begründung: Für ein Schulprojekt mit einmaligem Deployment zur Bewertung (kein produktiver Betrieb mit echten Userdaten über längere Zeit) steht der Aufwand für ein eigenes Secret-Management angesichts des Zeitbudgets von ca. 60 Stunden (siehe Kap. 2) nicht im Verhältnis zum Nutzen.
 
 Massnahme: Für einen produktiven Betrieb Secrets über ein Secret-Management statt `.env` einspielen und eine Rotation der Signing-Secrets vorsehen.
 

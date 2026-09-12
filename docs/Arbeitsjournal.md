@@ -97,4 +97,14 @@ Pro Eintrag: **Datum - Stunden - Tätigkeit(en)**. Stunden dezimal (z. B. 1.5).
 
 ---
 
-**Totale Stunden**: 56 h
+## 2026-09-12 - 5.0 h
+
+- Code Cleanup und kleinere Bugfixes
+- Ladeanzeige statt leerer Seite beim initialen Laden
+- Architekturdokumentation
+- Doku-Struktur / Readmes überarbeitet
+- Fazit/Reflexion
+
+---
+
+**Totale Stunden**: 61.5 h
