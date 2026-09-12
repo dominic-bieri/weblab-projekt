@@ -25,7 +25,7 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 0.25rem;
   text-align: center;
 }
 
@@ -46,6 +46,7 @@
   background: none;
   font: inherit;
   color: inherit;
+  --ring: 2px;
 }
 
 .day:not(:disabled) {
@@ -53,34 +54,34 @@
 }
 
 .day.filled {
-  background: var(--mat-sys-primary-container, #eaddff);
-  color: var(--mat-sys-on-primary-container, #21005d);
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
 }
 
 .day.filled:hover {
-  background: var(--mat-sys-primary, #6750a4);
-  color: var(--mat-sys-on-primary, #fff);
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
 }
 
 .day.streak {
-  background: var(--mat-sys-error-container, #f9dedc);
-  color: var(--mat-sys-on-error-container, #410e0b);
-  box-shadow: inset 0 0 0 2px var(--mat-sys-error, #b3261e);
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+  box-shadow: inset 0 0 0 var(--ring) var(--mat-sys-error);
 }
 
 .day.streak:hover {
-  background: var(--mat-sys-error, #b3261e);
-  color: var(--mat-sys-on-error, #fff);
+  background: var(--mat-sys-error);
+  color: var(--mat-sys-on-error);
 }
 
 .day.today {
-  box-shadow: inset 0 0 0 2px var(--mat-sys-primary, #6750a4);
+  box-shadow: inset 0 0 0 var(--ring) var(--mat-sys-primary);
   font-weight: 700;
 }
 
 .day.selected {
-  background: var(--mat-sys-primary, #6750a4);
-  color: var(--mat-sys-on-primary, #fff);
-  outline: 2px solid var(--mat-sys-primary, #6750a4);
-  outline-offset: 2px;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  outline: var(--ring) solid var(--mat-sys-primary);
+  outline-offset: var(--ring);
 }

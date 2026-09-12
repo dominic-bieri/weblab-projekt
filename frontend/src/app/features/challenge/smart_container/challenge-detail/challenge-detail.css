@@ -2,13 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  padding: 24px;
+  gap: 1.5rem;
+  padding: 1.5rem;
 }
 
 @media (max-width: 599.98px) {
   :host {
-    padding: 16px;
+    padding: 1rem;
   }
 }
 
@@ -26,5 +26,5 @@
   max-width: 900px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
-  gap: 4px;
+  gap: 0.25rem;
 }

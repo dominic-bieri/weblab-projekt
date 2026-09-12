@@ -30,12 +30,15 @@
   width: 100%;
 }
 
-.file-name {
+.file-name,
+.file-error {
   font: var(--mat-sys-body-small);
+}
+
+.file-name {
   color: var(--mat-sys-on-surface-variant);
 }
 
 .file-error {
-  font: var(--mat-sys-body-small);
   color: var(--mat-sys-error);
 }

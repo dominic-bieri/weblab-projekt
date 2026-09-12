@@ -9,20 +9,21 @@
 .streak-hero {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--mat-sys-outline-variant, #cac4d0);
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
 .streak-hero__icon {
-  font-size: 44px;
-  width: 44px;
-  height: 44px;
-  color: var(--mat-sys-error, #b3261e);
+  --icon-size: 2.75rem;
+  font-size: var(--icon-size);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  color: var(--mat-sys-error);
 }
 
 .streak-hero--inactive .streak-hero__icon {
-  color: var(--mat-sys-outline, #79747e);
+  color: var(--mat-sys-outline);
 }
 
 .streak-hero:not(.streak-hero--inactive) .streak-hero__icon {
@@ -54,12 +55,12 @@
 .streak-hero__count {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--mat-sys-on-surface, #1d1b20);
+  color: var(--mat-sys-on-surface);
 }
 
 .streak-hero__label {
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--mat-sys-on-surface-variant, #49454f);
+  color: var(--mat-sys-on-surface-variant);
 }

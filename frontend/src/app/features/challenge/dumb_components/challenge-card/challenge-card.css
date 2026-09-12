@@ -11,7 +11,6 @@
   margin-top: 0.5rem;
 }
 
-/* Matches Breakpoints.XSmall */
 @media (max-width: 599.98px) {
   .card-actions {
     flex-direction: column;

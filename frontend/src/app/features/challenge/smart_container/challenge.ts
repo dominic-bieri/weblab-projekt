@@ -4,7 +4,6 @@ import { ChallengeCard, ChallengeEdit } from '../dumb_components/challenge-card/
 import { ChallengeApi } from '../services/challenge.api';
 import { PhotoApi } from '../../home/services/photo.api';
 
-// Stabile Referenz fuer Challenges ohne Fotos, sonst NG0100 durch neues Array pro Change-Detection.
 const NO_CAPTURE_DATES: string[] = [];
 
 @Component({

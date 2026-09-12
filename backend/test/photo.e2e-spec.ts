@@ -8,6 +8,7 @@ import { PhotoService } from '../src/photo/photo.service.js';
 import { PhotoUrlSigner } from '../src/photo/photo-url.signer.js';
 import { SignedPhotoUrlGuard } from '../src/photo/signed-photo-url.guard.js';
 import { JwtAuthGuard } from '../src/auth/jwt-auth.guard.js';
+import { FakeAuthGuard } from './fake-auth.guard.js';
 
 const PHOTO_ID = '11111111-1111-1111-1111-111111111111';
 const IMAGE_BYTES = 'fake-webp-bytes';
@@ -33,9 +34,8 @@ describe('PhotoController /photo/:id (e2e)', () => {
         { provide: PhotoService, useValue: photoServiceMock },
       ],
     })
-      // Jwt interessiert in diesem Test nicht
       .overrideGuard(JwtAuthGuard)
-      .useValue({ canActivate: () => true })
+      .useValue(FakeAuthGuard)
       .compile();
 
     app = moduleFixture.createNestApplication();

@@ -2,16 +2,18 @@
   display: block;
 }
 
+.challenge-progress__header,
+.challenge-progress__time {
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
 .challenge-progress__header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 4px;
-  font-size: 0.8rem;
-  color: var(--mat-sys-on-surface-variant, #49454f);
+  margin-bottom: 0.25rem;
 }
 
 .challenge-progress__time {
-  margin: 6px 0 0;
-  font-size: 0.8rem;
-  color: var(--mat-sys-on-surface-variant, #49454f);
+  margin: 0.375rem 0 0;
 }
