@@ -1,5 +1,7 @@
 # Architekturdokumentation - daily-lens
 
+Architekturdokumentation nach [arc42](https://arc42.de/overview/)
+
 ## 1. Einführung und Ziele
 
 daily-lens ist eine Webapplikation, die User dazu anregt, täglich ein Foto hochzuladen und sich zeitlich begrenzen Challenges zu widmen.
@@ -13,7 +15,7 @@ Die Modulvorgaben dazu stehen im Repository [web-programming-lab-projekt](https:
 | Art | Randbedingung |
 |---|---|
 | Organisatorisch | Einzelarbeit, Zeitbudget ca. 60 Stunden (siehe [Arbeitsjournal.md](./Arbeitsjournal.md)) |
-| Organisatorisch | Abgabe als GitHub-Repository, Architekturdokumentation zählt 30 % der Modulnote |
+| Organisatorisch | Abgabe als GitHub-Repository (Modulvorgabe) |
 | Technisch | CRUD auf mind. einer selbstdefinierten Ressource, Daten persistent in einer DB, mind. zwei unterschiedliche Darstellungsformen der Daten (Modulvorgabe) |
 | Technisch | Responsive für Mobile/Tablet/Desktop (Modulvorgabe) |
 | Technisch | Automatisierte Unit-/Integrations-/E2E-Tests (Modulvorgabe) |
@@ -22,6 +24,8 @@ Die Modulvorgaben dazu stehen im Repository [web-programming-lab-projekt](https:
 | Konvention | Formatierung und Linting über Prettier und oxlint, in der CI erzwungen |
 
 ## 3. Kontextabgrenzung
+
+Dieses Kapitel grenzt daily-lens fachlich und technisch von seiner Umgebung ab.
 
 ### 3.1 Fachlicher Kontext
 
@@ -64,6 +68,8 @@ graph LR
 
 ## 4. Lösungsstrategie
 
+Dieses Kapitel begründet die wichtigsten technischen Grundsatzentscheidungen für Frontend und Backend.
+
 ### 4.1 Technische Entscheidungen
 
 - **Frontend**: Angular
@@ -99,6 +105,8 @@ Begründung: Es ist eine kleine Applikation, und ein Monolith ist einfacher aufz
 - nach Features
 
 ## 5. Bausteinsicht
+
+Dieses Kapitel zeigt die Bausteine des Systems auf Gesamtsystem- und Modulebene.
 
 ### 5.1 Whitebox Gesamtsystem (Level 1)
 
@@ -193,6 +201,9 @@ graph TB
 
 ## 6. Laufzeitsicht
 
+Dieses Kapitel zeigt bewusst nur die wichtigsten Abläufe als Sequenzdiagramme.
+Andere Abläufe wie das Erstellen von Challenges oder das Bearbeiten von Fotos sind hier bewusst nicht dargestellt, da sie keine zusätzlichen architektonischen Erkenntnisse liefern.
+
 ### Login/Registrierung (OIDC)
 
 ```mermaid
@@ -282,6 +293,8 @@ graph TB
 
 ## 8. Querschnittliche Konzepte
 
+Dieses Kapitel beschreibt Konzepte, die mehrere Bausteine gleichermassen betreffen.
+
 ### Authentifizierung & Autorisierung
 
 Keycloak ist der einzige Identity Provider (OIDC).
@@ -339,6 +352,8 @@ UI-Elemente, die im E2E-Test geprüft werden, bekommen ein eigenes `data-testid`
 
 ## 9. Architekturentscheidungen (ADRs)
 
+Die folgenden ADRs dokumentieren wichtige Architekturentscheidungen samt Begründung.
+
 ### ADR 1: Signierte URLs für den Bild-Stream-Endpunkt
 
 `<img ngSrc>` kann kein Bearer-Token mitschicken, daher wird `GET /photo/:id` nicht per `JwtAuthGuard`, sondern per kurzlebiger HMAC-signierter URL abgesichert.
@@ -372,6 +387,8 @@ Pro Foto liegt danach nur noch eine `<id>.webp` auf der Disk, die zusätzlich ü
 Details dazu in Kapitel 8 unter [Bild-Pipeline](#bild-pipeline).
 
 ## 10. Qualitätsanforderungen
+
+Dieses Kapitel beschreibt die Qualitätsziele und wie sie überprüft wurden.
 
 ### 10.1 Qualitätsanforderungen im Überblick
 
@@ -410,6 +427,8 @@ Die Screenshots liegen unter [`docs/lighthouse/`](./docs/lighthouse).
 | `/challenge/:id` | ![Lighthouse challenge-detail mobile](./docs/lighthouse/challenge-detail-mobile.png) | ![Lighthouse challenge-detail desktop](./docs/lighthouse/challenge-detail-desktop.png) |
 
 ## 11. Risiken und technische Schulden
+
+Dieses Kapitel listet bekannte Risiken und bewusst in Kauf genommene technische Schulden auf.
 
 ### Risiko 1: Fehlende Pagination bei wachsender Fotoanzahl
 
