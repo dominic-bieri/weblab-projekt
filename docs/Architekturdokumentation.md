@@ -10,6 +10,18 @@ Zusätzlich existiert eine Kalenderansicht mit Streak-Funktion, um die persönli
 Genaue Anforderungen stehen im [`Projektvorschlag.md`](./Projektvorschlag.md).
 Die Modulvorgaben dazu stehen im Repository [web-programming-lab-projekt](https://github.com/web-programming-lab/web-programming-lab-projekt) (Stand 31. August 2026).
 
+### 1.1 Top-Qualitätsziele
+
+| # | Ziel | Warum wichtig |
+|---|---|---|
+| 1 | Performance | Modulvorgabe Lighthouse-Score >= 90 (Mobile & Desktop, siehe Kap. 2); Fotos sind bandbreitenintensiv |
+| 2 | Sicherheit | Fotos sind personenbezogene Daten, jeder Account darf ausschliesslich eigene Fotos/Challenges sehen und ändern |
+| 3 | Übertragbarkeit | Abgabe/Bewertung erfolgt durch frisches Klonen und `docker compose up`, muss also reproduzierbar auf fremder Maschine starten |
+
+Konkrete, messbare Szenarien zu diesen Zielen stehen in Kap. 10.
+
+
+
 ## 2. Randbedingungen
 
 | Art | Randbedingung |
@@ -73,42 +85,55 @@ Dieses Kapitel begründet die wichtigsten technischen Grundsatzentscheidungen f�
 ### 4.1 Technische Entscheidungen
 
 - **Frontend**: Angular
-    - Begründung: Im Kurs am meisten Fokus & Wissen kann bei der Arbeit auch eingesetzt werden
-    - Erfüllt Anforderung an JavaScript SPA
+    - Begründung: Im Kurs lag der grösste Fokus auf Angular, das erworbene Wissen lässt sich auch beruflich einsetzen
+    - Erfüllt die Anforderung an eine JavaScript-SPA
 - **Backend**: NestJS
-    - Begründung: TypeScript, Dependency Injection, Decorator Style (ähnlich wie Java Backends welche ich sonst schreibe)
-    - Erfüllt Anforderung an JavaScript Backend
+    - Begründung: TypeScript, Dependency Injection und Decorator-Style ähneln den Java-Backends, die ich sonst schreibe
+    - Erfüllt die Anforderung an ein JavaScript-Backend
 - **DB**: PostgreSQL
-    - Begründung: einfach mit Docker
+    - Begründung: lässt sich einfach mit Docker betreiben
+- **ORM**: TypeORM
+    - Begründung: offizielle NestJS-Integration (`@nestjs/typeorm`), der Decorator-Style passt zum Rest des Backends
 - **Authentifizierung**: Keycloak
-    - Begründung: kann selbst gehostet werden
+    - Begründung: lässt sich selbst hosten
 - **Testing Frameworks**: Unit/Integration: Vitest, E2E: Cypress
-    - Begründung: Vitest: defacto Standard & ESM. Cypress: Im Kurs am meisten Fokus
+    - Begründung: Vitest ist De-facto-Standard und unterstützt ESM nativ, Cypress lag im Kurs am meisten im Fokus
 
 ### 4.2 Frontend Architektur
 
 Das Frontend wird als SPA (Angular) umgesetzt.
+
 Begründung: interaktive Ansichten (Kalender, Galerie) ohne Full-Page-Reloads und klare Trennung von Frontend und Backend über eine REST-API.
 
 ### 4.3 Backend Architektur
 
 Das Backend wird als ein einzelner Monolith (NestJS) umgesetzt.
+
 Begründung: Es ist eine kleine Applikation, und ein Monolith ist einfacher aufzusetzen und zu betreiben als mehrere Services.
 
-### Struktur
+### 4.4 Struktur
 
 **Frontend**
-- nach Features
-- strikte Unterteilung in `smart_container` und `dumb_components`
+- Gliederung nach Features, ein Ordner pro Feature
+- Innerhalb jedes Features strikte Trennung in `smart_container` und `dumb_components`
 
 **Backend**
-- nach Features
+- Gliederung nach Features, ein Modul pro fachlicher Domäne
 
 ## 5. Bausteinsicht
 
-Dieses Kapitel zeigt die Bausteine des Systems auf Gesamtsystem- und Modulebene.
+Dieses Kapitel zeigt die Bausteine des Systems nach dem [C4-Modell](https://c4model.com): C1 (Systemkontext) -> C2 (Container) -> C3 (Komponenten).
 
-### 5.1 Whitebox Gesamtsystem (Level 1)
+### 5.1 C1 – Systemkontext
+
+Ein Akteur (User im Browser), keine Anbindung an Drittsysteme — Details siehe Kap. 3.1.
+
+```mermaid
+graph LR
+    U((User)) --> S[daily-lens]
+```
+
+### 5.2 C2 – Container
 
 ```mermaid
 graph TB
@@ -136,9 +161,9 @@ graph TB
 | Keycloak | Identity Provider: Login, Registrierung, Token-Ausstellung/-Verifikation |
 | Volume `uploads` | Persistenz der konvertierten Bilddateien |
 
-### 5.2 Whitebox wichtiger Bausteine (Level 2)
+### 5.3 C3 – Komponenten
 
-**Backend**: ein Modul pro fachlicher Domäne (Controller -> Service -> Entity/DTO)
+**Backend-Container**: ein Modul pro fachlicher Domäne (Controller -> Service -> Entity/DTO)
 
 ```mermaid
 graph TB
@@ -156,7 +181,9 @@ graph TB
 | StreakModule | Streak-Berechnung aus den Aufnahmedaten der Fotos |
 | AuthModule | JWT-Verifikation gegen Keycloak-JWKS, schützt die übrigen Module |
 
-**Frontend**: je Feature ein Ordner, intern getrennt in `smart_container` (State, ruft `*.api.ts` auf) und `dumb_components` (reine Präsentation, kein HTTP)
+**Frontend-Container**: je Feature ein Ordner, intern getrennt in `smart_container` (State, ruft `*.api.ts` auf) und `dumb_components` (reine Präsentation, kein HTTP).
+
+Die Features (`login`, `home`, `calendar`, `challenge`) sind vollständig voneinander isoliert und importieren nichts aus einem anderen Feature-Ordner. Sie greifen nur gemeinsam auf `core/auth`, `core/i18n` und `shared` zu.
 
 ```mermaid
 graph TB
@@ -174,17 +201,10 @@ graph TB
 
     Nav -- "router-outlet" --> features
     config -- "definiert Routen für" --> features
-    login --> core
-    home --> core
-    calendar --> core
-    challenge --> core
-    home --> shared
-    calendar --> shared
-    challenge --> shared
+    features --> core
+    features --> shared
+    features --> i18n
     Nav --> i18n
-    home --> i18n
-    calendar --> i18n
-    challenge --> i18n
 ```
 
 | Baustein | Verantwortung |
@@ -359,15 +379,18 @@ Die folgenden ADRs dokumentieren wichtige Architekturentscheidungen samt Begrün
 `<img ngSrc>` kann kein Bearer-Token mitschicken, daher wird `GET /photo/:id` nicht per `JwtAuthGuard`, sondern per kurzlebiger HMAC-signierter URL abgesichert.
 Der Mechanismus ist in Kapitel 8 unter [Signierte Bild-URLs](#signierte-bild-urls) beschrieben.
 
+Betrachtete Alternative: Bild per authentifiziertem Fetch laden (mit Bearer-Token) und als Blob-URL ins `<img>` einsetzen.
+Verworfen, weil dafür jedes Bild einzeln per JavaScript geladen und verwaltet werden müsste, statt `<img ngSrc>` nativ (inkl. Lazy-Loading, Caching) nutzen zu können.
+
 ### ADR 2: E2E-Test
 
 Der Cypress-Test in `e2e/` läuft gegen den vollständigen `docker-compose`-Stack (Frontend, Backend, Postgres, Keycloak), nicht gegen `ng serve` mit gemocktem Backend.
-Grund: Das Backend validiert Tokens live gegen den JWKS-Endpunkt des Realms; ein Mock würde genau diese Integration ungetestet lassen.
+Grund: Das Backend validiert Tokens live gegen den JWKS-Endpunkt des Realms. Ein Mock würde genau diese Integration ungetestet lassen.
 Vor allem Keycloak zu mocken hätte sich letztlich aufwändiger angefühlt als den ganzen Stack e2e zu testen.
 
 Das Warten auf Stack-Bereitschaft steckt in `e2e/wait-for-stack.sh`, nicht in einem `docker-compose`-Healthcheck:
 "Keycloak läuft" heisst nicht "Realm kann Login/Registrierung entgegennehmen".
-Eine bessere Lösung dafür wurde auf die Schnelle nicht gefunden; das Skript pollt deshalb den Realm-Endpunkt, bis er antwortet.
+Eine bessere Lösung dafür wurde auf die Schnelle nicht gefunden. Das Skript pollt deshalb den Realm-Endpunkt, bis er antwortet.
 
 
 Elemente, die im UI per E2E-Test geprüft werden, erhalten ein eigenes `data-testid`-Attribut statt über CSS-Klassen selektiert zu werden.
@@ -415,7 +438,7 @@ Dieses Kapitel beschreibt die Qualitätsziele und wie sie überprüft wurden.
 
 Gemessen wurde manuell (Chrome DevTools Lighthouse) pro Route, jeweils für Mobile und Desktop, gegen den per `docker compose up --build` gestarteten Stack.
 Damit nicht nur der leere Zustand gemessen wird, wurden vorher ca. 10 Fotos (je ca. 20 MB, unkonvertiert direkt ab Kamera) hochgeladen. Das entspricht eher der späteren Praxisnutzung als eine leere Galerie oder Kalenderansicht.
-Gemessen wurde in einem Inkognito-Tab; sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
+Gemessen wurde in einem Inkognito-Tab. Sonst waren keine weiteren Chrome-Tabs geöffnet. Das verhindert, dass Erweiterungen oder Hintergrundaktivität aus anderen Tabs den Score verfälschen.
 Die Screenshots liegen unter [`docs/lighthouse/`](./lighthouse).
 
 | Route | Mobile | Desktop |
@@ -475,14 +498,21 @@ Massnahme: Vor einem produktiven Einsatz auf TypeORM-Migrations umstellen und `s
 | Begriff | Beschreibung |
 |---|---|
 | `assertOwnership()` | Backend-Prüfung, ob eine angefragte Ressource (Photo/Challenge) dem authentifizierten User gehört. |
+| ADR | Architecture Decision Record. Kurzdokumentation einer wichtigen Architekturentscheidung samt Begründung (siehe Kap. 9) |
 | Bearer-Token | Access-Token im HTTP-Header `Authorization: Bearer <token>`. Authentifiziert den User gegenüber dem Backend |
+| C4-Modell | Notation zur Darstellung von Softwarearchitektur in vier Abstraktionsebenen (Context, Container, Component, Code), hier für Kap. 5 verwendet (C1–C3) |
 | Challenge | Vom User erstellte, zeitlich begrenzte Foto-Aufgabe, Fotos können ihr zugeordnet werden |
+| DTO | Data Transfer Object. Klasse, die Struktur und Validierungsregeln der Ein-/Ausgabedaten einer API-Route beschreibt (z. B. `PhotoDto`) |
 | dumb_component | Frontend-Komponente ohne eigenen State/HTTP-Zugriff, rein präsentativ, Daten via Input/Output |
 | HMAC | Hash-based Message Authentication Code. Signaturverfahren aus Daten + geheimem Schlüssel, Basis der signierten Bild-URLs |
+| i18n | Internationalization. Abkürzung für Mehrsprachigkeit (hier DE/EN via `ngx-translate`, siehe Kap. 8) |
 | JWKS | JSON Web Key Set. Endpunkt von Keycloak mit öffentlichen Schlüsseln zur Prüfung der JWT-Signatur |
 | JWT | JSON Web Token. signiertes Token-Format, das Keycloak als Access-/Refresh-Token ausstellt |
+| Monolith | Backend, das als ein einzelner deploybarer Prozess/Container umgesetzt ist, statt in mehrere Services aufgeteilt (siehe Kap. 4.3) |
 | OIDC | OpenID Connect. Authentifizierungsprotokoll auf Basis von OAuth2, hier via Authorization Code Flow gegen Keycloak |
 | Realm | Mandanten-/Konfigurationseinheit in Keycloak (User, Clients, Rollen). Hier der `daily-lens`-Realm |
 | Signierte URL | Zeitlich begrenzte URL mit HMAC-Signatur (`exp`, `sig`). Erlaubt Ressourcenzugriff ohne Bearer-Token (siehe ADR 1) |
 | smart_container | Frontend-Komponente mit State, ruft `*.api.ts` auf, reicht Daten an dumb_components weiter |
+| SPA | Single Page Application. Frontend-Architektur, bei der eine einzelne HTML-Seite im Browser dynamisch aktualisiert wird statt Full-Page-Reloads (siehe Kap. 4.2) |
 | Streak | Anzahl aufeinanderfolgender Tage mit mind. einem hochgeladenen Foto |
+| TypeORM | ORM (Object-Relational Mapper) für TypeScript/NestJS, bildet Entities auf PostgreSQL-Tabellen ab (siehe Kap. 4.1) |
